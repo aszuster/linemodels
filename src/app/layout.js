@@ -3,7 +3,7 @@ import "./globals.css";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import { GuardadosProvider } from "@/context/GuardadosContext";
-
+import {ReactLenis} from "@/utils/lenis";
 
 
 
@@ -15,6 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <ReactLenis root>
       <body
         className={`font-times antialiased`}
         suppressHydrationWarning>
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
           <Footer />
         </GuardadosProvider>
       </body>
+      </ReactLenis>
     </html>
   );
 }

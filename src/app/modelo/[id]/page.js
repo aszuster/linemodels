@@ -3,12 +3,44 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getModelById } from "@/data/models";
+import HorizontalLine from "@/svg/horizontalLine";
+import { useGuardados } from "@/context/GuardadosContext";
 
 export default function ModelPage({ params }) {
+  const { addToGuardados } = useGuardados();
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [model, setModel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddToGuardados = (e, name) => {
+    e.preventDefault(); // Prevenir navegación del Link
+    e.stopPropagation(); // Prevenir que se active el Link padre
+    addToGuardados(name);
+  };
+
+  // Funciones de navegación de la galería
+  const goToPreviousPhoto = () => {
+    if (selectedPhoto > 0) {
+      setSelectedPhoto(selectedPhoto - 1);
+    }
+  };
+
+  const goToNextPhoto = () => {
+    if (selectedPhoto < model.photos.length - 1) {
+      setSelectedPhoto(selectedPhoto + 1);
+    }
+  };
+
+  // Funciones del modal
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     setIsClient(true);
@@ -18,7 +50,7 @@ export default function ModelPage({ params }) {
         const modelData = getModelById(resolvedParams.id);
         setModel(modelData);
       } catch (error) {
-        console.error('Error loading model:', error);
+        console.error("Error loading model:", error);
       } finally {
         setLoading(false);
       }
@@ -26,6 +58,37 @@ export default function ModelPage({ params }) {
 
     loadModel();
   }, [params]);
+
+  // Navegación con teclado
+  useEffect(() => {
+    if (!model || model.photos.length <= 1) return;
+
+    const handleKeyPress = (e) => {
+      if (e.key === "ArrowLeft" && selectedPhoto > 0) {
+        goToPreviousPhoto();
+      } else if (
+        e.key === "ArrowRight" &&
+        selectedPhoto < model.photos.length - 1
+      ) {
+        goToNextPhoto();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [model, selectedPhoto]);
+
+  // Cerrar modal con Escape
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === "Escape" && isModalOpen) {
+        closeModal();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [isModalOpen]);
 
   if (loading || !isClient) {
     return (
@@ -42,11 +105,11 @@ export default function ModelPage({ params }) {
 
   if (!model) {
     return (
-      <main className="bg-white-00 pt-[200px] px-[14px] pb-[80px]">
+      <main className="bg-white-00 pt-[32px] px-[14px] pb-[80px]">
         <div className="text-center">
           <h1 className="text-2xl text-black-00 mb-4">Modelo no encontrado</h1>
           <Link href="/" className="text-grey-30 hover:underline">
-            Volver al inicio
+            volver
           </Link>
         </div>
       </main>
@@ -54,23 +117,53 @@ export default function ModelPage({ params }) {
   }
 
   return (
-    <main className="bg-white-00 pt-[200px] px-[14px] pb-[80px]">
+    <main className="bg-white-00 pt-[80px] px-[14px] pb-[80px]">
       {/* Botón de regreso */}
-      <div className="mb-8">
-        <Link 
-          href="/" 
-          className="text-grey-30 hover:underline text-sm"
-        >
-          ← Volver al catálogo
+      <div className="mb-8 ">
+        <Link href="/" className="text-black-00 flex items-center gap-2">
+          <HorizontalLine fill="#000" /> volver
         </Link>
       </div>
 
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Información */}
+          <div className="flex justify-between">
+            <div>
+              <h3 className="text-[20px] pb-[4px]">{model.name}</h3>
+              <div
+                className="text-[12px] flex gap-[4px] items-center cursor-pointer"
+                onClick={(e) => handleAddToGuardados(e, model.name)}
+              >
+                <p>add</p>
+                <p>( + )</p>
+              </div>
+            </div>
+            <div className="flex gap-[32px]">
+              <div>
+                <p className="text-[12px] text-grey-20">altura: </p>
+                <p className="text-[12px] text-grey-20">busto:</p>
+                <p className="text-[12px] text-grey-20">cintura:</p>
+                <p className="text-[12px] text-grey-20">cadera:</p>
+                <p className="text-[12px] text-grey-20">zapatos:</p>
+              </div>
+              <div>
+                <p className="text-[12px] ">{model.height}</p>
+                <p className="text-[12px] ">{model.bust}</p>
+                <p className="text-[12px] ">{model.waist}</p>
+                <p className="text-[12px] ">{model.hips}</p>
+                <p className="text-[12px] ">{model.shoes}</p>
+              </div>
+            </div>
+          </div>
           {/* Galería de fotos */}
           <div className="space-y-4">
+            <p className="mb-[48px]">polas</p>
             {/* Foto principal */}
-            <div className="aspect-[3/4] relative overflow-hidden bg-grey-10">
+            <div
+              className="aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={openModal}
+            >
               <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                 {model.name} - Foto {selectedPhoto + 1}
               </div>
@@ -86,13 +179,13 @@ export default function ModelPage({ params }) {
             </div>
 
             {/* Miniaturas */}
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-6 gap-2">
               {model.photos.map((photo, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedPhoto(index)}
-                  className={`aspect-square relative overflow-hidden bg-grey-10 ${
-                    selectedPhoto === index ? 'ring-2 ring-black-00' : ''
+                  className={`aspect-square relative overflow-hidden bg-grey-10 transition-all ${
+                    selectedPhoto === index ? "" : "hover:scale-105"
                   }`}
                 >
                   <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-xs">
@@ -100,98 +193,100 @@ export default function ModelPage({ params }) {
                   </div>
                   {/* Cuando tengas las imágenes reales, descomenta esto: */}
                   {/* 
-                  <Image
-                    src={photo}
-                    alt={`${model.name} - Miniatura ${index + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                  */}
+                    <Image
+                      src={photo}
+                      alt={`${model.name} - Miniatura ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                    */}
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Información del modelo */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl text-black-00 font-normal mb-2">{model.name}</h1>
-              <p className="text-grey-30">{model.age} años • {model.location}</p>
-            </div>
-
-            {/* Medidas */}
-            <div className="border-l border-grey-10 pl-4">
-              <h2 className="text-lg text-black-00 mb-4">Medidas</h2>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-grey-30">Altura</p>
-                  <p className="text-black-00 font-medium">{model.height}</p>
-                </div>
-                <div>
-                  <p className="text-grey-30">Busto</p>
-                  <p className="text-black-00 font-medium">{model.bust}</p>
-                </div>
-                <div>
-                  <p className="text-grey-30">Cintura</p>
-                  <p className="text-black-00 font-medium">{model.waist}</p>
-                </div>
-                <div>
-                  <p className="text-grey-30">Cadera</p>
-                  <p className="text-black-00 font-medium">{model.hips}</p>
-                </div>
-                <div>
-                  <p className="text-grey-30">Zapatos</p>
-                  <p className="text-black-00 font-medium">{model.shoes}</p>
-                </div>
-                <div>
-                  <p className="text-grey-30">Experiencia</p>
-                  <p className="text-black-00 font-medium">{model.experience}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Descripción */}
-            <div className="border-l border-grey-10 pl-4">
-              <h2 className="text-lg text-black-00 mb-2">Sobre {model.name}</h2>
-              <p className="text-grey-30 text-sm leading-relaxed">{model.description}</p>
-            </div>
-
-            {/* Especialidades */}
-            <div className="border-l border-grey-10 pl-4">
-              <h2 className="text-lg text-black-00 mb-2">Especialidades</h2>
-              <div className="flex flex-wrap gap-2">
-                {model.specialties.map((specialty, index) => (
-                  <span
-                    key={index}
-                    className="bg-grey-10 text-grey-30 px-3 py-1 text-xs rounded"
-                  >
-                    {specialty}
+            {/* Botones de navegación */}
+            {model.photos.length > 1 && (
+              <div className="flex justify-between gap-4 mt-4">
+                <button
+                  onClick={goToPreviousPhoto}
+                  disabled={selectedPhoto === 0}
+                  className={`py-2 flex items-center gap-3 ${
+                    selectedPhoto === 0
+                      ? "text-grey-30 cursor-not-allowed"
+                      : "text-black-00 hover:underline cursor-pointer"
+                  }`}
+                  aria-label="Foto anterior"
+                >
+                  <span>
+                    <HorizontalLine
+                      fill={selectedPhoto === 0 ? "#9CA3AF" : "#000"}
+                    />
                   </span>
-                ))}
-              </div>
-            </div>
+                  <span>anterior</span>
+                </button>
 
-            {/* Disponibilidad y contacto */}
-            <div className="border-l border-grey-10 pl-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-black-00">{model.availability}</span>
+                <button
+                  onClick={goToNextPhoto}
+                  disabled={selectedPhoto === model.photos.length - 1}
+                  className={`py-2 flex items-center gap-3 ${
+                    selectedPhoto === model.photos.length - 1
+                      ? "text-grey-30 cursor-not-allowed"
+                      : "text-black-00 hover:underline cursor-pointer"
+                  }`}
+                  aria-label="Foto siguiente"
+                >
+                  <span>siguiente</span>
+                  <span>
+                    <HorizontalLine
+                      fill={
+                        selectedPhoto === model.photos.length - 1
+                          ? "#9CA3AF"
+                          : "#000"
+                      }
+                    />
+                  </span>
+                </button>
               </div>
-              <p className="text-sm text-grey-30">Contacto: {model.contact}</p>
-            </div>
-
-            {/* Botones de acción */}
-            <div className="flex gap-4 pt-4">
-              <button className="bg-black-00 text-white-00 px-6 py-2 text-sm hover:bg-grey-40 transition-colors">
-                Contactar
-              </button>
-              <button className="border border-grey-10 text-black-00 px-6 py-2 text-sm hover:bg-grey-10 transition-colors">
-                Agregar a favoritos
-              </button>
-            </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Modal de foto ampliada */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white-00 w-full h-full flex flex-col">
+            {/* Botón de cerrar */}
+            <div className="flex justify-center mt-[36px]">
+              <button
+                onClick={closeModal}
+                className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center"
+                aria-label="Cerrar modal"
+              >
+                cerrar
+              </button>
+            </div>
+
+            {/* Foto ampliada */}
+            <div className="flex-1 flex items-center justify-center px-2">
+              <div className="aspect-[3/4] relative overflow-hidden bg-grey-10 w-full max-w-4xl">
+                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                  {model.name} - Foto {selectedPhoto + 1}
+                </div>
+                {/* Cuando tengas las imágenes reales, descomenta esto: */}
+                {/* 
+                <Image
+                  src={model.photos[selectedPhoto]}
+                  alt={`${model.name} - Foto ${selectedPhoto + 1}`}
+                  fill
+                  className="object-cover"
+                />
+                */}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

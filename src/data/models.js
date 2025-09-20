@@ -1,7 +1,7 @@
 export const modelsData = [
   {
     id: 1,
-    name: "Ana",
+    name: "ana",
     age: 25,
     height: "179cm",
     bust: "80cm",
@@ -23,7 +23,7 @@ export const modelsData = [
   },
   {
     id: 2,
-    name: "María",
+    name: "maría",
     age: 23,
     height: "175cm",
     bust: "85cm",
@@ -44,7 +44,7 @@ export const modelsData = [
   },
   {
     id: 3,
-    name: "Carlos",
+    name: "carlos",
     age: 28,
     height: "185cm",
     bust: "95cm",
@@ -67,7 +67,7 @@ export const modelsData = [
   },
   {
     id: 4,
-    name: "Luis",
+    name: "luis",
     age: 26,
     height: "182cm",
     bust: "90cm",
@@ -87,7 +87,7 @@ export const modelsData = [
   },
   {
     id: 5,
-    name: "Sofia",
+    name: "sofia",
     age: 24,
     height: "177cm",
     bust: "82cm",
@@ -109,7 +109,7 @@ export const modelsData = [
   },
   {
     id: 6,
-    name: "Diego",
+    name: "diego",
     age: 27,
     height: "188cm",
     bust: "98cm",
@@ -130,7 +130,7 @@ export const modelsData = [
   },
   {
     id: 7,
-    name: "Elena",
+    name: "elena",
     age: 22,
     height: "173cm",
     bust: "78cm",
@@ -152,7 +152,7 @@ export const modelsData = [
   },
   {
     id: 8,
-    name: "Roberto",
+    name: "roberto",
     age: 30,
     height: "190cm",
     bust: "100cm",
