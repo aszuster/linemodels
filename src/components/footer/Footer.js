@@ -2,6 +2,12 @@
 import SecondaryButton from "../secondaryButton/SecondaryButton";
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
   return (
     <footer className="bg-white-00 px-[14px] pb-[24px]">
         <div className="flex flex-col gap-[24px]">
@@ -19,7 +25,7 @@ const Footer = () => {
       </div>
       <div className="flex w-full justify-between items-center">
         <div>ig: @line</div>
-        <SecondaryButton><span>back to top</span></SecondaryButton>
+        <SecondaryButton onClick={scrollToTop}><span>back to top</span></SecondaryButton>
       </div>
       </div>
     </footer>
