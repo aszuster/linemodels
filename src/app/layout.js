@@ -2,6 +2,7 @@
 import "./globals.css";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
+import { GuardadosProvider } from "@/context/GuardadosContext";
 
 
 
@@ -13,13 +14,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`font-times antialiased`}
-      >
-        <Header />
-        {children}
-        <Footer />
+        suppressHydrationWarning>
+        <GuardadosProvider>
+          <Header />
+          {children}
+          <Footer />
+        </GuardadosProvider>
       </body>
     </html>
   );
