@@ -28,7 +28,7 @@ export default function ModelPage({ params }) {
   };
 
   const goToNextPhoto = () => {
-    if (selectedPhoto < model.photos.length - 1) {
+    if (model.photos && selectedPhoto < model.photos.length - 1) {
       setSelectedPhoto(selectedPhoto + 1);
     }
   };
@@ -61,13 +61,14 @@ export default function ModelPage({ params }) {
 
   // Navegación con teclado
   useEffect(() => {
-    if (!model || model.photos.length <= 1) return;
+    if (!model || !model.photos || model.photos.length <= 1) return;
 
     const handleKeyPress = (e) => {
       if (e.key === "ArrowLeft" && selectedPhoto > 0) {
         goToPreviousPhoto();
       } else if (
         e.key === "ArrowRight" &&
+        model.photos &&
         selectedPhoto < model.photos.length - 1
       ) {
         goToNextPhoto();
@@ -126,9 +127,9 @@ export default function ModelPage({ params }) {
       </div>
 
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div >
           {/* Información */}
-          <div className="flex justify-between">
+          <div className="flex justify-between ">
             <div>
               <h3 className="text-[20px] pb-[4px]">{model.name}</h3>
               <div
@@ -157,7 +158,8 @@ export default function ModelPage({ params }) {
             </div>
           </div>
           {/* Galería de fotos */}
-          <div className="space-y-4">
+          {model.photos && model.photos.length > 0 && (
+          <div className="space-y-4 mt-[48px]">
             <p className="mb-[48px]">polas</p>
             {/* Foto principal */}
             <div
@@ -205,7 +207,7 @@ export default function ModelPage({ params }) {
             </div>
 
             {/* Botones de navegación */}
-            {model.photos.length > 1 && (
+            {model.photos && model.photos.length > 1 && (
               <div className="flex justify-between gap-4 mt-4">
                 <button
                   onClick={goToPreviousPhoto}
@@ -227,9 +229,9 @@ export default function ModelPage({ params }) {
 
                 <button
                   onClick={goToNextPhoto}
-                  disabled={selectedPhoto === model.photos.length - 1}
+                  disabled={model.photos && selectedPhoto === model.photos.length - 1}
                   className={`py-2 flex items-center gap-3 ${
-                    selectedPhoto === model.photos.length - 1
+                    model.photos && selectedPhoto === model.photos.length - 1
                       ? "text-grey-30 cursor-not-allowed"
                       : "text-black-00 hover:underline cursor-pointer"
                   }`}
@@ -239,7 +241,7 @@ export default function ModelPage({ params }) {
                   <span>
                     <HorizontalLine
                       fill={
-                        selectedPhoto === model.photos.length - 1
+                        model.photos && selectedPhoto === model.photos.length - 1
                           ? "#9CA3AF"
                           : "#000"
                       }
@@ -249,6 +251,20 @@ export default function ModelPage({ params }) {
               </div>
             )}
           </div>
+          )}
+          {/* book component */}
+          {model.book && model.book.length > 0 && (
+          <div className="mt-[48px]">
+          <p className="mb-[48px]">book</p>
+          <div className="grid grid-cols-2 gap-4">
+            {model.book.map((photo, index) => (
+              <div className={`bg-grey-10 ${photo.orientation === "horizontal" ? "col-span-2 aspect-[4/3]" : "col-span-1 aspect-[3/4]"}`} key={index}>
+                <p>{photo.image}</p>
+              </div>
+            ))}
+          </div>
+          </div>
+          )}
         </div>
       </div>
 

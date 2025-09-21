@@ -3,6 +3,7 @@ import { useState } from "react";
 import Cross from "@/svg/cross";
 import SecondaryButton from "../secondaryButton/SecondaryButton";
 import { useGuardados } from "@/context/GuardadosContext";
+import Link from "next/link";
 
 const Header = () => {
   const [isGuardadosOpen, setIsGuardadosOpen] = useState(false);
@@ -18,7 +19,7 @@ const Header = () => {
       <header className="fixed top-0 left-0 right-0 bg-white-00 text-black-00 px-[20px] pt-[16px] z-30">
         <div className="mb-[10px] flex justify-between items-center">
           <div>
-            <h1 className="text-[20px] font-normal	leading-[24px]">line</h1>
+            <Link href="/"><h1 className="text-[20px] font-normal	leading-[24px]">line</h1></Link>
           </div>
           <div className="flex gap-[10px] items-center">
             <div

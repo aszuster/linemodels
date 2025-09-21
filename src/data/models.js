@@ -16,6 +16,12 @@ export const modelsData = [
       "/placeholder-1-3.jpg",
       "/placeholder-1-4.jpg"
     ],
+    book: [
+      { image: "/placeholder-1-1.jpg", orientation: "vertical" },
+      { image: "/placeholder-1-2.jpg", orientation: "horizontal" },
+      { image: "/placeholder-1-3.jpg", orientation: "vertical" },
+      { image: "/placeholder-1-4.jpg", orientation: "horizontal" }
+    ],
     description: "Modelo profesional con experiencia en moda y editorial. Especializada en fotografía de moda y pasarela.",
     specialties: ["Moda", "Editorial", "Pasarela"],
     availability: "Disponible",
@@ -36,6 +42,11 @@ export const modelsData = [
       "/placeholder-2-1.jpg",
       "/placeholder-2-2.jpg",
       "/placeholder-2-3.jpg"
+    ],
+    book: [
+      { image: "/placeholder-2-1.jpg", orientation: "vertical" },
+      { image: "/placeholder-2-2.jpg", orientation: "horizontal" },
+      { image: "/placeholder-2-3.jpg", orientation: "vertical" }
     ],
     description: "Modelo versátil con experiencia en publicidad y catálogos. Trabaja tanto en estudio como en exteriores.",
     specialties: ["Publicidad", "Catálogos", "Estudio"],
@@ -76,9 +87,9 @@ export const modelsData = [
     shoes: "41",
     experience: "1 año",
     location: "Sevilla",
-    photos: [
-      "/placeholder-4-1.jpg",
-      "/placeholder-4-2.jpg"
+    book: [
+      { image: "/placeholder-4-1.jpg", orientation: "vertical" },
+      { image: "/placeholder-4-2.jpg", orientation: "horizontal" }
     ],
     description: "Modelo emergente con gran potencial. Especializado en fotografía de producto y lifestyle.",
     specialties: ["Producto", "Lifestyle", "Emergente"],
@@ -102,6 +113,12 @@ export const modelsData = [
       "/placeholder-5-3.jpg",
       "/placeholder-5-4.jpg"
     ],
+    book: [
+      { image: "/placeholder-5-1.jpg", orientation: "vertical" },
+      { image: "/placeholder-5-2.jpg", orientation: "horizontal" },
+      { image: "/placeholder-5-3.jpg", orientation: "vertical" },
+      { image: "/placeholder-5-4.jpg", orientation: "horizontal" }
+    ],
     description: "Modelo senior con amplia experiencia en alta costura y editorial de lujo. Trabaja con las mejores marcas.",
     specialties: ["Alta Costura", "Lujo", "Editorial"],
     availability: "Disponible",
@@ -122,6 +139,11 @@ export const modelsData = [
       "/placeholder-6-1.jpg",
       "/placeholder-6-2.jpg",
       "/placeholder-6-3.jpg"
+    ],
+    book: [
+      { image: "/placeholder-6-1.jpg", orientation: "horizontal" },
+      { image: "/placeholder-6-2.jpg", orientation: "vertical" },
+      { image: "/placeholder-6-3.jpg", orientation: "horizontal" }
     ],
     description: "Modelo atlético especializado en deporte y lifestyle. Perfecto para campañas deportivas.",
     specialties: ["Deporte", "Lifestyle", "Atlético"],
@@ -145,6 +167,12 @@ export const modelsData = [
       "/placeholder-7-3.jpg",
       "/placeholder-7-4.jpg"
     ],
+    book: [
+      { image: "/placeholder-7-1.jpg", orientation: "vertical" },
+      { image: "/placeholder-7-2.jpg", orientation: "horizontal" },
+      { image: "/placeholder-7-3.jpg", orientation: "vertical" },
+      { image: "/placeholder-7-4.jpg", orientation: "horizontal" }
+    ],
     description: "Modelo joven y versátil. Especializada en moda juvenil y redes sociales.",
     specialties: ["Moda Juvenil", "Redes Sociales", "Versátil"],
     availability: "Disponible",
@@ -164,6 +192,10 @@ export const modelsData = [
     photos: [
       "/placeholder-8-1.jpg",
       "/placeholder-8-2.jpg"
+    ],
+    book: [
+      { image: "/placeholder-8-1.jpg", orientation: "horizontal" },
+      { image: "/placeholder-8-2.jpg", orientation: "vertical" }
     ],
     description: "Modelo senior con experiencia en moda masculina de lujo y editorial. Referente en el sector.",
     specialties: ["Lujo", "Editorial", "Senior"],
