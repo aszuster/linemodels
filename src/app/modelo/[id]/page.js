@@ -142,18 +142,18 @@ export default function ModelPage({ params }) {
             </div>
             <div className="flex gap-[32px]">
               <div>
-                <p className="text-[12px] text-grey-20">altura: </p>
-                <p className="text-[12px] text-grey-20">busto:</p>
-                <p className="text-[12px] text-grey-20">cintura:</p>
-                <p className="text-[12px] text-grey-20">cadera:</p>
-                <p className="text-[12px] text-grey-20">zapatos:</p>
+                <p className="text-[12px] text-grey-40">altura</p>
+                <p className="text-[12px] text-grey-40">busto</p>
+                <p className="text-[12px] text-grey-40">cintura</p>
+                <p className="text-[12px] text-grey-40">cadera</p>
+                <p className="text-[12px] text-grey-40">zapatos</p>
               </div>
               <div>
-                <p className="text-[12px] ">{model.height}</p>
-                <p className="text-[12px] ">{model.bust}</p>
-                <p className="text-[12px] ">{model.waist}</p>
-                <p className="text-[12px] ">{model.hips}</p>
-                <p className="text-[12px] ">{model.shoes}</p>
+                <p className="text-[12px] text-grey-40">{model.height}</p>
+                <p className="text-[12px] text-grey-40">{model.bust}</p>
+                <p className="text-[12px] text-grey-40">{model.waist}</p>
+                <p className="text-[12px] text-grey-40">{model.hips}</p>
+                <p className="text-[12px] text-grey-40">{model.shoes}</p>
               </div>
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function ModelPage({ params }) {
             <p className="mb-[48px]">polas</p>
             {/* Foto principal */}
             <div
-              className="aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity"
+              className="aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity mb-[8px]"
               onClick={openModal}
             >
               <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
@@ -181,7 +181,7 @@ export default function ModelPage({ params }) {
             </div>
 
             {/* Miniaturas */}
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-6 gap-[2px]">
               {model.photos.map((photo, index) => (
                 <button
                   key={index}
@@ -257,11 +257,73 @@ export default function ModelPage({ params }) {
           <div className="mt-[48px]">
           <p className="mb-[48px]">book</p>
           <div className="grid grid-cols-2 gap-4">
-            {model.book.map((photo, index) => (
-              <div className={`bg-grey-10 ${photo.orientation === "horizontal" ? "col-span-2 aspect-[4/3]" : "col-span-1 aspect-[3/4]"}`} key={index}>
-                <p>{photo.image}</p>
-              </div>
-            ))}
+            {(() => {
+              // Función para procesar las fotos y agregar placeholders
+              const processedPhotos = [];
+              let currentRow = 0;
+              let currentCol = 0;
+              
+              model.book.forEach((photo, index) => {
+                if (photo.orientation === "horizontal") {
+                  // Si hay una columna ocupada en la fila actual, agregar placeholder
+                  if (currentCol === 1) {
+                    processedPhotos.push({
+                      type: 'placeholder',
+                      key: `placeholder-${index}-1`,
+                      className: "col-span-1 aspect-[3/4]"
+                    });
+                  }
+                  // Agregar la foto horizontal
+                  processedPhotos.push({
+                    type: 'photo',
+                    data: photo,
+                    key: index,
+                    className: "col-span-2 aspect-[4/3]"
+                  });
+                  currentRow++;
+                  currentCol = 0;
+                } else {
+                  // Foto vertical
+                  processedPhotos.push({
+                    type: 'photo',
+                    data: photo,
+                    key: index,
+                    className: "col-span-1 aspect-[3/4]"
+                  });
+                  currentCol++;
+                  if (currentCol === 2) {
+                    currentRow++;
+                    currentCol = 0;
+                  }
+                }
+              });
+              
+              // Si la última fila tiene solo una columna ocupada, agregar placeholder
+              if (currentCol === 1) {
+                processedPhotos.push({
+                  type: 'placeholder',
+                  key: `placeholder-end`,
+                  className: "col-span-1 aspect-[3/4]"
+                });
+              }
+              
+              return processedPhotos.map((item) => (
+                <div 
+                  key={item.key}
+                  className={`bg-grey-10 ${item.className}`}
+                >
+                  {item.type === 'placeholder' ? (
+                    <img 
+                      src="/empty.webp" 
+                      alt="Empty placeholder" 
+                      className="w-full h-full bg-white-00 "
+                    />
+                  ) : (
+                    <p>{item.data.image}</p>
+                  )}
+                </div>
+              ));
+            })()}
           </div>
           </div>
           )}

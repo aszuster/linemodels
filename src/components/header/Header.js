@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cross from "@/svg/cross";
 import SecondaryButton from "../secondaryButton/SecondaryButton";
 import { useGuardados } from "@/context/GuardadosContext";
@@ -7,11 +7,40 @@ import Link from "next/link";
 
 const Header = () => {
   const [isGuardadosOpen, setIsGuardadosOpen] = useState(false);
-  const { guardadosList, isClient, removeFromGuardados, clearAllGuardados } = useGuardados();
+  const [showGuardadosText, setShowGuardadosText] = useState(true);
+  const { guardadosList, isClient, removeFromGuardados, clearAllGuardados } =
+    useGuardados();
 
   const toggleGuardados = () => {
     setIsGuardadosOpen(!isGuardadosOpen);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      // Mostrar el texto cuando esté en el top (scrollTop < 50px) O cuando el modal esté abierto
+      setShowGuardadosText(scrollTop < 50 || isGuardadosOpen);
+    };
+
+    // Agregar el event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup function para remover el event listener
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isGuardadosOpen]); // Agregamos isGuardadosOpen como dependencia
+
+  // Efecto adicional para manejar cuando se abre/cierra el modal
+  useEffect(() => {
+    if (isGuardadosOpen) {
+      setShowGuardadosText(true);
+    } else {
+      // Solo ocultar si no estamos en el top
+      const scrollTop = window.scrollY;
+      setShowGuardadosText(scrollTop < 50);
+    }
+  }, [isGuardadosOpen]);
 
   return (
     <>
@@ -19,15 +48,25 @@ const Header = () => {
       <header className="fixed top-0 left-0 right-0 bg-white-00 text-black-00 px-[20px] pt-[16px] z-30">
         <div className="mb-[10px] flex justify-between items-center">
           <div>
-            <Link href="/"><h1 className="text-[20px] font-normal	leading-[24px]">line</h1></Link>
+            <Link href="/">
+              <h1 className="text-[20px] font-normal	leading-[24px]">line</h1>
+            </Link>
           </div>
           <div className="flex gap-[10px] items-center">
             <div
               className="flex gap-[10px] items-center cursor-pointer"
               onClick={toggleGuardados}
             >
-              <p>Guardados</p>
-              <SecondaryButton>
+              <p
+                className={`transition-all duration-300 ease-in-out ${
+                  showGuardadosText
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-2 pointer-events-none"
+                }`}
+              >
+                guardados
+              </p>
+              <SecondaryButton px="11px">
                 <span>{isClient ? guardadosList.length : 0}</span>
               </SecondaryButton>
             </div>
@@ -36,9 +75,9 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Acordeón que ocupa toda la pantalla */}
+      {/* Acordeón que se ajusta al contenido */}
       <div
-        className={`fixed inset-0 bg-white-00 z-20 transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 bg-white-00 z-20 transition-all duration-300 ease-in-out ${
           isGuardadosOpen
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-full pointer-events-none"
@@ -54,34 +93,16 @@ const Header = () => {
           </div>
         </div> */}
 
-        <div className="pt-[160px] px-[20px] h-full flex flex-col">
-          <div className=" mb-[36px]">
-            <p className="pb-[36px]">modelos</p>
-            <div className="flex items-center">
-              <span className="border-r-1 border-grey-10 pr-[20px]">
-                guardados
-              </span>
-               <span className="border-r-1 border-grey-10 px-[8px]">{isClient ? guardadosList.length : 0}</span>
-              <div 
-                className="ml-[24px] cursor-pointer hover:opacity-70 transition-opacity"
-                onClick={() => {
-                  clearAllGuardados();
-                  setIsGuardadosOpen(false);
-                }}
-              >
-                <Cross />
-              </div>
-            </div>
-          </div>
-          <div className="py-4 flex gap-[16px] mb-[36px] flex-wrap">
+        <div className="pt-[96px] px-[20px] pb-[40px] flex flex-col">
+          <div className="py-4 flex flex-col md:flex-row gap-[16px] mb-[36px] md:flex-wrap">
             {isClient &&
               guardadosList.map((nombre, index) => (
-                <div
-                  key={index}
-                  className="border-r-1 border-grey-10 pr-[20px] flex justify-center items-center gap-[16px] h-[12px]"
-                >
+                  <div
+                    key={index}
+                    className="w-1/2 md:w-auto lg:border-r-1 lg:border-grey-10 lg:pr-[20px] flex justify-start items-center gap-[16px] h-[12px]"
+                  >
                   <p>{nombre}</p>
-                  <div 
+                  <div
                     className="cursor-pointer hover:opacity-70 transition-opacity"
                     onClick={() => removeFromGuardados(nombre)}
                   >
@@ -94,14 +115,13 @@ const Header = () => {
             <div className="flex gap-[16px] items-center">
               <p className="cursor-pointer hover:underline">copiar todos</p>
               <div className="bg-grey-10 w-[1px] h-[9px]"></div>
-              <p 
+              <p
                 className="cursor-pointer hover:underline"
                 onClick={clearAllGuardados}
               >
                 borrar todos
               </p>
             </div>
-            <div>Total: {isClient ? guardadosList.length : 0}</div>
           </div>
         </div>
       </div>

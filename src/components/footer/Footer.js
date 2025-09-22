@@ -21,18 +21,19 @@ const Footer = () => {
     setIsModelModalOpen(false);
   };
   return (
-    <footer className="bg-white-00 px-[14px] pb-[24px]">
-      <div className="flex flex-col gap-[24px]">
+    <footer className="bg-white-00 px-[14px] pb-[24px] ">
+      <div className="flex flex-col gap-[42px]">
         <div className="flex flex-col">
-          <p className="tracking-[-2%] mb-[8px]">contacto</p>
-          <div className="text-grey-40">
-            <p>hola@linemodels.co</p>
-            <p>buenos aires, argentina</p>
+          <p className="pb-[34px]">✦ ia lab</p>
+          <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">contacto</p>
+          <div className="text-grey-40 leading-[16px]">
+            <p className="pb-[6px]">hola@linemodels.co</p>
+            <p>buenos aires, argentina.</p>
           </div>
 
           <button
             onClick={openModelModal}
-            className="tracking-[-2%] flex gap-[14px] items-center mt-[20px]"
+            className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px]"
           >
             <p>querés ser modelo?</p>
             <SecondaryButton>
@@ -41,9 +42,9 @@ const Footer = () => {
           </button>
         </div>
         <div className="flex w-full justify-between items-center">
-          <div>ig: @line</div>
-          <SecondaryButton onClick={scrollToTop}>
-            <span>back to top</span>
+          <div><Link href="https://www.instagram.com/line/" target="_blank">instagram</Link></div>
+          <SecondaryButton onClick={scrollToTop} px="14px">
+            <span className="tracking-[-0.3px] leading-[16px]">back to top</span>
           </SecondaryButton>
         </div>
       </div>
