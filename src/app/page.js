@@ -57,10 +57,10 @@ export default function Home() {
   };
 
   return (
-    <main className=" bg-white-00 pt-[200px] px-[14px] pb-[80px]">
-      <div className="w-full grid grid-cols-2 gap-[2px]">
+    <main className=" bg-white-00 pt-[216px] px-[14px] pb-[80px]">
+      <div className="w-full grid grid-cols-2 gap-x-[2px] gap-y-[32px]">
         {currentImages.map((image) => (
-          <div key={image.id} className="w-full mb-[10px]">
+          <div key={image.id} className="w-full">
             {/* Contenedor de la imagen */}
             <Link href={`/modelo/${image.id}`}>
               <div className="bg-grey-10 w-full aspect-[3/4] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
@@ -85,9 +85,9 @@ export default function Home() {
             <div className="bg-white-00 ">
               <div className="flex justify-between mt-[10px] px-[12px] items-end border-l border-grey-10">
                 <div>
-                  <p className="text-black-00 leading-[15px]">{image.name}</p>
+                  <p className="text-black-00 leading-[16px]">{image.name}</p>
                   <p
-                    className="text-[12px] cursor-pointer hover:underline"
+                    className="text-[12px] cursor-pointer hover:underline leading-[12px] pt-[5px] tracking-[-0.3px]"
                     onClick={() => toggleCard(image.id)}
                   >
                     {expandedCard === image.id
@@ -96,7 +96,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div 
-                  className="text-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
+                  className="text-[12px] leading-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
                   onClick={(e) => handleAddToGuardados(e, image.name)}
                 >
                   <p>add</p>
@@ -137,7 +137,7 @@ export default function Home() {
       
       {/* Paginador */}
       {isClient && totalPages > 1 && (
-        <div className="flex justify-between items-center gap-4 mt-8">
+        <div className="flex justify-between items-center gap-4 mt-[80px]">
           <button
             onClick={goToPreviousPage}
             disabled={currentPage === 1}

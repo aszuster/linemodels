@@ -23,6 +23,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --font-times:'Times New Roman', Times, serif;
+
 }
 
 /* @theme inline {
@@ -43,7 +44,14 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-times);
+
+
+    /* background: url('/mobile.png') center top / 100% auto;
+    opacity: 0.7;
+    height: 100%; */
 }
+
+
 
 /* Ocultar barra de scroll */
 .scrollbar-hide {
@@ -53,3 +61,5 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
+
+
