@@ -5,6 +5,7 @@ import Link from "next/link";
 import { modelsData } from "@/data/models";
 import { useGuardados } from "@/context/GuardadosContext";
 import SecondaryButton from "@/components/secondaryButton/SecondaryButton";
+import { useInfiniteScrollAnimation } from "@/hooks/useInfiniteScrollAnimation";
 
 export default function Home() {
   // Usar los datos reales de los modelos
@@ -38,6 +39,12 @@ export default function Home() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentImages = images.slice(0, endIndex); // Mostrar todos los elementos hasta el final actual
+
+  // Hook para animación de fade in en secuencia con scroll infinito
+  const { containerRef, visibleItems, hasStarted } = useInfiniteScrollAnimation(
+    currentImages,
+    300 // 300ms de delay entre cada card
+  );
 
   const toggleCard = (cardId) => {
     setExpandedCard(expandedCard === cardId ? null : cardId);
@@ -127,9 +134,17 @@ export default function Home() {
 
   return (
     <main className="bg-white-00 pt-[216px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px]">
-      <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-x-[2px] gap-y-[32px] lg:max-w-[1282px] lg:ml-auto">
-        {currentImages.map((image) => (
-          <div key={image.id} className="w-full">
+      <div 
+        ref={containerRef}
+        className="w-full grid grid-cols-2 lg:grid-cols-3 gap-x-[2px] gap-y-[32px] lg:max-w-[1282px] lg:ml-auto"
+      >
+        {currentImages.map((image, index) => (
+          <div 
+            key={image.id} 
+            className={`w-full fade-in-stagger ${
+              visibleItems.has(index) ? 'visible' : ''
+            }`}
+          >
             {/* Contenedor de la imagen */}
             <Link href={`/modelo/${image.id}`}>
               <div className="bg-grey-10 w-full aspect-[3/4] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
