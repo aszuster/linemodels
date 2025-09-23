@@ -93,7 +93,7 @@ export default function ModelPage({ params }) {
 
   if (loading || !isClient) {
     return (
-      <main className="bg-white-00 pt-[200px] px-[14px] pb-[80px]">
+      <main className="bg-white-00 pt-[200px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
         <div className="text-center">
           <div className="animate-pulse">
             <div className="h-8 bg-grey-10 rounded mb-4 mx-auto w-64"></div>
@@ -106,7 +106,7 @@ export default function ModelPage({ params }) {
 
   if (!model) {
     return (
-      <main className="bg-white-00 pt-[32px] px-[14px] pb-[80px]">
+      <main className="bg-white-00 pt-[32px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
         <div className="text-center">
           <h1 className="text-2xl text-black-00 mb-4">Modelo no encontrado</h1>
           <Link href="/" className="text-grey-30 hover:underline">
@@ -118,7 +118,7 @@ export default function ModelPage({ params }) {
   }
 
   return (
-    <main className="bg-white-00 pt-[80px] px-[14px] pb-[80px]">
+    <main className="bg-white-00 pt-[80px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
       {/* Botón de regreso */}
       <div className="mb-8 ">
         <Link href="/" className="text-black-00 flex items-center gap-2">
