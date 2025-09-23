@@ -8,28 +8,28 @@ import { useGuardados } from "@/context/GuardadosContext";
 export default function Home() {
   // Usar los datos reales de los modelos
   const images = modelsData;
-  
+
   // Context para manejar guardados
   const { addToGuardados, guardadosList } = useGuardados();
 
   // Estado para controlar qué tarjeta está expandida
   const [expandedCard, setExpandedCard] = useState(null);
-  
+
   // Estado para la paginación
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  
+
   // Estado para scroll infinito
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  
+
   // Estado para prevenir hydration mismatches
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
+
   // Calcular elementos para la página actual
   const totalPages = Math.ceil(images.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -57,13 +57,13 @@ export default function Home() {
   // Función para cargar más elementos (scroll infinito)
   const loadMore = useCallback(() => {
     if (isLoading || !hasMore) return;
-    
+
     setIsLoading(true);
-    
+
     // Simular delay de carga
     setTimeout(() => {
       if (currentPage < totalPages) {
-        setCurrentPage(prev => prev + 1);
+        setCurrentPage((prev) => prev + 1);
         setExpandedCard(null);
       } else {
         setHasMore(false);
@@ -77,10 +77,11 @@ export default function Home() {
     const handleScroll = () => {
       // Solo en desktop (lg y superiores)
       if (window.innerWidth >= 1024) {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
-        
+
         // Cargar más cuando esté cerca del final (100px antes del final)
         if (scrollTop + windowHeight >= documentHeight - 100) {
           loadMore();
@@ -88,8 +89,8 @@ export default function Home() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore]);
 
   const handleAddToGuardados = (e, name) => {
@@ -110,12 +111,26 @@ export default function Home() {
                 <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-sm group-hover:opacity-20 transition-opacity duration-300">
                   {image.name}
                 </div>
-                
+
                 {/* Overlay con medidas - Solo visible en hover en desktop */}
                 <div className="absolute inset-0  bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex flex-col  p-[20px]">
-                  <div className="">
-                    <div className="space-y-2 text-[14px] leading-[18px] text-left">
-                      <div className="flex justify-between gap-4">
+                  <div className="flex justify-between">
+                    <div className="flex flex-col text-[14px] leading-[18px]">
+                      <span>altura</span>
+                      <span>busto</span>
+                      <span>cintura</span>
+                      <span>cadera</span>
+                      <span>zapatos</span>
+                    </div>
+                    <div className="flex flex-col text-[14px] leading-[18px]">
+                      <span>{image.height}</span>
+                      <span>{image.bust}</span>
+                      <span>{image.waist}</span>
+                      <span>{image.hips}</span>
+                      <span>{image.shoes}</span>
+                    </div>
+                    {/* <div className="space-y-2 text-[14px] leading-[18px] text-left">
+                      <div className="flex justify-between ga p-4">
                         <span className="text-black-00">altura</span>
                         <span>{image.height}</span>
                       </div>
@@ -135,10 +150,10 @@ export default function Home() {
                         <span className="text-black-00">zapatos</span>
                         <span>{image.shoes}</span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
-                
+
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
                 {/* 
                 <Image
@@ -166,7 +181,7 @@ export default function Home() {
                       : "ver medidas"}
                   </p>
                 </div>
-                <div 
+                <div
                   className="text-[12px] lg:text-[16px] leading-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
                   onClick={(e) => handleAddToGuardados(e, image.name)}
                 >
@@ -183,29 +198,29 @@ export default function Home() {
                   : "max-h-0 opacity-0"
               }`}
             >
-               <div className="bg-white-00  border-l border-grey-10">
-                 <div className=" px-[12px] py-[10px] text-sm text-grey-30 flex justify-start gap-[24px]">
-                   <div>
-                     <p className="">altura</p>
-                     <p className="">busto</p>
-                     <p className="">cintura</p>
-                     <p className="">cadera</p>
-                     <p className="">zapatos</p>
-                   </div>
-                   <div>
-                     <p>{image.height}</p>
-                     <p>{image.bust}</p>
-                     <p>{image.waist}</p>
-                     <p>{image.hips}</p>
-                     <p>{image.shoes}</p>
-                   </div>
-                 </div>
-               </div>
+              <div className="bg-white-00  border-l border-grey-10">
+                <div className=" px-[12px] py-[10px] text-sm text-grey-30 flex justify-start gap-[24px]">
+                  <div>
+                    <p className="">altura</p>
+                    <p className="">busto</p>
+                    <p className="">cintura</p>
+                    <p className="">cadera</p>
+                    <p className="">zapatos</p>
+                  </div>
+                  <div>
+                    <p>{image.height}</p>
+                    <p>{image.bust}</p>
+                    <p>{image.waist}</p>
+                    <p>{image.hips}</p>
+                    <p>{image.shoes}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ))}
       </div>
-      
+
       {/* Paginador - Solo visible en mobile */}
       {isClient && totalPages > 1 && (
         <div className="flex justify-between items-center gap-4 mt-[80px] lg:hidden">
@@ -214,24 +229,24 @@ export default function Home() {
             disabled={currentPage === 1}
             className={` py-2 text-sm ${
               currentPage === 1
-                ? 'text-grey-30 cursor-not-allowed'
-                : 'text-black-00 hover:underline cursor-pointer'
+                ? "text-grey-30 cursor-not-allowed"
+                : "text-black-00 hover:underline cursor-pointer"
             }`}
           >
             anterior
           </button>
-          
+
           <div className="text-sm text-black-00">
             {currentPage} / {totalPages}
           </div>
-          
+
           <button
             onClick={goToNextPage}
             disabled={currentPage === totalPages}
             className={` py-2 text-sm ${
               currentPage === totalPages
-                ? 'text-grey-30 cursor-not-allowed'
-                : 'text-black-00 hover:underline cursor-pointer'
+                ? "text-grey-30 cursor-not-allowed"
+                : "text-black-00 hover:underline cursor-pointer"
             }`}
           >
             siguiente
