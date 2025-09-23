@@ -3,32 +3,59 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * Hook específico para animaciones en scroll infinito
  * Mantiene las animaciones de elementos ya mostrados y solo anima los nuevos
+ * En móvil, reinicia la animación en cada cambio de página
  */
-export const useInfiniteScrollAnimation = (items = [], delay = 300) => {
+export const useInfiniteScrollAnimation = (items = [], delay = 300, isMobile = false) => {
   const containerRef = useRef(null);
   const [visibleItems, setVisibleItems] = useState(new Set());
   const [hasStarted, setHasStarted] = useState(false);
   const [lastItemsLength, setLastItemsLength] = useState(0);
   const observerRef = useRef(null);
+  const previousItemsRef = useRef([]);
 
-  // Efecto para manejar la carga inicial
+  // Efecto para manejar la carga inicial y cambios de página en móvil
   useEffect(() => {
-    if (items.length > 0 && !hasStarted) {
-      setHasStarted(true);
-      setLastItemsLength(items.length);
+    if (items.length > 0) {
+      // Comparar items para detectar cambios reales
+      const hasChanged = items.length !== previousItemsRef.current.length || 
+        (items.length > 0 && previousItemsRef.current.length > 0 && 
+         items[0]?.id !== previousItemsRef.current[0]?.id);
       
-      // Animar todos los elementos iniciales
-      items.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleItems(prev => new Set([...prev, index]));
-        }, index * delay);
-      });
+      if (hasChanged) {
+        previousItemsRef.current = items;
+        
+        // En móvil, reiniciar animación en cada cambio de página
+        if (isMobile) {
+          setVisibleItems(new Set());
+          setHasStarted(false);
+          setLastItemsLength(0);
+          
+          // Animar todos los elementos de la página actual
+          items.forEach((_, index) => {
+            setTimeout(() => {
+              setVisibleItems(prev => new Set([...prev, index]));
+            }, index * delay);
+          });
+          setHasStarted(true);
+        } else if (!hasStarted) {
+          // Desktop: comportamiento original
+          setHasStarted(true);
+          setLastItemsLength(items.length);
+          
+          // Animar todos los elementos iniciales
+          items.forEach((_, index) => {
+            setTimeout(() => {
+              setVisibleItems(prev => new Set([...prev, index]));
+            }, index * delay);
+          });
+        }
+      }
     }
-  }, [items.length, hasStarted, delay]);
+  }, [items, hasStarted, delay, isMobile]);
 
-  // Efecto para manejar nuevos elementos (scroll infinito)
+  // Efecto para manejar nuevos elementos (scroll infinito) - Solo en desktop
   useEffect(() => {
-    if (items.length > lastItemsLength && lastItemsLength > 0) {
+    if (!isMobile && items.length > lastItemsLength && lastItemsLength > 0) {
       const newItemsCount = items.length - lastItemsLength;
       const startIndex = lastItemsLength;
       
@@ -42,7 +69,7 @@ export const useInfiniteScrollAnimation = (items = [], delay = 300) => {
       
       setLastItemsLength(items.length);
     }
-  }, [items.length, lastItemsLength, delay]);
+  }, [items.length, lastItemsLength, delay, isMobile]);
 
   // Intersection Observer para detectar cuando el contenedor entra en viewport
   useEffect(() => {
