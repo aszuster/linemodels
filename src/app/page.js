@@ -29,21 +29,34 @@ export default function Home() {
 
   // Estado para prevenir hydration mismatches
   const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
+    
+    // Detectar si es móvil
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
   // Calcular elementos para la página actual
   const totalPages = Math.ceil(images.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentImages = images.slice(0, endIndex); // Mostrar todos los elementos hasta el final actual
+  const currentImages = isMobile 
+    ? images.slice(startIndex, endIndex) // Móvil: solo página actual (6 elementos)
+    : images.slice(0, endIndex); // Desktop: scroll infinito (acumulativo)
 
   // Hook para animación de fade in en secuencia con scroll infinito
   const { containerRef, visibleItems, hasStarted } = useInfiniteScrollAnimation(
     currentImages,
-    300 // 300ms de delay entre cada card
+    300, // 300ms de delay entre cada card
+    isMobile // Pasar el estado de móvil al hook
   );
 
   const toggleCard = (cardId) => {
