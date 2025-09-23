@@ -28,6 +28,15 @@ const Header = () => {
   const firstColumnModels = modelsData.slice(0, 21); // Siempre los primeros 21 en la primera columna
   const secondColumnModels = isModelsExpanded ? modelsData.slice(21) : []; // Solo los adicionales en la segunda columna
 
+  // Calcular guardados por columna (máximo 11 por columna)
+  const itemsPerColumn = 11;
+  const totalGuardados = guardadosList.length;
+  const guardadosColumns = [];
+  
+  for (let i = 0; i < totalGuardados; i += itemsPerColumn) {
+    guardadosColumns.push(guardadosList.slice(i, i + itemsPerColumn));
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -62,7 +71,7 @@ const Header = () => {
         <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:justify-start lg:h-full">
           <div>
             <Link href="/">
-              <h1 className="text-[20px] font-normal	leading-[24px] lg:text-[29px] lg:mb-[152px]">
+              <h1 className="text-[20px] font-normal	leading-[24px] lg:text-[29px] lg:mb-[152px] z-50">
                 line
               </h1>
             </Link>
@@ -173,10 +182,10 @@ const Header = () => {
 
       {/* Acordeón que se ajusta al contenido */}
       <div
-        className={`fixed top-0 left-0 right-0 lg:left-1/4 lg:right-0 bg-white-00 z-20 transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 lg:left-0 lg:right-auto lg:w-1/4 lg:top-[80px] lg:h-[calc(100vh-80px)] bg-white-00 z-40 transition-all duration-300 ease-in-out ${
           isGuardadosOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-full pointer-events-none"
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 -translate-x-full pointer-events-none"
         }`}
       >
         {/* Botón de cerrar en la esquina superior derecha */}
@@ -189,25 +198,53 @@ const Header = () => {
           </div>
         </div> */}
 
-        <div className="pt-[96px] px-[20px] pb-[40px] flex flex-col">
-          <div className="py-4 flex flex-col md:flex-row gap-[16px] mb-[36px] md:flex-wrap">
+        <div className="pt-[96px] px-[20px] pb-[40px] lg:pt-[24px] lg:px-[24px] lg:pb-[24px] flex flex-col lg:h-full">
+          <p className="hidden lg:block mb-[17px] leading-[16px] tracking-[-0.4px]">
+              — modelos
+            </p>
+            <div className="hidden lg:flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] lg:mb-[35px]">
+            <div
+              className="flex gap-[10px] items-center cursor-pointer"
+              onClick={toggleGuardados}
+            >
+              <p
+                className={`transition-all duration-300 ease-in-out ${
+                  showGuardadosText
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
+                }`}
+              >
+                guardados
+              </p>
+              <SecondaryButton px="11px">
+                <span>{isClient ? guardadosList.length : 0}</span>
+              </SecondaryButton>
+            </div>
+          </div>
+          <div className="py-4 flex gap-[8px] mb-[36px] lg:mb-[20px]">
             {isClient &&
-              guardadosList.map((nombre, index) => (
-                <div
-                  key={index}
-                  className="w-1/2 md:w-auto lg:border-r-1 lg:border-grey-10 lg:pr-[20px] flex justify-start items-center gap-[16px] h-[12px]"
-                >
-                  <p>{nombre}</p>
-                  <div
-                    className="cursor-pointer hover:opacity-70 transition-opacity"
-                    onClick={() => removeFromGuardados(nombre)}
-                  >
-                    <Cross />
-                  </div>
+              guardadosColumns.map((column, columnIndex) => (
+                <div key={columnIndex} className="flex-1">
+                  {column.map((nombre, index) => (
+                    <div
+                      key={`${columnIndex}-${index}`}
+                      className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
+                    >
+                      <div className="flex items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px]">
+                        <p>{nombre}</p>
+                        <div
+                          className="cursor-pointer hover:opacity-70 transition-opacity"
+                          onClick={() => removeFromGuardados(nombre)}
+                        >
+                          <Cross />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
           </div>
-          <div className="flex justify-between items-center text-grey-20">
+          <div className="flex justify-between items-center text-grey-20 lg:mt-auto">
             <div className="flex gap-[16px] items-center">
               <p className="cursor-pointer hover:underline">copiar todos</p>
               <div className="bg-grey-10 w-[1px] h-[9px]"></div>
