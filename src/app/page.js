@@ -57,7 +57,7 @@ export default function Home() {
   };
 
   return (
-    <main className=" bg-white-00 pt-[216px] px-[14px] pb-[80px]">
+    <main className="bg-white-00 pt-[216px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px]">
       <div className="w-full grid grid-cols-2 gap-x-[2px] gap-y-[32px]">
         {currentImages.map((image) => (
           <div key={image.id} className="w-full">
