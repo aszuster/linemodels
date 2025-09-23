@@ -198,7 +198,7 @@ const Header = () => {
           </div>
         </div> */}
 
-        <div className="pt-[96px] px-[20px] pb-[40px] lg:pt-[24px] lg:px-[24px] lg:pb-[24px] flex flex-col lg:h-full">
+        <div className="pt-[96px] px-[20px] pb-[40px] lg:pt-[124px] lg:px-[24px] lg:pb-[24px] flex flex-col lg:h-full">
           <p className="hidden lg:block mb-[17px] leading-[16px] tracking-[-0.4px]">
               — modelos
             </p>
@@ -244,7 +244,7 @@ const Header = () => {
                 </div>
               ))}
           </div>
-          <div className="flex justify-between items-center text-grey-20 lg:mt-auto">
+          <div className="flex justify-between items-center text-grey-20">
             <div className="flex gap-[16px] items-center">
               <p className="cursor-pointer hover:underline">copiar todos</p>
               <div className="bg-grey-10 w-[1px] h-[9px]"></div>
