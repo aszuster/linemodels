@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { modelsData } from "@/data/models";
 import { useGuardados } from "@/context/GuardadosContext";
+import SecondaryButton from "@/components/secondaryButton/SecondaryButton";
+import { useInfiniteScrollAnimation } from "@/hooks/useInfiniteScrollAnimation";
 
 export default function Home() {
   // Usar los datos reales de los modelos
@@ -22,6 +24,8 @@ export default function Home() {
   // Estado para scroll infinito
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [showPauseAt22, setShowPauseAt22] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   // Estado para prevenir hydration mismatches
   const [isClient, setIsClient] = useState(false);
@@ -35,6 +39,12 @@ export default function Home() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentImages = images.slice(0, endIndex); // Mostrar todos los elementos hasta el final actual
+
+  // Hook para animación de fade in en secuencia con scroll infinito
+  const { containerRef, visibleItems, hasStarted } = useInfiniteScrollAnimation(
+    currentImages,
+    300 // 300ms de delay entre cada card
+  );
 
   const toggleCard = (cardId) => {
     setExpandedCard(expandedCard === cardId ? null : cardId);
@@ -58,6 +68,14 @@ export default function Home() {
   const loadMore = useCallback(() => {
     if (isLoading || !hasMore) return;
 
+    // Verificar si llegamos a 22 modelos (4 páginas de 6 = 24, pero queremos pausar en 22)
+    const currentItemsCount = currentPage * itemsPerPage;
+    if (currentItemsCount >= 22 && !showPauseAt22) {
+      setShowPauseAt22(true);
+      setShowBackToTop(true);
+      return;
+    }
+
     setIsLoading(true);
 
     // Simular delay de carga
@@ -70,7 +88,7 @@ export default function Home() {
       }
       setIsLoading(false);
     }, 500);
-  }, [currentPage, totalPages, isLoading, hasMore]);
+  }, [currentPage, totalPages, isLoading, hasMore, showPauseAt22]);
 
   // Detectar scroll para cargar más elementos
   useEffect(() => {
@@ -84,14 +102,22 @@ export default function Home() {
 
         // Cargar más cuando esté cerca del final (100px antes del final)
         if (scrollTop + windowHeight >= documentHeight - 100) {
-          loadMore();
+          // Si estamos en la pausa de 22 modelos, continuar el scroll infinito
+          if (showPauseAt22) {
+            setShowPauseAt22(false);
+            setShowBackToTop(false);
+            // Continuar cargando más elementos
+            loadMore();
+          } else {
+            loadMore();
+          }
         }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loadMore]);
+  }, [loadMore, showPauseAt22]);
 
   const handleAddToGuardados = (e, name) => {
     e.preventDefault(); // Prevenir navegación del Link
@@ -99,11 +125,26 @@ export default function Home() {
     addToGuardados(name);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <main className="bg-white-00 pt-[216px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px]">
-      <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-x-[2px] gap-y-[32px] lg:max-w-[1282px] lg:ml-auto">
-        {currentImages.map((image) => (
-          <div key={image.id} className="w-full">
+      <div 
+        ref={containerRef}
+        className="w-full grid grid-cols-2 lg:grid-cols-3 gap-x-[2px] gap-y-[32px] lg:max-w-[1282px] lg:ml-auto"
+      >
+        {currentImages.map((image, index) => (
+          <div 
+            key={image.id} 
+            className={`w-full fade-in-stagger ${
+              visibleItems.has(index) ? 'visible' : ''
+            }`}
+          >
             {/* Contenedor de la imagen */}
             <Link href={`/modelo/${image.id}`}>
               <div className="bg-grey-10 w-full aspect-[3/4] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
@@ -255,11 +296,27 @@ export default function Home() {
       )}
 
       {/* Indicador de carga para scroll infinito - Solo visible en desktop */}
-      {isClient && isLoading && (
-        <div className="hidden lg:flex justify-center items-center mt-[80px]">
-          <div className="text-sm text-grey-30">Cargando más modelos...</div>
+      {isClient && (isLoading || showPauseAt22) && (
+        <div className="hidden lg:flex max-w-[1282px] ml-auto justify-between items-center mt-[80px]">
+          <div></div>
+          <div className="text-sm text-grey-30">
+            {showPauseAt22
+              ? `ver más (${images.length - currentImages.length})`
+              : "cargando más modelos..."}
+          </div>
+          {isClient && showBackToTop && (
+            <div className="hidden lg:flex justify-end items-center">
+              <SecondaryButton onClick={scrollToTop} px="14px">
+                <span className="tracking-[-0.3px] leading-[16px]">
+                  back to top
+                </span>
+              </SecondaryButton>
+            </div>
+          )}
         </div>
       )}
+
+      {/* Botón Back to Top - Solo visible cuando se llega a 22 modelos */}
 
       {/* Indicador de fin de contenido - Solo visible en desktop */}
       {/* {isClient && !hasMore && currentImages.length === images.length && (

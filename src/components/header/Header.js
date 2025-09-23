@@ -6,13 +6,14 @@ import { useGuardados } from "@/context/GuardadosContext";
 import Link from "next/link";
 import HorizontalLine from "@/svg/horizontalLine";
 import { modelsData } from "@/data/models";
+import GuardadosMobile from "./GuardadosMobile";
+import GuardadosDesktop from "./GuardadosDesktop";
 
 const Header = () => {
   const [isGuardadosOpen, setIsGuardadosOpen] = useState(false);
   const [showGuardadosText, setShowGuardadosText] = useState(true);
   const [isModelsExpanded, setIsModelsExpanded] = useState(false);
-  const { guardadosList, isClient, removeFromGuardados, clearAllGuardados } =
-    useGuardados();
+  const { guardadosList, isClient } = useGuardados();
 
   const toggleGuardados = () => {
     setIsGuardadosOpen(!isGuardadosOpen);
@@ -27,15 +28,6 @@ const Header = () => {
   const shouldShowExpandButton = totalModels > 21;
   const firstColumnModels = modelsData.slice(0, 21); // Siempre los primeros 21 en la primera columna
   const secondColumnModels = isModelsExpanded ? modelsData.slice(21) : []; // Solo los adicionales en la segunda columna
-
-  // Calcular guardados por columna (máximo 11 por columna)
-  const itemsPerColumn = 11;
-  const totalGuardados = guardadosList.length;
-  const guardadosColumns = [];
-  
-  for (let i = 0; i < totalGuardados; i += itemsPerColumn) {
-    guardadosColumns.push(guardadosList.slice(i, i + itemsPerColumn));
-  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -180,83 +172,12 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Acordeón que se ajusta al contenido */}
-      <div
-        className={`fixed top-0 left-0 right-0 lg:left-0 lg:right-auto lg:w-1/4 lg:top-[80px] lg:h-[calc(100vh-80px)] bg-white-00 z-40 transition-all duration-300 ease-in-out ${
-          isGuardadosOpen
-            ? "opacity-100 translate-x-0"
-            : "opacity-0 -translate-x-full pointer-events-none"
-        }`}
-      >
-        {/* Botón de cerrar en la esquina superior derecha */}
-        {/* <div className="absolute top-4 right-4 z-40">
-          <div 
-            className="cursor-pointer p-2 hover:bg-grey-10 rounded-full transition-colors"
-            onClick={toggleGuardados}
-          >
-            <Cross />
-          </div>
-        </div> */}
-
-        <div className="pt-[96px] px-[20px] pb-[40px] lg:pt-[124px] lg:px-[24px] lg:pb-[24px] flex flex-col lg:h-full">
-          <p className="hidden lg:block mb-[17px] leading-[16px] tracking-[-0.4px]">
-              — modelos
-            </p>
-            <div className="hidden lg:flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] lg:mb-[35px]">
-            <div
-              className="flex gap-[10px] items-center cursor-pointer"
-              onClick={toggleGuardados}
-            >
-              <p
-                className={`transition-all duration-300 ease-in-out ${
-                  showGuardadosText
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
-                }`}
-              >
-                guardados
-              </p>
-              <SecondaryButton px="11px">
-                <span>{isClient ? guardadosList.length : 0}</span>
-              </SecondaryButton>
-            </div>
-          </div>
-          <div className="py-4 flex gap-[8px] mb-[36px] lg:mb-[20px]">
-            {isClient &&
-              guardadosColumns.map((column, columnIndex) => (
-                <div key={columnIndex} className="flex-1">
-                  {column.map((nombre, index) => (
-                    <div
-                      key={`${columnIndex}-${index}`}
-                      className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
-                    >
-                      <div className="flex items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px]">
-                        <p>{nombre}</p>
-                        <div
-                          className="cursor-pointer hover:opacity-70 transition-opacity"
-                          onClick={() => removeFromGuardados(nombre)}
-                        >
-                          <Cross />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-          </div>
-          <div className="flex justify-between items-center text-grey-20">
-            <div className="flex gap-[16px] items-center">
-              <p className="cursor-pointer hover:underline">copiar todos</p>
-              <div className="bg-grey-10 w-[1px] h-[9px]"></div>
-              <p
-                className="cursor-pointer hover:underline"
-                onClick={clearAllGuardados}
-              >
-                borrar todos
-              </p>
-            </div>
-          </div>
-        </div>
+      {/* Componentes separados para mobile y desktop */}
+      <div className="lg:hidden">
+        <GuardadosMobile isOpen={isGuardadosOpen} onClose={toggleGuardados} />
+      </div>
+      <div className="hidden lg:block">
+        <GuardadosDesktop isOpen={isGuardadosOpen} onClose={toggleGuardados} />
       </div>
     </>
   );

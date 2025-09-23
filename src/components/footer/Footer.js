@@ -22,7 +22,7 @@ const Footer = () => {
   };
   return (
     <footer className="bg-white-00 px-[14px] pb-[24px] ">
-      <div className="flex flex-col gap-[42px]">
+      <div className="flex flex-col gap-[42px] lg:hidden">
         <div className="flex flex-col">
           <p className="pb-[34px]">✦ ia lab</p>
           <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">contacto</p>
@@ -42,11 +42,22 @@ const Footer = () => {
           </button>
         </div>
         <div className="flex w-full justify-between items-center">
-          <div><Link href="https://www.instagram.com/line/" target="_blank">instagram</Link></div>
+          <div>
+            <Link href="https://www.instagram.com/line/" target="_blank">
+              instagram
+            </Link>
+          </div>
           <SecondaryButton onClick={scrollToTop} px="14px">
-            <span className="tracking-[-0.3px] leading-[16px]">back to top</span>
+            <span className="tracking-[-0.3px] leading-[16px]">
+              back to top
+            </span>
           </SecondaryButton>
         </div>
+      </div>
+      <div className="hidden lg:flex w-full justify-end items-center">
+        <SecondaryButton onClick={scrollToTop} px="14px">
+          <span className="tracking-[-0.3px] leading-[16px]">back to top</span>
+        </SecondaryButton>
       </div>
 
       {/* Modal de "querés ser modelo?" */}
@@ -68,7 +79,9 @@ const Footer = () => {
             <div className="flex-1 flex items-center justify-center px-[14px]">
               <div className="relative overflow-hidden w-full">
                 <div className=" text-black-00 ">
-                  <p className="mb-[32px] leading-[20px]">Querés ser modelo? </p>
+                  <p className="mb-[32px] leading-[20px]">
+                    Querés ser modelo? 
+                  </p>
                   <p className="mb-[32px] leading-[20px]">
                     Mandanos tus datos y dos fotos a hola@linemodels.co Queremos
                     verte natural, luz de día y sin make up, las fotos las podés
