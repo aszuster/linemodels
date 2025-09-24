@@ -10,10 +10,19 @@ import GuardadosMobile from "./GuardadosMobile";
 import GuardadosDesktop from "./GuardadosDesktop";
 
 const Header = () => {
+  const [isModelModalOpen, setIsModelModalOpen] = useState(false);
   const [isGuardadosOpen, setIsGuardadosOpen] = useState(false);
   const [showGuardadosText, setShowGuardadosText] = useState(true);
   const [isModelsExpanded, setIsModelsExpanded] = useState(false);
   const { guardadosList, isClient } = useGuardados();
+
+  const openModelModal = () => {
+    setIsModelModalOpen(true);
+  };
+
+  const closeModelModal = () => {
+    setIsModelModalOpen(false);
+  };
 
   const toggleGuardados = () => {
     setIsGuardadosOpen(!isGuardadosOpen);
@@ -154,7 +163,7 @@ const Header = () => {
               </div>
 
               <button
-                // onClick={openModelModal}
+                onClick={openModelModal}
                 className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px]"
               >
                 <p>querés ser modelo?</p>
@@ -179,6 +188,62 @@ const Header = () => {
       <div className="hidden lg:block">
         <GuardadosDesktop isOpen={isGuardadosOpen} onClose={toggleGuardados} />
       </div>
+
+            {/* Modal de "querés ser modelo?" */}
+            {isModelModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white-00 opacity-95 w-full h-full  flex items-center justify-center">
+            <div className="w-full lg:h-[375px] lg:flex lg:flex-row-reverse lg:max-w-[1000px]">
+            {/* Botón de cerrar */}
+            <div className="flex justify-center">
+              <button
+                onClick={closeModelModal}
+                className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center lg:cursor-pointer"
+                aria-label="Cerrar modal"
+              >
+                cerrar
+              </button>
+            </div>
+
+            {/* Contenido del modal */}
+            <div className="flex-1 flex items-center justify-center px-[14px]">
+              <div className="relative overflow-hidden w-full">
+                <div className=" text-black-00 lg:max-w-[700px]">
+                  <p className="mb-[32px] leading-[20px] lg:text-[18px]">
+                  — querés ser modelo? 
+                  </p>
+                  <p className="mb-[32px] leading-[20px] lg:text-[18px] lg:max-w-[420px]">
+                    mandanos tus datos y dos fotos a hola@linemodels.co <br/>queremos
+                    verte natural, luz de día y sin make up, las fotos las podés
+                    sacar con tu celular.
+                  </p>
+                  <p className="mb-[32px] leading-[20px] lg:text-[18px]">
+                    nombre completo:
+                    <br />
+                    fecha de nacimiento:
+                    <br />
+                    edad:
+                    <br />
+                    localidad:
+                    <br />
+                    teléfono:
+                    <br />
+                    mail:
+                    <br />
+                    instagram:
+                    <br />
+                    altura:
+                    <br />
+                    medidas:
+                  </p>
+                  <p className="lg:text-[18px]">gracias —</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
