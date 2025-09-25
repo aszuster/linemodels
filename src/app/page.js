@@ -190,11 +190,9 @@ export default function Home() {
           >
             {/* Contenedor de la imagen */}
             <Link href={`/modelo/${image.id}`}>
-              <div className="bg-grey-10 w-full aspect-[3/4] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
+              <div className="bg-white-00 w-full aspect-[3/4] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
                 {/* Placeholder para la imagen */}
-                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-sm group-hover:opacity-20 transition-opacity duration-300">
-                  {image.name}
-                </div>
+
 
                 {/* Overlay con medidas - Solo visible en hover en desktop */}
                 <div className="absolute inset-0  bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex flex-col  p-[20px]">

@@ -33,7 +33,7 @@ const Footer = () => {
 
           <button
             onClick={openModelModal}
-            className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px]"
+            className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
           >
             <p>querés ser modelo?</p>
             <SecondaryButton>
@@ -80,33 +80,32 @@ const Footer = () => {
               <div className="relative overflow-hidden w-full">
                 <div className=" text-black-00 ">
                   <p className="mb-[32px] leading-[20px]">
-                    Querés ser modelo? 
+                  — querés ser modelo?
                   </p>
                   <p className="mb-[32px] leading-[20px]">
-                    Mandanos tus datos y dos fotos a hola@linemodels.co Queremos
-                    verte natural, luz de día y sin make up, las fotos las podés
-                    sacar con tu celular.
+                  nandanos tus datos y dos fotos a hola@linemodels.co <br />
+                  queremos verte natural, luz de día y sin make up, las fotos las podés sacar con tu celular.
                   </p>
                   <p className="mb-[32px] leading-[20px]">
-                    Nombre completo:
+                  · nombre completo: 
                     <br />
-                    Fecha de nacimiento:
+                    · fecha de nacimiento: 
                     <br />
-                    Edad:
+                    · edad: 
                     <br />
-                    Localidad:
+                    · localidad: 
                     <br />
-                    Teléfono:
+                    · teléfono: 
                     <br />
-                    Mail:
+                    · mail: 
                     <br />
-                    Instagram:
+                    · instagram: 
                     <br />
-                    Altura:
+                    · altura: 
                     <br />
-                    Medidas:
+                    · medidas: 
                   </p>
-                  <p className="">gracias ♡</p>
+                  <p className="">gracias —</p>
                 </div>
               </div>
             </div>
