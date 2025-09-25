@@ -51,7 +51,7 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
                     className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
                   >
                     <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] lg:w-[100px]">
-                      <p>{model.name} {model.lastName}</p>
+                      <p>{model.name}</p>
                       <div
                         className="cursor-pointer hover:opacity-70 transition-opacity"
                         onClick={() => removeFromGuardados(model.id)}
