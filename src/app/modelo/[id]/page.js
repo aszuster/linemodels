@@ -148,6 +148,9 @@ export default function ModelPage({ params }) {
                 <p className="text-[12px] lg:text-[14px] text-grey-40">cintura</p>
                 <p className="text-[12px] lg:text-[14px] text-grey-40">cadera</p>
                 <p className="text-[12px] lg:text-[14px] text-grey-40">zapatos</p>
+                {/* {model.instagram && (
+                  <p className="text-[12px] lg:text-[14px] text-grey-40">instagram</p>
+                )} */}
               </div>
               <div>
                 <p className="text-[12px] lg:text-[14px] text-grey-40">{model.height}</p>
@@ -155,6 +158,16 @@ export default function ModelPage({ params }) {
                 <p className="text-[12px] lg:text-[14px] text-grey-40">{model.waist}</p>
                 <p className="text-[12px] lg:text-[14px] text-grey-40">{model.hips}</p>
                 <p className="text-[12px] lg:text-[14px] text-grey-40">{model.shoes}</p>
+                {/* {model.instagram && (
+                  <a 
+                    href={`https://instagram.com/${model.instagram}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[12px] lg:text-[14px] text-grey-40 hover:text-black transition-colors duration-200 break-all"
+                  >
+                    https://instagram.com/{model.instagram}
+                  </a>
+                )} */}
               </div>
             </div>
           </div>

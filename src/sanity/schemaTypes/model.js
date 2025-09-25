@@ -138,6 +138,28 @@ export default {
       validation: Rule => Rule.required()
     },
     {
+      name: 'instagram',
+      title: 'Instagram',
+      type: 'string',
+      placeholder: '@usuario_instagram',
+      description: 'Cuenta de Instagram del modelo (sin @)',
+      validation: Rule => Rule.custom((value) => {
+        if (!value) return true // Campo opcional
+        // Validar que no contenga @ al inicio
+        if (value.startsWith('@')) {
+          return 'No incluyas el símbolo @, solo el nombre de usuario'
+        }
+        // Validar formato básico de usuario de Instagram
+        if (!/^[a-zA-Z0-9._]+$/.test(value)) {
+          return 'El nombre de usuario solo puede contener letras, números, puntos y guiones bajos'
+        }
+        if (value.length < 1 || value.length > 30) {
+          return 'El nombre de usuario debe tener entre 1 y 30 caracteres'
+        }
+        return true
+      })
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
