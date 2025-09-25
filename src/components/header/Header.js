@@ -52,9 +52,10 @@ const Header = () => {
 
   // Calcular modelos a mostrar
   const totalModels = models.length;
-  const shouldShowExpandButton = totalModels > 21;
-  const firstColumnModels = models.slice(0, 21); // Siempre los primeros 21 en la primera columna
-  const secondColumnModels = isModelsExpanded ? models.slice(21) : []; // Solo los adicionales en la segunda columna
+  const shouldShowExpandButton = totalModels > 14;
+  const firstColumnModels = models.slice(0, 14); // Siempre los primeros 14 en la primera columna
+  const secondColumnModels = isModelsExpanded ? models.slice(14, 28) : []; // Los siguientes 14 en la segunda columna
+  const thirdColumnModels = isModelsExpanded ? models.slice(28) : []; // Los restantes en la tercera columna
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,7 +103,7 @@ const Header = () => {
 
             {/* Lista de modelos */}
             <div className="space-y-[8px]">
-              <div className="grid grid-cols-2 gap-x-[80px] gap-y-[6px]">
+              <div className="grid grid-cols-3 gap-x-[40px] gap-y-[6px]">
                 {/* Primera columna - siempre visible */}
                 <div className="space-y-[6px]">
                   {firstColumnModels.map((model) => (
@@ -126,6 +127,27 @@ const Header = () => {
                     }`}
                   >
                     {secondColumnModels.map((model) => (
+                      <Link
+                        key={model.id}
+                        href={`/modelo/${model.id}`}
+                        className="block text-[16px] leading-[16px] mb-[6px] tracking-[-0.4px] hover:underline transition-all duration-200"
+                      >
+                        {model.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tercera columna - con transición */}
+                <div className="space-y-[6px]">
+                  <div
+                    className={`transition-all duration-600 ease-in-out ${
+                      isModelsExpanded
+                        ? "opacity-100 max-h-[1000px]"
+                        : "opacity-0 max-h-0 overflow-hidden"
+                    }`}
+                  >
+                    {thirdColumnModels.map((model) => (
                       <Link
                         key={model.id}
                         href={`/modelo/${model.id}`}
