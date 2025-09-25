@@ -88,14 +88,15 @@ const Header = () => {
     <>
       {/* Header fijo que siempre se mantiene visible */}
       <header className="fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto lg:w-1/4 lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px] z-30">
-        <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:justify-start lg:h-full">
+        <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
           <div>
             <Link href="/">
-              <h1 className="text-[20px] font-normal	leading-[24px] lg:text-[29px] lg:mb-[152px] z-50">
+              <h1 className="text-[20px] font-normal	leading-[24px] lg:text-[29px]  z-50">
                 line
               </h1>
             </Link>
           </div>
+          <div>
           <div className="hidden lg:block lg:mb-[20px]">
             <p className="mb-[17px] leading-[16px] tracking-[-0.4px]">
               — modelos
@@ -171,7 +172,7 @@ const Header = () => {
               )}
             </div>
           </div>
-          <div className="flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] lg:mb-[35px]">
+          <div className="flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] ">
             <div
               className="flex gap-[10px] items-center cursor-pointer"
               onClick={toggleGuardados}
@@ -189,11 +190,12 @@ const Header = () => {
                 <span>{isClient ? guardadosList.length : 0}</span>
               </SecondaryButton>
             </div>
+            <p className="hidden lg:block pb-[34px]">✦ ia lab</p>
+          </div>
           </div>
           <div className="bg-grey-10 w-[1px] h-[16px] absolute left-[50%] translate-x-[-50%] lg:hidden"></div>
-          <div className="hidden lg:flex lg:flex-col lg:gap-[42px]">
+          <div className="hidden lg:flex lg:flex-col lg:gap-[20px] lg:mb-[24px]">
             <div className="flex flex-col">
-              <p className="pb-[34px]">✦ ia lab</p>
               <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">
               — contacto
               </p>
