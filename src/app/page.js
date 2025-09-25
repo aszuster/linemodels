@@ -2,14 +2,15 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { modelsData } from "@/data/models";
 import { useGuardados } from "@/context/GuardadosContext";
 import SecondaryButton from "@/components/secondaryButton/SecondaryButton";
 import { useInfiniteScrollAnimation } from "@/hooks/useInfiniteScrollAnimation";
+import { getModelsData } from "@/lib/sanity-models";
 
 export default function Home() {
-  // Usar los datos reales de los modelos
-  const images = modelsData;
+  // Estado para los modelos de Sanity
+  const [models, setModels] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Context para manejar guardados
   const { addToGuardados, guardadosList } = useGuardados();
@@ -31,6 +32,22 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Cargar datos de Sanity
+  useEffect(() => {
+    const loadModels = async () => {
+      try {
+        const modelsData = await getModelsData();
+        setModels(modelsData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error loading models:', error);
+        setLoading(false);
+      }
+    };
+
+    loadModels();
+  }, []);
+
   useEffect(() => {
     setIsClient(true);
     
@@ -45,12 +62,12 @@ export default function Home() {
   }, []);
 
   // Calcular elementos para la página actual
-  const totalPages = Math.ceil(images.length / itemsPerPage);
+  const totalPages = Math.ceil(models.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentImages = isMobile 
-    ? images.slice(startIndex, endIndex) // Móvil: solo página actual (6 elementos)
-    : images.slice(0, endIndex); // Desktop: scroll infinito (acumulativo)
+    ? models.slice(startIndex, endIndex) // Móvil: solo página actual (6 elementos)
+    : models.slice(0, endIndex); // Desktop: scroll infinito (acumulativo)
 
   // Hook para animación de fade in en secuencia con scroll infinito
   const { containerRef, visibleItems, hasStarted } = useInfiniteScrollAnimation(
@@ -132,10 +149,10 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore, showPauseAt22]);
 
-  const handleAddToGuardados = (e, name) => {
+  const handleAddToGuardados = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
     e.stopPropagation(); // Prevenir que se active el Link padre
-    addToGuardados(name);
+    addToGuardados(model);
   };
 
   const scrollToTop = () => {
@@ -144,6 +161,19 @@ export default function Home() {
       behavior: "smooth",
     });
   };
+
+  if (loading) {
+    return (
+      <main className="bg-white-00 pt-[216px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px]">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
+            <p className="text-gray-600">Cargando modelos...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="bg-white-00 pt-[216px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px]">
@@ -183,41 +213,19 @@ export default function Home() {
                       <span>{image.hips}</span>
                       <span>{image.shoes}</span>
                     </div>
-                    {/* <div className="space-y-2 text-[14px] leading-[18px] text-left">
-                      <div className="flex justify-between ga p-4">
-                        <span className="text-black-00">altura</span>
-                        <span>{image.height}</span>
-                      </div>
-                      <div className="flex justify-between gap-4">
-                        <span className="text-black-00">busto</span>
-                        <span>{image.bust}</span>
-                      </div>
-                      <div className="flex justify-between gap-4">
-                        <span className="text-black-00">cintura</span>
-                        <span>{image.waist}</span>
-                      </div>
-                      <div className="flex justify-between gap-4">
-                        <span className="text-black-00">cadera</span>
-                        <span>{image.hips}</span>
-                      </div>
-                      <div className="flex justify-between gap-4">
-                        <span className="text-black-00">zapatos</span>
-                        <span>{image.shoes}</span>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
 
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
-                {/* 
+               
                 <Image
-                  src={image.photos[0]}
+                  src={image.coverPhoto}
                   alt={image.name}
                   fill
                   className="object-cover group-hover:opacity-20 transition-opacity duration-300"
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
                 />
-                */}
+          
               </div>
             </Link>
 
@@ -237,7 +245,7 @@ export default function Home() {
                 </div>
                 <div
                   className="text-[12px] lg:text-[16px] leading-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={(e) => handleAddToGuardados(e, image.name)}
+                  onClick={(e) => handleAddToGuardados(e, image)}
                 >
                   <p>add</p>
                   <p>( + )</p>
@@ -314,7 +322,7 @@ export default function Home() {
           <div></div>
           <div className="text-sm text-grey-30">
             {showPauseAt22
-              ? `ver más (${images.length - currentImages.length})`
+              ? `ver más (${models.length - currentImages.length})`
               : "cargando más modelos..."}
           </div>
           {isClient && showBackToTop && (
@@ -328,15 +336,6 @@ export default function Home() {
           )}
         </div>
       )}
-
-      {/* Botón Back to Top - Solo visible cuando se llega a 22 modelos */}
-
-      {/* Indicador de fin de contenido - Solo visible en desktop */}
-      {/* {isClient && !hasMore && currentImages.length === images.length && (
-        <div className="hidden lg:flex justify-center items-center mt-[80px]">
-          <div className="text-sm text-grey-30">Has visto todos los modelos</div>
-        </div>
-      )} */}
     </main>
   );
 }

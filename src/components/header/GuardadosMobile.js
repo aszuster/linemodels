@@ -3,7 +3,7 @@ import Cross from "@/svg/cross";
 import { useGuardados } from "@/context/GuardadosContext";
 
 const GuardadosMobile = ({ isOpen, onClose }) => {
-  const { guardadosList, isClient, removeFromGuardados, clearAllGuardados } = useGuardados();
+  const { guardadosList, isClient, removeFromGuardados, clearAllGuardados, copyAllUrls } = useGuardados();
 
   // Calcular guardados por columna (máximo 11 por columna)
   const itemsPerColumn = 11;
@@ -27,17 +27,17 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
           {isClient &&
             guardadosColumns.map((column, columnIndex) => (
               <div key={columnIndex} className="flex-1">
-                {column.map((nombre, index) => (
+                {column.map((model, index) => (
                   <div
                     key={`${columnIndex}-${index}`}
                     className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
                   >
                     {/* en caso de cambiar de parecer sacar w-[100px] y justify-between */}
                     <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] w-[100px]">
-                      <p>{nombre}</p>
+                      <p>{model.name} {model.lastName}</p>
                       <div
                         className="cursor-pointer hover:opacity-70 transition-opacity"
-                        onClick={() => removeFromGuardados(nombre)}
+                        onClick={() => removeFromGuardados(model.id)}
                       >
                         <Cross />
                       </div>
@@ -49,7 +49,12 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
         </div>
         <div className="flex justify-between items-center text-grey-20">
           <div className="flex gap-[16px] items-center">
-            <p className="cursor-pointer hover:underline">copiar todos</p>
+            <p 
+              className="cursor-pointer hover:underline"
+              onClick={copyAllUrls}
+            >
+              copiar todos
+            </p>
             <div className="bg-grey-10 w-[1px] h-[9px]"></div>
             <p
               className="cursor-pointer hover:underline"

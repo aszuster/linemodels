@@ -21,22 +21,36 @@ export const GuardadosProvider = ({ children }) => {
     setGuardadosList([]);
   }, []);
 
-  const addToGuardados = (name) => {
+  const addToGuardados = (model) => {
     setGuardadosList(prev => {
-      // Verificar si el nombre ya existe para evitar duplicados
-      if (!prev.includes(name)) {
-        return [...prev, name];
+      // Verificar si el modelo ya existe para evitar duplicados (comparar por id)
+      if (!prev.some(item => item.id === model.id)) {
+        return [...prev, model];
       }
       return prev;
     });
   };
 
-  const removeFromGuardados = (name) => {
-    setGuardadosList(prev => prev.filter(item => item !== name));
+  const removeFromGuardados = (modelId) => {
+    setGuardadosList(prev => prev.filter(item => item.id !== modelId));
   };
 
   const clearAllGuardados = () => {
     setGuardadosList([]);
+  };
+
+  const copyAllUrls = async () => {
+    try {
+      const baseUrl = window.location.origin;
+      const urls = guardadosList.map(model => `${baseUrl}/modelo/${model.slug?.current || model.slug}`);
+      const urlsText = urls.join('\n');
+      
+      await navigator.clipboard.writeText(urlsText);
+      return true;
+    } catch (error) {
+      console.error('Error copying URLs to clipboard:', error);
+      return false;
+    }
   };
 
   const value = {
@@ -45,6 +59,7 @@ export const GuardadosProvider = ({ children }) => {
     addToGuardados,
     removeFromGuardados,
     clearAllGuardados,
+    copyAllUrls,
   };
 
   return (

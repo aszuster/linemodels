@@ -6,15 +6,33 @@ import { useGuardados } from "@/context/GuardadosContext";
 import Link from "next/link";
 import HorizontalLine from "@/svg/horizontalLine";
 import { modelsData } from "@/data/models";
+import { getModelsData } from "@/lib/sanity-models";
 import GuardadosMobile from "./GuardadosMobile";
 import GuardadosDesktop from "./GuardadosDesktop";
 
 const Header = () => {
+  const [models, setModels] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isModelModalOpen, setIsModelModalOpen] = useState(false);
   const [isGuardadosOpen, setIsGuardadosOpen] = useState(false);
   const [showGuardadosText, setShowGuardadosText] = useState(true);
   const [isModelsExpanded, setIsModelsExpanded] = useState(false);
   const { guardadosList, isClient } = useGuardados();
+
+  useEffect(() => {
+    const loadModels = async () => {
+      try {
+        const modelsData = await getModelsData();
+        setModels(modelsData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error loading models:', error);
+        setLoading(false);
+      }
+    };
+
+    loadModels();
+  }, []);
 
   const openModelModal = () => {
     setIsModelModalOpen(true);
@@ -33,10 +51,10 @@ const Header = () => {
   };
 
   // Calcular modelos a mostrar
-  const totalModels = modelsData.length;
+  const totalModels = models.length;
   const shouldShowExpandButton = totalModels > 21;
-  const firstColumnModels = modelsData.slice(0, 21); // Siempre los primeros 21 en la primera columna
-  const secondColumnModels = isModelsExpanded ? modelsData.slice(21) : []; // Solo los adicionales en la segunda columna
+  const firstColumnModels = models.slice(0, 21); // Siempre los primeros 21 en la primera columna
+  const secondColumnModels = isModelsExpanded ? models.slice(21) : []; // Solo los adicionales en la segunda columna
 
   useEffect(() => {
     const handleScroll = () => {

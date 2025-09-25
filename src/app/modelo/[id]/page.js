@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getModelById } from "@/data/models";
+import { getModelDataById } from "@/lib/sanity-models";
 import HorizontalLine from "@/svg/horizontalLine";
 import { useGuardados } from "@/context/GuardadosContext";
 
@@ -14,10 +14,10 @@ export default function ModelPage({ params }) {
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddToGuardados = (e, name) => {
+  const handleAddToGuardados = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
     e.stopPropagation(); // Prevenir que se active el Link padre
-    addToGuardados(name);
+    addToGuardados(model);
   };
 
   // Funciones de navegación de la galería
@@ -47,7 +47,7 @@ export default function ModelPage({ params }) {
     const loadModel = async () => {
       try {
         const resolvedParams = await params;
-        const modelData = getModelById(resolvedParams.id);
+        const modelData = await getModelDataById(resolvedParams.id);
         setModel(modelData);
       } catch (error) {
         console.error("Error loading model:", error);
@@ -132,10 +132,10 @@ export default function ModelPage({ params }) {
           {/* Información */}
           <div className="flex justify-between lg:flex-col lg:w-1/4 lg:pt-[160px] lg:gap-[121px]">
             <div>
-              <h3 className="text-[20px] pb-[4px]">{model.name}</h3>
+              <h3 className="text-[20px] pb-[4px]">{model.name} {model.lastName}</h3>
               <div
                 className="text-[12px] lg:text-[16px] flex gap-[4px] items-center cursor-pointer"
-                onClick={(e) => handleAddToGuardados(e, model.name)}
+                onClick={(e) => handleAddToGuardados(e, model)}
               >
                 <p>add</p>
                 <p>( + )</p>
@@ -174,14 +174,14 @@ export default function ModelPage({ params }) {
                 {model.name} - Foto {selectedPhoto + 1}
               </div>
               {/* Cuando tengas las imágenes reales, descomenta esto: */}
-              {/* 
+              
               <Image
                 src={model.photos[selectedPhoto]}
                 alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                 fill
                 className="object-cover"
               />
-              */}
+             
              {/* botones de navegación solo desktop */}
               <div className="hidden lg:flex justify-between gap-4 mt-4 lg:absolute lg:bottom-[-50px] lg:left-0 lg:right-0 lg:w-full">
                 <button
@@ -241,14 +241,14 @@ export default function ModelPage({ params }) {
                     {index + 1}
                   </div>
                   {/* Cuando tengas las imágenes reales, descomenta esto: */}
-                  {/* 
+                  
                     <Image
                       src={photo}
                       alt={`${model.name} - Miniatura ${index + 1}`}
                       fill
                       className="object-cover"
                     />
-                    */}
+                   
                 </button>
               ))}
             </div>
@@ -328,7 +328,7 @@ export default function ModelPage({ params }) {
                     type: 'photo',
                     data: photo,
                     key: index,
-                    className: "col-span-2 aspect-[4/3]"
+                    className: "col-span-2 aspect-[3/2]"
                   });
                   currentRow++;
                   currentCol = 0;
@@ -360,7 +360,7 @@ export default function ModelPage({ params }) {
               return processedPhotos.map((item) => (
                 <div 
                   key={item.key}
-                  className={`bg-grey-10 ${item.className}`}
+                  className={`bg-grey-10 relative ${item.className}`}
                 >
                   {item.type === 'placeholder' ? (
                     <img 
@@ -369,7 +369,13 @@ export default function ModelPage({ params }) {
                       className="w-full h-full bg-white-00 "
                     />
                   ) : (
-                    <p>{item.data.image}</p>
+                    <Image 
+                      src={item.data.image} 
+                      alt="Book photo" 
+                      fill 
+                      className="object-cover" 
+                    />
+                    // <p>{item.data.image}</p>
                   )}
                 </div>
               ));
@@ -438,14 +444,14 @@ export default function ModelPage({ params }) {
                   {model.name} - Foto {selectedPhoto + 1}
                 </div>
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
-                {/* 
+                
                 <Image
                   src={model.photos[selectedPhoto]}
                   alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                   fill
                   className="object-cover"
                 />
-                */}
+               
               </div>
             </div>
           </div>
