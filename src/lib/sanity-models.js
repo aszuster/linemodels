@@ -60,7 +60,8 @@ export async function getModelsData() {
       photos: processSanityImages(model.photos),
       book: processSanityBook(model.book),
       coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).url() : null,
-      slug: model.slug
+      slug: model.slug,
+      instagram: model.instagram
     }))
   } catch (error) {
     console.error('Error fetching models from Sanity:', error)
@@ -87,7 +88,8 @@ export async function getModelDataById(id) {
       shoes: model.shoes,
       photos: processSanityImages(model.photos),
       book: processSanityBook(model.book),
-      contact: model.contact
+      contact: model.contact,
+      instagram: model.instagram
     }
   } catch (error) {
     console.error('Error fetching model from Sanity:', error)

@@ -25,7 +25,8 @@ export async function getModels() {
         photos,
         book,
         coverPhoto,
-        slug
+        slug,
+        instagram
       }
     `)
     return models
@@ -51,7 +52,8 @@ export async function getModelById(id) {
         photos,
         book,
         coverPhoto,
-        slug
+        slug,
+        instagram
       }
     `, { id })
     return model

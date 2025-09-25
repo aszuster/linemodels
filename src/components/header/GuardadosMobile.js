@@ -34,7 +34,7 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
                   >
                     {/* en caso de cambiar de parecer sacar w-[100px] y justify-between */}
                     <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] w-[100px]">
-                      <p>{model.name} {model.lastName}</p>
+                      <p>{model.name}</p>
                       <div
                         className="cursor-pointer hover:opacity-70 transition-opacity"
                         onClick={() => removeFromGuardados(model.id)}

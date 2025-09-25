@@ -131,7 +131,7 @@ const Header = () => {
                       <Link
                         key={model.id}
                         href={`/modelo/${model.id}`}
-                        className="block text-[16px] leading-[16px] mb-[6px] tracking-[-0.4px] hover:underline transition-all duration-200"
+                        className="block text-[16px] leading-[16px] mb-[6px] tracking-[-0.4px] hover:underline transition-all duration-200 lowercase"
                       >
                         {model.name}
                       </Link>
