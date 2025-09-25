@@ -185,7 +185,10 @@ export default function ModelPage({ params }) {
              {/* botones de navegación solo desktop */}
               <div className="hidden lg:flex justify-between gap-4 mt-4 lg:absolute lg:bottom-[-50px] lg:left-0 lg:right-0 lg:w-full">
                 <button
-                  onClick={goToPreviousPhoto}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToPreviousPhoto();
+                  }}
                   disabled={selectedPhoto === 0}
                   className={`py-2 flex items-center gap-3 ${
                     selectedPhoto === 0
@@ -203,7 +206,10 @@ export default function ModelPage({ params }) {
                 </button>
 
                 <button
-                  onClick={goToNextPhoto}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToNextPhoto();
+                  }}
                   disabled={model.photos && selectedPhoto === model.photos.length - 1}
                   className={`py-2 flex items-center gap-3 ${
                     model.photos && selectedPhoto === model.photos.length - 1

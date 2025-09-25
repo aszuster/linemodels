@@ -182,7 +182,7 @@ const Header = () => {
 
               <button
                 onClick={openModelModal}
-                className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px]"
+                className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
               >
                 <p>querés ser modelo?</p>
                 <SecondaryButton>
