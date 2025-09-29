@@ -47,7 +47,7 @@ export default {
     },
     {
       name: 'photos',
-      title: 'Fotos',
+      title: 'Polas',
       type: 'array',
       of: [
         {
