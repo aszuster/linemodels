@@ -9,6 +9,7 @@ import { modelsData } from "@/data/models";
 import { getModelsData } from "@/lib/sanity-models";
 import GuardadosMobile from "./GuardadosMobile";
 import GuardadosDesktop from "./GuardadosDesktop";
+import Star from "@/svg/star";
 
 const Header = () => {
   const [models, setModels] = useState([]);
@@ -190,7 +191,7 @@ const Header = () => {
                 <span>{isClient ? guardadosList.length : 0}</span>
               </SecondaryButton>
             </div>
-            <p className="hidden lg:block pb-[34px]">✦ ia lab</p>
+            <p className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</p>
           </div>
           </div>
           <div className="bg-grey-10 w-[1px] h-[16px] absolute left-[50%] translate-x-[-50%] lg:hidden"></div>
