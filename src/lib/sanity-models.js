@@ -88,6 +88,8 @@ export async function getModelDataById(id) {
       shoes: model.shoes,
       photos: processSanityImages(model.photos),
       book: processSanityBook(model.book),
+      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).url() : null,
+      slug: model.slug,
       contact: model.contact,
       instagram: model.instagram
     }

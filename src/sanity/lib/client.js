@@ -36,11 +36,11 @@ export async function getModels() {
   }
 }
 
-// Función para obtener un modelo por ID
+// Función para obtener un modelo por ID o slug
 export async function getModelById(id) {
   try {
     const model = await client.fetch(`
-      *[_type == "model" && _id == $id][0] {
+      *[_type == "model" && (_id == $id || slug.current == $id)][0] {
         _id,
         name,
         lastName,
