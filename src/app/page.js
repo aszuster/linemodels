@@ -205,10 +205,10 @@ export default function Home() {
                       <span>zapatos</span>
                     </div>
                     <div className="flex flex-col text-[14px] leading-[18px]">
-                      <span>{image.height}</span>
-                      <span>{image.bust}</span>
-                      <span>{image.waist}</span>
-                      <span>{image.hips}</span>
+                      <span>{image.height} cm</span>
+                      <span>{image.bust} cm</span>
+                      <span>{image.waist} cm</span>
+                      <span>{image.hips} cm</span>
                       <span>{image.shoes}</span>
                     </div>
                   </div>
