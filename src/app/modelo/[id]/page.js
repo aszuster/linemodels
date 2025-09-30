@@ -14,6 +14,8 @@ export default function ModelPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBookModalOpen, setIsBookModalOpen] = useState(false);
+  const [selectedBookPhoto, setSelectedBookPhoto] = useState(0);
 
   // Hook para animación escalonada de miniaturas de polas
   const { containerRef: polasContainerRef, visibleItems: polasVisibleItems } = useStaggeredImageAnimation(
@@ -69,6 +71,29 @@ export default function ModelPage({ params }) {
     setIsModalOpen(false);
   };
 
+  // Funciones del modal del book
+  const openBookModal = (index) => {
+    setSelectedBookPhoto(index);
+    setIsBookModalOpen(true);
+  };
+
+  const closeBookModal = () => {
+    setIsBookModalOpen(false);
+  };
+
+  // Funciones de navegación del book modal
+  const goToPreviousBookPhoto = () => {
+    if (selectedBookPhoto > 0) {
+      setSelectedBookPhoto(selectedBookPhoto - 1);
+    }
+  };
+
+  const goToNextBookPhoto = () => {
+    if (model.book && selectedBookPhoto < model.book.length - 1) {
+      setSelectedBookPhoto(selectedBookPhoto + 1);
+    }
+  };
+
   useEffect(() => {
     setIsClient(true);
     const loadModel = async () => {
@@ -111,12 +136,34 @@ export default function ModelPage({ params }) {
     const handleKeyPress = (e) => {
       if (e.key === "Escape" && isModalOpen) {
         closeModal();
+      } else if (e.key === "Escape" && isBookModalOpen) {
+        closeBookModal();
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [isModalOpen]);
+  }, [isModalOpen, isBookModalOpen]);
+
+  // Navegación con teclado para book modal
+  useEffect(() => {
+    if (!model || !model.book || model.book.length <= 1 || !isBookModalOpen) return;
+
+    const handleKeyPress = (e) => {
+      if (e.key === "ArrowLeft" && selectedBookPhoto > 0) {
+        goToPreviousBookPhoto();
+      } else if (
+        e.key === "ArrowRight" &&
+        model.book &&
+        selectedBookPhoto < model.book.length - 1
+      ) {
+        goToNextBookPhoto();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [model, selectedBookPhoto, isBookModalOpen]);
 
   if (loading || !isClient) {
     return (
@@ -416,7 +463,10 @@ export default function ModelPage({ params }) {
                   ref={(el) => registerBookElement(index, el)}
                   className={`bg-grey-10 relative fade-in-stagger ${
                     bookVisibleItems.has(index) ? 'visible' : ''
-                  } ${item.className}`}
+                  } ${item.className} ${
+                    item.type === 'photo' ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
+                  }`}
+                  onClick={item.type === 'photo' ? () => openBookModal(index) : undefined}
                 >
                   {item.type === 'placeholder' ? (
                     <img 
@@ -510,6 +560,122 @@ export default function ModelPage({ params }) {
                
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de foto ampliada del book */}
+      {isBookModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white-00 w-full h-full flex flex-col">
+            {/* Botón de cerrar */}
+            <div className="flex justify-center mt-[36px] lg:absolute lg:right-[36px] z-20">
+              <button
+                onClick={closeBookModal}
+                className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center lg:cursor-pointer"
+                aria-label="Cerrar modal"
+              >
+                cerrar
+              </button>
+            </div>
+
+            {/* Foto ampliada */}
+            <div className="flex-1 flex items-center justify-center px-2 relative">
+              {/* Área clickeable izquierda - Anterior (solo desktop) */}
+              {model.book && model.book.length > 1 && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedBookPhoto > 0) {
+                      goToPreviousBookPhoto();
+                    }
+                  }}
+                  className={`hidden lg:block absolute left-0 top-0 w-1/2 h-full z-10 ${
+                    selectedBookPhoto > 0 
+                      ? "cursor-[url(/arrow-left.cur),_pointer] hover:bg-opacity-5 transition-colors" 
+                      : "cursor-default"
+                  }`}
+                  aria-label="Área para ir a la foto anterior"
+                />
+              )}
+
+              {/* Área clickeable derecha - Siguiente (solo desktop) */}
+              {model.book && model.book.length > 1 && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedBookPhoto < model.book.length - 1) {
+                      goToNextBookPhoto();
+                    }
+                  }}
+                  className={`hidden lg:block absolute right-0 top-0 w-1/2 h-full z-10 ${
+                    selectedBookPhoto < model.book.length - 1 
+                      ? "cursor-[url(/arrow-right.cur),_pointer] hover:bg-opacity-5 transition-colors" 
+                      : "cursor-default"
+                  }`}
+                  aria-label="Área para ir a la foto siguiente"
+                />
+              )}
+
+              <div className="relative overflow-hidden bg-grey-10 w-full max-w-4xl lg:max-w-[700px]"
+                   style={{
+                     aspectRatio: model.book[selectedBookPhoto]?.orientation === 'horizontal' ? '3/2' : '3/4'
+                   }}>
+                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                  {model.name} - Book {selectedBookPhoto + 1}
+                </div>
+                {/* Cuando tengas las imágenes reales, descomenta esto: */}
+                
+                <Image
+                  src={model.book[selectedBookPhoto]?.image}
+                  alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
+                  fill
+                  className="object-cover"
+                />
+               
+              </div>
+            </div>
+
+            {/* Botones de navegación para móvil */}
+            {model.book && model.book.length > 1 && (
+              <div className="flex justify-between gap-4 p-4 lg:hidden">
+                <button
+                  onClick={goToPreviousBookPhoto}
+                  disabled={selectedBookPhoto === 0}
+                  className={`py-2 flex items-center gap-3 ${
+                    selectedBookPhoto === 0
+                      ? "text-grey-30 cursor-not-allowed"
+                      : "text-black-00 hover:underline cursor-pointer"
+                  }`}
+                  aria-label="Foto anterior"
+                >
+                  <span>
+                    <HorizontalLine
+                      fill={selectedBookPhoto === 0 ? "#9CA3AF" : "#000"}
+                    />
+                  </span>
+                  <span>anterior</span>
+                </button>
+
+                <button
+                  onClick={goToNextBookPhoto}
+                  disabled={selectedBookPhoto === model.book.length - 1}
+                  className={`py-2 flex items-center gap-3 ${
+                    selectedBookPhoto === model.book.length - 1
+                      ? "text-grey-30 cursor-not-allowed"
+                      : "text-black-00 hover:underline cursor-pointer"
+                  }`}
+                  aria-label="Foto siguiente"
+                >
+                  <span>siguiente</span>
+                  <span>
+                    <HorizontalLine
+                      fill={selectedBookPhoto === model.book.length - 1 ? "#9CA3AF" : "#000"}
+                    />
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
