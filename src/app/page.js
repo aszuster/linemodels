@@ -13,7 +13,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   // Context para manejar guardados
-  const { addToGuardados, guardadosList } = useGuardados();
+  const { toggleGuardado, guardadosList, isInGuardados } = useGuardados();
 
   // Estado para controlar qué tarjeta está expandida
   const [expandedCard, setExpandedCard] = useState(null);
@@ -149,10 +149,10 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore, showPauseAt22]);
 
-  const handleAddToGuardados = (e, model) => {
+  const handleToggleGuardado = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
     e.stopPropagation(); // Prevenir que se active el Link padre
-    addToGuardados(model);
+    toggleGuardado(model);
   };
 
   const scrollToTop = () => {
@@ -243,10 +243,10 @@ export default function Home() {
                 </div>
                 <div
                   className="text-[12px] lg:text-[16px] leading-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={(e) => handleAddToGuardados(e, image)}
+                  onClick={(e) => handleToggleGuardado(e, image)}
                 >
-                  <p>add</p>
-                  <p>( + )</p>
+                  <p>{isInGuardados(image.id) ? "added" : "add"}</p>
+                  <p>{isInGuardados(image.id) ? "( - )" : "( + )"}</p>
                 </div>
               </div>
             </div>

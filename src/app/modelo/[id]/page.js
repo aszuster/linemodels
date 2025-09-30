@@ -7,17 +7,17 @@ import HorizontalLine from "@/svg/horizontalLine";
 import { useGuardados } from "@/context/GuardadosContext";
 
 export default function ModelPage({ params }) {
-  const { addToGuardados } = useGuardados();
+  const { toggleGuardado, isInGuardados } = useGuardados();
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [model, setModel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddToGuardados = (e, model) => {
+  const handleToggleGuardado = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
     e.stopPropagation(); // Prevenir que se active el Link padre
-    addToGuardados(model);
+    toggleGuardado(model);
   };
 
   // Funciones de navegación de la galería
@@ -135,10 +135,10 @@ export default function ModelPage({ params }) {
               <h3 className="text-[20px] pb-[4px]">{model.name} {model.lastName}</h3>
               <div
                 className="text-[12px] lg:text-[16px] flex gap-[4px] items-center cursor-pointer"
-                onClick={(e) => handleAddToGuardados(e, model)}
+                onClick={(e) => handleToggleGuardado(e, model)}
               >
-                <p>add</p>
-                <p>( + )</p>
+                <p>{isInGuardados(model.id) ? "added" : "add"}</p>
+                <p>{isInGuardados(model.id) ? "( - )" : "( + )"}</p>
               </div>
             </div>
             <div className="flex gap-[32px]">
