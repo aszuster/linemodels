@@ -252,7 +252,7 @@ export default function ModelPage({ params }) {
                 <button
                   key={index}
                   onClick={() => setSelectedPhoto(index)}
-                  className={`aspect-square relative overflow-hidden bg-grey-10 transition-all ${
+                  className={`aspect-[3/4] relative overflow-hidden bg-grey-10 transition-all ${
                     selectedPhoto === index ? "" : "hover:opacity-70 cursor-pointer"
                   }`}
                 >
