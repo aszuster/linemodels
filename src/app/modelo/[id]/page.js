@@ -153,10 +153,10 @@ export default function ModelPage({ params }) {
                 )} */}
               </div>
               <div>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.height}</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.bust}</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.waist}</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.hips}</p>
+                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.height} cm</p>
+                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.bust} cm</p>
+                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.waist} cm</p>
+                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.hips} cm</p>
                 <p className="text-[12px] lg:text-[14px] text-grey-40">{model.shoes}</p>
                 {/* {model.instagram && (
                   <a 
