@@ -2,6 +2,7 @@
 import Cross from "@/svg/cross";
 import SecondaryButton from "../secondaryButton/SecondaryButton";
 import { useGuardados } from "@/context/GuardadosContext";
+import Link from "next/link";
 
 const GuardadosDesktop = ({ isOpen, onClose }) => {
   const { guardadosList, isClient, removeFromGuardados, clearAllGuardados, copyAllUrls } = useGuardados();
@@ -24,9 +25,9 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
       }`}
     >
       <div className="pt-[124px] px-[24px] pb-[24px] flex flex-col">
-        <a href="/" className="mb-[36px] leading-[16px] tracking-[-0.4px]">
+        <Link href="/" className="mb-[36px] leading-[16px] tracking-[-0.4px]">
           — modelos
-        </a>
+        </Link>
         {/* Botón guardados dentro del menú expandido */}
         <div className="flex gap-[10px] items-center mb-[35px]">
           <div

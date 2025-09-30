@@ -10,6 +10,7 @@ import { getModelsData } from "@/lib/sanity-models";
 import GuardadosMobile from "./GuardadosMobile";
 import GuardadosDesktop from "./GuardadosDesktop";
 import Star from "@/svg/star";
+import Line from "@/svg/line";
 
 const Header = () => {
   const [models, setModels] = useState([]);
@@ -104,9 +105,9 @@ const Header = () => {
           <div>
           <div className="hidden lg:block lg:mb-[20px]">
             <div className="mb-[17px]">
-            <a href="/" className=" leading-[16px] tracking-[-0.4px]">
+            <Link href="/" className=" leading-[16px] tracking-[-0.4px]">
               — modelos
-            </a>
+            </Link>
             </div>
             {/* Lista de modelos */}
             <div className="space-y-[8px]">
