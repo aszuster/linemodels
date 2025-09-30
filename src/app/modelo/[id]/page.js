@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getModelDataById } from "@/lib/sanity-models";
 import HorizontalLine from "@/svg/horizontalLine";
 import { useGuardados } from "@/context/GuardadosContext";
+import { useStaggeredImageAnimation, useProgressiveImageAnimation } from "@/hooks/useStaggeredImageAnimation";
 
 export default function ModelPage({ params }) {
   const { toggleGuardado, isInGuardados } = useGuardados();
@@ -13,6 +14,32 @@ export default function ModelPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Hook para animación escalonada de miniaturas de polas
+  const { containerRef: polasContainerRef, visibleItems: polasVisibleItems } = useStaggeredImageAnimation(
+    model?.photos || [],
+    150 // 150ms de delay entre cada miniatura
+  );
+
+  // Hook para animación progresiva de imágenes del book (aparecen al hacer scroll)
+  const { visibleItems: bookVisibleItems, registerElement: registerBookElement } = useProgressiveImageAnimation(
+    model?.book || [],
+    150 // 150ms de delay entre cada imagen del book
+  );
+
+  // Estado para controlar la aparición de la foto principal de polas
+  const [isMainPhotoVisible, setIsMainPhotoVisible] = useState(false);
+
+  // Efecto para mostrar la foto principal con delay
+  useEffect(() => {
+    if (model?.photos && model.photos.length > 0) {
+      const timer = setTimeout(() => {
+        setIsMainPhotoVisible(true);
+      }, 300); // Aparece después de 300ms
+      
+      return () => clearTimeout(timer);
+    }
+  }, [model?.photos]);
 
   const handleToggleGuardado = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
@@ -180,7 +207,9 @@ export default function ModelPage({ params }) {
             <p className="hidden lg:block lg:text-right lg:writing-mode-vertical-rl lg:self-start mr-[135px]">polas</p>
             {/* Foto principal */}
             <div
-              className="aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px]"
+              className={`aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
+                isMainPhotoVisible ? 'visible' : ''
+              }`}
               onClick={openModal}
             >
               <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
@@ -247,12 +276,17 @@ export default function ModelPage({ params }) {
             </div>
 
             {/* Miniaturas */}
-            <div className="grid grid-cols-6 gap-[2px] lg:grid-cols-1 lg:gap-[2px] lg:w-[102px] lg:ml-[2px]">
+            <div 
+              ref={polasContainerRef}
+              className="grid grid-cols-6 gap-[2px] lg:grid-cols-1 lg:gap-[2px] lg:w-[102px] lg:ml-[2px]"
+            >
               {model.photos.map((photo, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedPhoto(index)}
-                  className={`aspect-[3/4] relative overflow-hidden bg-grey-10 transition-all ${
+                  className={`aspect-[3/4] relative overflow-hidden bg-grey-10 transition-all fade-in-stagger ${
+                    polasVisibleItems.has(index) ? 'visible' : ''
+                  } ${
                     selectedPhoto === index ? "" : "hover:opacity-70 cursor-pointer"
                   }`}
                 >
@@ -376,10 +410,13 @@ export default function ModelPage({ params }) {
               //   });
               // }
               
-              return processedPhotos.map((item) => (
+              return processedPhotos.map((item, index) => (
                 <div 
                   key={item.key}
-                  className={`bg-grey-10 relative ${item.className}`}
+                  ref={(el) => registerBookElement(index, el)}
+                  className={`bg-grey-10 relative fade-in-stagger ${
+                    bookVisibleItems.has(index) ? 'visible' : ''
+                  } ${item.className}`}
                 >
                   {item.type === 'placeholder' ? (
                     <img 
