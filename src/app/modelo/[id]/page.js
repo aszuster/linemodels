@@ -368,13 +368,13 @@ export default function ModelPage({ params }) {
               });
               
               // Si la última fila tiene solo una columna ocupada, agregar placeholder
-              if (currentCol === 1) {
-                processedPhotos.push({
-                  type: 'placeholder',
-                  key: `placeholder-end`,
-                  className: "col-span-1 aspect-[3/4]"
-                });
-              }
+              // if (currentCol === 1) {
+              //   processedPhotos.push({
+              //     type: 'placeholder',
+              //     key: `placeholder-end`,
+              //     className: "col-span-1 aspect-[3/4]"
+              //   });
+              // }
               
               return processedPhotos.map((item) => (
                 <div 
