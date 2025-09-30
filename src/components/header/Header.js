@@ -257,15 +257,15 @@ const Header = () => {
             <div className="flex-1 flex items-center justify-center px-[14px]">
               <div className="relative overflow-hidden w-full">
                 <div className=" text-black-00 lg:max-w-[700px]">
-                  <p className="mb-[32px] leading-[20px] lg:text-[18px]">
+                  <p className="mb-[32px] leading-[20px] lg:text-[16px]">
                   — querés ser modelo? 
                   </p>
-                  <p className="mb-[32px] leading-[20px] lg:text-[18px] lg:max-w-[420px]">
+                  <p className="mb-[32px] leading-[20px] lg:text-[16px] lg:max-w-[420px]">
                     mandanos tus datos y dos fotos a hola@linemodels.co <br/>queremos
                     verte natural, luz de día y sin make up, las fotos las podés
                     sacar con tu celular.
                   </p>
-                  <p className="mb-[32px] leading-[20px] lg:text-[18px]">
+                  <p className="mb-[32px] leading-[20px] lg:text-[16px]">
                     nombre completo:
                     <br />
                     fecha de nacimiento:
@@ -284,7 +284,7 @@ const Header = () => {
                     <br />
                     medidas:
                   </p>
-                  <p className="lg:text-[18px]">gracias —</p>
+                  <p className="lg:text-[16px]">gracias —</p>
                 </div>
               </div>
             </div>
