@@ -53,6 +53,18 @@ export const GuardadosProvider = ({ children }) => {
     }
   };
 
+  const isInGuardados = (modelId) => {
+    return guardadosList.some(item => item.id === modelId);
+  };
+
+  const toggleGuardado = (model) => {
+    if (isInGuardados(model.id)) {
+      removeFromGuardados(model.id);
+    } else {
+      addToGuardados(model);
+    }
+  };
+
   const value = {
     guardadosList,
     isClient,
@@ -60,6 +72,8 @@ export const GuardadosProvider = ({ children }) => {
     removeFromGuardados,
     clearAllGuardados,
     copyAllUrls,
+    isInGuardados,
+    toggleGuardado,
   };
 
   return (

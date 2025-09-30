@@ -2,6 +2,7 @@
 import { useState } from "react";
 import SecondaryButton from "../secondaryButton/SecondaryButton";
 import Link from "next/link";
+import Star from "@/svg/star";
 
 const Footer = () => {
   const [isModelModalOpen, setIsModelModalOpen] = useState(false);
@@ -21,11 +22,11 @@ const Footer = () => {
     setIsModelModalOpen(false);
   };
   return (
-    <footer className="bg-white-00 px-[14px] pb-[24px] ">
+    <footer className="bg-white-00 px-[14px] pb-[24px] lg:px-[24px]">
       <div className="flex flex-col gap-[42px] lg:hidden">
         <div className="flex flex-col">
-          <p className="pb-[34px]">✦ ia lab</p>
-          <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">contacto</p>
+          <p className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</p>
+          <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">— contacto</p>
           <div className="text-grey-40 leading-[16px]">
             <p className="pb-[6px]">hola@linemodels.co</p>
             <p>buenos aires, argentina.</p>
@@ -35,7 +36,7 @@ const Footer = () => {
             onClick={openModelModal}
             className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
           >
-            <p>querés ser modelo?</p>
+            <p>— querés ser modelo?</p>
             <SecondaryButton>
               <span>+</span>
             </SecondaryButton>

@@ -2,12 +2,13 @@
 import Cross from "@/svg/cross";
 import SecondaryButton from "../secondaryButton/SecondaryButton";
 import { useGuardados } from "@/context/GuardadosContext";
+import Link from "next/link";
 
 const GuardadosDesktop = ({ isOpen, onClose }) => {
   const { guardadosList, isClient, removeFromGuardados, clearAllGuardados, copyAllUrls } = useGuardados();
 
-  // Calcular guardados por columna (máximo 11 por columna)
-  const itemsPerColumn = 11;
+  // Calcular guardados por columna (máximo 15 por columna)
+  const itemsPerColumn = 15;
   const totalGuardados = guardadosList.length;
   const guardadosColumns = [];
   
@@ -24,21 +25,22 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
       }`}
     >
       <div className="pt-[124px] px-[24px] pb-[24px] flex flex-col">
-        <p className="mb-[36px] leading-[16px] tracking-[-0.4px]">
+        <Link href="/" className="mb-[36px] leading-[16px] tracking-[-0.4px]">
           — modelos
-        </p>
+        </Link>
         {/* Botón guardados dentro del menú expandido */}
         <div className="flex gap-[10px] items-center mb-[35px]">
           <div
             className="flex gap-[10px] items-center cursor-pointer"
             onClick={onClose}
           >
-            <p className="opacity-100 translate-y-0">
+            <p className="opacity-100 translate-y-0 underline">
               guardados
             </p>
             <SecondaryButton px="11px">
               <span>{isClient ? guardadosList.length : 0}</span>
             </SecondaryButton>
+            <Cross onClick={onClose} width="12px" height="12px"/>
           </div>
         </div>
         <div className="py-4 flex gap-[8px] mb-[20px] flex-1">
@@ -48,7 +50,7 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
                 {column.map((model, index) => (
                   <div
                     key={`${columnIndex}-${index}`}
-                    className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
+                    className="flex justify-start items-center gap-[16px] h-[12px] my-[12px]"
                   >
                     <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] lg:w-[100px]">
                       <p>{model.name}</p>

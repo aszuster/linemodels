@@ -13,7 +13,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   // Context para manejar guardados
-  const { addToGuardados, guardadosList } = useGuardados();
+  const { toggleGuardado, guardadosList, isInGuardados } = useGuardados();
 
   // Estado para controlar qué tarjeta está expandida
   const [expandedCard, setExpandedCard] = useState(null);
@@ -149,10 +149,10 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore, showPauseAt22]);
 
-  const handleAddToGuardados = (e, model) => {
+  const handleToggleGuardado = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
     e.stopPropagation(); // Prevenir que se active el Link padre
-    addToGuardados(model);
+    toggleGuardado(model);
   };
 
   const scrollToTop = () => {
@@ -189,7 +189,7 @@ export default function Home() {
             }`}
           >
             {/* Contenedor de la imagen */}
-            <Link href={`/modelo/${image.id}`}>
+            <Link href={`/modelo/${image.slug?.current || image.id}`}>
               <div className="bg-white-00 w-full aspect-[3/4] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
                 {/* Placeholder para la imagen */}
 
@@ -197,18 +197,18 @@ export default function Home() {
                 {/* Overlay con medidas - Solo visible en hover en desktop */}
                 <div className="absolute inset-0  bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex flex-col  p-[20px]">
                   <div className="flex justify-between">
-                    <div className="flex flex-col text-[14px] leading-[18px]">
+                    <div className="flex flex-col text-[14px] leading-[16px]">
                       <span>altura</span>
                       <span>busto</span>
                       <span>cintura</span>
                       <span>cadera</span>
                       <span>zapatos</span>
                     </div>
-                    <div className="flex flex-col text-[14px] leading-[18px]">
-                      <span>{image.height}</span>
-                      <span>{image.bust}</span>
-                      <span>{image.waist}</span>
-                      <span>{image.hips}</span>
+                    <div className="flex flex-col text-[14px] leading-[16px]">
+                      <span>{image.height} cm</span>
+                      <span>{image.bust} cm</span>
+                      <span>{image.waist} cm</span>
+                      <span>{image.hips} cm</span>
                       <span>{image.shoes}</span>
                     </div>
                   </div>
@@ -243,10 +243,10 @@ export default function Home() {
                 </div>
                 <div
                   className="text-[12px] lg:text-[16px] leading-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={(e) => handleAddToGuardados(e, image)}
+                  onClick={(e) => handleToggleGuardado(e, image)}
                 >
-                  <p>add</p>
-                  <p>( + )</p>
+                  <p>{isInGuardados(image.id) ? "added" : "add"}</p>
+                  <p>{isInGuardados(image.id) ? "( - )" : "( + )"}</p>
                 </div>
               </div>
             </div>

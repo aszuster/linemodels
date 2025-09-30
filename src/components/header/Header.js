@@ -9,6 +9,7 @@ import { modelsData } from "@/data/models";
 import { getModelsData } from "@/lib/sanity-models";
 import GuardadosMobile from "./GuardadosMobile";
 import GuardadosDesktop from "./GuardadosDesktop";
+import Star from "@/svg/star";
 
 const Header = () => {
   const [models, setModels] = useState([]);
@@ -44,6 +45,10 @@ const Header = () => {
 
   const toggleGuardados = () => {
     setIsGuardadosOpen(!isGuardadosOpen);
+  };
+
+  const closeGuardados = () => {
+    setIsGuardadosOpen(false);
   };
 
   const toggleModelsExpansion = () => {
@@ -91,17 +96,18 @@ const Header = () => {
         <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
           <div>
             <Link href="/">
-              <h1 className="text-[20px] font-normal	leading-[24px] lg:text-[29px]  z-50">
+              <h1 className="text-[24px] font-normal	leading-[24px] lg:text-[29px]  z-50">
                 line
               </h1>
             </Link>
           </div>
           <div>
           <div className="hidden lg:block lg:mb-[20px]">
-            <p className="mb-[17px] leading-[16px] tracking-[-0.4px]">
+            <div className="mb-[17px]">
+            <Link href="/" className=" leading-[16px] tracking-[-0.4px]">
               — modelos
-            </p>
-
+            </Link>
+            </div>
             {/* Lista de modelos */}
             <div className="space-y-[8px]">
               <div className="grid grid-cols-3 gap-x-[40px] gap-y-[6px]">
@@ -182,7 +188,7 @@ const Header = () => {
                   showGuardadosText
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
-                }`}
+                } ${isGuardadosOpen ? "underline" : ""}`}
               >
                 guardados
               </p>
@@ -190,7 +196,7 @@ const Header = () => {
                 <span>{isClient ? guardadosList.length : 0}</span>
               </SecondaryButton>
             </div>
-            <p className="hidden lg:block pb-[34px]">✦ ia lab</p>
+            <p className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</p>
           </div>
           </div>
           <div className="bg-grey-10 w-[1px] h-[16px] absolute left-[50%] translate-x-[-50%] lg:hidden"></div>
@@ -225,7 +231,7 @@ const Header = () => {
 
       {/* Componentes separados para mobile y desktop */}
       <div className="lg:hidden">
-        <GuardadosMobile isOpen={isGuardadosOpen} onClose={toggleGuardados} />
+        <GuardadosMobile isOpen={isGuardadosOpen} onClose={closeGuardados} />
       </div>
       <div className="hidden lg:block">
         <GuardadosDesktop isOpen={isGuardadosOpen} onClose={toggleGuardados} />
@@ -251,15 +257,15 @@ const Header = () => {
             <div className="flex-1 flex items-center justify-center px-[14px]">
               <div className="relative overflow-hidden w-full">
                 <div className=" text-black-00 lg:max-w-[700px]">
-                  <p className="mb-[32px] leading-[20px] lg:text-[18px]">
+                  <p className="mb-[32px] leading-[20px] lg:text-[16px]">
                   — querés ser modelo? 
                   </p>
-                  <p className="mb-[32px] leading-[20px] lg:text-[18px] lg:max-w-[420px]">
+                  <p className="mb-[32px] leading-[20px] lg:text-[16px] lg:max-w-[420px]">
                     mandanos tus datos y dos fotos a hola@linemodels.co <br/>queremos
                     verte natural, luz de día y sin make up, las fotos las podés
                     sacar con tu celular.
                   </p>
-                  <p className="mb-[32px] leading-[20px] lg:text-[18px]">
+                  <p className="mb-[32px] leading-[20px] lg:text-[16px]">
                     nombre completo:
                     <br />
                     fecha de nacimiento:
@@ -278,7 +284,7 @@ const Header = () => {
                     <br />
                     medidas:
                   </p>
-                  <p className="lg:text-[18px]">gracias —</p>
+                  <p className="lg:text-[16px]">gracias —</p>
                 </div>
               </div>
             </div>

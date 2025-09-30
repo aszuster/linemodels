@@ -5,19 +5,48 @@ import Link from "next/link";
 import { getModelDataById } from "@/lib/sanity-models";
 import HorizontalLine from "@/svg/horizontalLine";
 import { useGuardados } from "@/context/GuardadosContext";
+import { useStaggeredImageAnimation, useProgressiveImageAnimation } from "@/hooks/useStaggeredImageAnimation";
 
 export default function ModelPage({ params }) {
-  const { addToGuardados } = useGuardados();
+  const { toggleGuardado, isInGuardados } = useGuardados();
   const [selectedPhoto, setSelectedPhoto] = useState(0);
   const [model, setModel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBookModalOpen, setIsBookModalOpen] = useState(false);
+  const [selectedBookPhoto, setSelectedBookPhoto] = useState(0);
 
-  const handleAddToGuardados = (e, model) => {
+  // Hook para animación escalonada de miniaturas de polas
+  const { containerRef: polasContainerRef, visibleItems: polasVisibleItems } = useStaggeredImageAnimation(
+    model?.photos || [],
+    150 // 150ms de delay entre cada miniatura
+  );
+
+  // Hook para animación progresiva de imágenes del book (aparecen al hacer scroll)
+  const { visibleItems: bookVisibleItems, registerElement: registerBookElement } = useProgressiveImageAnimation(
+    model?.book || [],
+    150 // 150ms de delay entre cada imagen del book
+  );
+
+  // Estado para controlar la aparición de la foto principal de polas
+  const [isMainPhotoVisible, setIsMainPhotoVisible] = useState(false);
+
+  // Efecto para mostrar la foto principal con delay
+  useEffect(() => {
+    if (model?.photos && model.photos.length > 0) {
+      const timer = setTimeout(() => {
+        setIsMainPhotoVisible(true);
+      }, 300); // Aparece después de 300ms
+      
+      return () => clearTimeout(timer);
+    }
+  }, [model?.photos]);
+
+  const handleToggleGuardado = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
     e.stopPropagation(); // Prevenir que se active el Link padre
-    addToGuardados(model);
+    toggleGuardado(model);
   };
 
   // Funciones de navegación de la galería
@@ -40,6 +69,29 @@ export default function ModelPage({ params }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  // Funciones del modal del book
+  const openBookModal = (index) => {
+    setSelectedBookPhoto(index);
+    setIsBookModalOpen(true);
+  };
+
+  const closeBookModal = () => {
+    setIsBookModalOpen(false);
+  };
+
+  // Funciones de navegación del book modal
+  const goToPreviousBookPhoto = () => {
+    if (selectedBookPhoto > 0) {
+      setSelectedBookPhoto(selectedBookPhoto - 1);
+    }
+  };
+
+  const goToNextBookPhoto = () => {
+    if (model.book && selectedBookPhoto < model.book.length - 1) {
+      setSelectedBookPhoto(selectedBookPhoto + 1);
+    }
   };
 
   useEffect(() => {
@@ -84,12 +136,34 @@ export default function ModelPage({ params }) {
     const handleKeyPress = (e) => {
       if (e.key === "Escape" && isModalOpen) {
         closeModal();
+      } else if (e.key === "Escape" && isBookModalOpen) {
+        closeBookModal();
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [isModalOpen]);
+  }, [isModalOpen, isBookModalOpen]);
+
+  // Navegación con teclado para book modal
+  useEffect(() => {
+    if (!model || !model.book || model.book.length <= 1 || !isBookModalOpen) return;
+
+    const handleKeyPress = (e) => {
+      if (e.key === "ArrowLeft" && selectedBookPhoto > 0) {
+        goToPreviousBookPhoto();
+      } else if (
+        e.key === "ArrowRight" &&
+        model.book &&
+        selectedBookPhoto < model.book.length - 1
+      ) {
+        goToNextBookPhoto();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [model, selectedBookPhoto, isBookModalOpen]);
 
   if (loading || !isClient) {
     return (
@@ -135,29 +209,29 @@ export default function ModelPage({ params }) {
               <h3 className="text-[20px] pb-[4px]">{model.name} {model.lastName}</h3>
               <div
                 className="text-[12px] lg:text-[16px] flex gap-[4px] items-center cursor-pointer"
-                onClick={(e) => handleAddToGuardados(e, model)}
+                onClick={(e) => handleToggleGuardado(e, model)}
               >
-                <p>add</p>
-                <p>( + )</p>
+                <p>{isInGuardados(model.id) ? "added" : "add"}</p>
+                <p>{isInGuardados(model.id) ? "( - )" : "( + )"}</p>
               </div>
             </div>
             <div className="flex gap-[32px]">
               <div>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">altura</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">busto</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">cintura</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">cadera</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">zapatos</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">altura</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">busto</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">cintura</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">cadera</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">zapatos</p>
                 {/* {model.instagram && (
                   <p className="text-[12px] lg:text-[14px] text-grey-40">instagram</p>
                 )} */}
               </div>
               <div>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.height}</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.bust}</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.waist}</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.hips}</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.shoes}</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.height} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.bust} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.waist} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.hips} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.shoes}</p>
                 {/* {model.instagram && (
                   <a 
                     href={`https://instagram.com/${model.instagram}`} 
@@ -180,7 +254,9 @@ export default function ModelPage({ params }) {
             <p className="hidden lg:block lg:text-right lg:writing-mode-vertical-rl lg:self-start mr-[135px]">polas</p>
             {/* Foto principal */}
             <div
-              className="aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px]"
+              className={`aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
+                isMainPhotoVisible ? 'visible' : ''
+              }`}
               onClick={openModal}
             >
               <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
@@ -247,12 +323,17 @@ export default function ModelPage({ params }) {
             </div>
 
             {/* Miniaturas */}
-            <div className="grid grid-cols-6 gap-[2px] lg:grid-cols-1 lg:gap-[2px] lg:w-[102px] lg:ml-[2px]">
+            <div 
+              ref={polasContainerRef}
+              className="grid grid-cols-6 gap-[2px] lg:grid-cols-1 lg:gap-[2px] lg:w-[102px] lg:ml-[2px]"
+            >
               {model.photos.map((photo, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedPhoto(index)}
-                  className={`aspect-square relative overflow-hidden bg-grey-10 transition-all ${
+                  className={`aspect-[3/4] relative overflow-hidden bg-grey-10 transition-all fade-in-stagger ${
+                    polasVisibleItems.has(index) ? 'visible' : ''
+                  } ${
                     selectedPhoto === index ? "" : "hover:opacity-70 cursor-pointer"
                   }`}
                 >
@@ -325,7 +406,7 @@ export default function ModelPage({ params }) {
           {model.book && model.book.length > 0 && (
           <div className="mt-[48px] lg:mt-[144px]">
           <p className="mb-[48px] lg:mb-[80px]">book</p>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-x-[6px] gap-y-[16px] lg:gap-x-[2px] lg:gap-y-[32px]">
             {(() => {
               // Función para procesar las fotos y agregar placeholders
               const processedPhotos = [];
@@ -368,18 +449,24 @@ export default function ModelPage({ params }) {
               });
               
               // Si la última fila tiene solo una columna ocupada, agregar placeholder
-              if (currentCol === 1) {
-                processedPhotos.push({
-                  type: 'placeholder',
-                  key: `placeholder-end`,
-                  className: "col-span-1 aspect-[3/4]"
-                });
-              }
+              // if (currentCol === 1) {
+              //   processedPhotos.push({
+              //     type: 'placeholder',
+              //     key: `placeholder-end`,
+              //     className: "col-span-1 aspect-[3/4]"
+              //   });
+              // }
               
-              return processedPhotos.map((item) => (
+              return processedPhotos.map((item, index) => (
                 <div 
                   key={item.key}
-                  className={`bg-grey-10 relative ${item.className}`}
+                  ref={(el) => registerBookElement(index, el)}
+                  className={`bg-grey-10 relative fade-in-stagger ${
+                    bookVisibleItems.has(index) ? 'visible' : ''
+                  } ${item.className} ${
+                    item.type === 'photo' ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''
+                  }`}
+                  onClick={item.type === 'photo' ? () => openBookModal(index) : undefined}
                 >
                   {item.type === 'placeholder' ? (
                     <img 
@@ -473,6 +560,122 @@ export default function ModelPage({ params }) {
                
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de foto ampliada del book */}
+      {isBookModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white-00 w-full h-full flex flex-col">
+            {/* Botón de cerrar */}
+            <div className="flex justify-center mt-[36px] lg:absolute lg:right-[36px] z-20">
+              <button
+                onClick={closeBookModal}
+                className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center lg:cursor-pointer"
+                aria-label="Cerrar modal"
+              >
+                cerrar
+              </button>
+            </div>
+
+            {/* Foto ampliada */}
+            <div className="flex-1 flex items-center justify-center px-2 relative">
+              {/* Área clickeable izquierda - Anterior (solo desktop) */}
+              {model.book && model.book.length > 1 && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedBookPhoto > 0) {
+                      goToPreviousBookPhoto();
+                    }
+                  }}
+                  className={`hidden lg:block absolute left-0 top-0 w-1/2 h-full z-10 ${
+                    selectedBookPhoto > 0 
+                      ? "cursor-[url(/arrow-left.cur),_pointer] hover:bg-opacity-5 transition-colors" 
+                      : "cursor-default"
+                  }`}
+                  aria-label="Área para ir a la foto anterior"
+                />
+              )}
+
+              {/* Área clickeable derecha - Siguiente (solo desktop) */}
+              {model.book && model.book.length > 1 && (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (selectedBookPhoto < model.book.length - 1) {
+                      goToNextBookPhoto();
+                    }
+                  }}
+                  className={`hidden lg:block absolute right-0 top-0 w-1/2 h-full z-10 ${
+                    selectedBookPhoto < model.book.length - 1 
+                      ? "cursor-[url(/arrow-right.cur),_pointer] hover:bg-opacity-5 transition-colors" 
+                      : "cursor-default"
+                  }`}
+                  aria-label="Área para ir a la foto siguiente"
+                />
+              )}
+
+              <div className="relative overflow-hidden bg-grey-10 w-full max-w-4xl lg:max-w-[700px]"
+                   style={{
+                     aspectRatio: model.book[selectedBookPhoto]?.orientation === 'horizontal' ? '3/2' : '3/4'
+                   }}>
+                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                  {model.name} - Book {selectedBookPhoto + 1}
+                </div>
+                {/* Cuando tengas las imágenes reales, descomenta esto: */}
+                
+                <Image
+                  src={model.book[selectedBookPhoto]?.image}
+                  alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
+                  fill
+                  className="object-cover"
+                />
+               
+              </div>
+            </div>
+
+            {/* Botones de navegación para móvil */}
+            {model.book && model.book.length > 1 && (
+              <div className="flex justify-between gap-4 p-4 lg:hidden">
+                <button
+                  onClick={goToPreviousBookPhoto}
+                  disabled={selectedBookPhoto === 0}
+                  className={`py-2 flex items-center gap-3 ${
+                    selectedBookPhoto === 0
+                      ? "text-grey-30 cursor-not-allowed"
+                      : "text-black-00 hover:underline cursor-pointer"
+                  }`}
+                  aria-label="Foto anterior"
+                >
+                  <span>
+                    <HorizontalLine
+                      fill={selectedBookPhoto === 0 ? "#9CA3AF" : "#000"}
+                    />
+                  </span>
+                  <span>anterior</span>
+                </button>
+
+                <button
+                  onClick={goToNextBookPhoto}
+                  disabled={selectedBookPhoto === model.book.length - 1}
+                  className={`py-2 flex items-center gap-3 ${
+                    selectedBookPhoto === model.book.length - 1
+                      ? "text-grey-30 cursor-not-allowed"
+                      : "text-black-00 hover:underline cursor-pointer"
+                  }`}
+                  aria-label="Foto siguiente"
+                >
+                  <span>siguiente</span>
+                  <span>
+                    <HorizontalLine
+                      fill={selectedBookPhoto === model.book.length - 1 ? "#9CA3AF" : "#000"}
+                    />
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
