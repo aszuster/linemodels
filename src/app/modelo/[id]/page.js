@@ -325,7 +325,7 @@ export default function ModelPage({ params }) {
           {model.book && model.book.length > 0 && (
           <div className="mt-[48px] lg:mt-[144px]">
           <p className="mb-[48px] lg:mb-[80px]">book</p>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-x-[6px] gap-y-[16px] lg:gap-x-[2px] lg:gap-y-[32px]">
             {(() => {
               // Función para procesar las fotos y agregar placeholders
               const processedPhotos = [];
