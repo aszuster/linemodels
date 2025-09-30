@@ -103,10 +103,11 @@ const Header = () => {
           </div>
           <div>
           <div className="hidden lg:block lg:mb-[20px]">
-            <p className="mb-[17px] leading-[16px] tracking-[-0.4px]">
+            <div className="mb-[17px]">
+            <a href="/" className=" leading-[16px] tracking-[-0.4px]">
               — modelos
-            </p>
-
+            </a>
+            </div>
             {/* Lista de modelos */}
             <div className="space-y-[8px]">
               <div className="grid grid-cols-3 gap-x-[40px] gap-y-[6px]">

@@ -24,9 +24,9 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
       }`}
     >
       <div className="pt-[124px] px-[24px] pb-[24px] flex flex-col">
-        <p className="mb-[36px] leading-[16px] tracking-[-0.4px]">
+        <a href="/" className="mb-[36px] leading-[16px] tracking-[-0.4px]">
           — modelos
-        </p>
+        </a>
         {/* Botón guardados dentro del menú expandido */}
         <div className="flex gap-[10px] items-center mb-[35px]">
           <div
