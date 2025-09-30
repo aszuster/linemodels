@@ -39,6 +39,7 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
             <SecondaryButton px="11px">
               <span>{isClient ? guardadosList.length : 0}</span>
             </SecondaryButton>
+            <Cross onClick={onClose} width="12px" height="12px"/>
           </div>
         </div>
         <div className="py-4 flex gap-[8px] mb-[20px] flex-1">

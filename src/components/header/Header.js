@@ -47,6 +47,10 @@ const Header = () => {
     setIsGuardadosOpen(!isGuardadosOpen);
   };
 
+  const closeGuardados = () => {
+    setIsGuardadosOpen(false);
+  };
+
   const toggleModelsExpansion = () => {
     setIsModelsExpanded(!isModelsExpanded);
   };
@@ -226,7 +230,7 @@ const Header = () => {
 
       {/* Componentes separados para mobile y desktop */}
       <div className="lg:hidden">
-        <GuardadosMobile isOpen={isGuardadosOpen} onClose={toggleGuardados} />
+        <GuardadosMobile isOpen={isGuardadosOpen} onClose={closeGuardados} />
       </div>
       <div className="hidden lg:block">
         <GuardadosDesktop isOpen={isGuardadosOpen} onClose={toggleGuardados} />
