@@ -6,8 +6,8 @@ import { useGuardados } from "@/context/GuardadosContext";
 const GuardadosDesktop = ({ isOpen, onClose }) => {
   const { guardadosList, isClient, removeFromGuardados, clearAllGuardados, copyAllUrls } = useGuardados();
 
-  // Calcular guardados por columna (máximo 11 por columna)
-  const itemsPerColumn = 11;
+  // Calcular guardados por columna (máximo 15 por columna)
+  const itemsPerColumn = 15;
   const totalGuardados = guardadosList.length;
   const guardadosColumns = [];
   
@@ -49,7 +49,7 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
                 {column.map((model, index) => (
                   <div
                     key={`${columnIndex}-${index}`}
-                    className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
+                    className="flex justify-start items-center gap-[16px] h-[12px] my-[12px]"
                   >
                     <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] lg:w-[100px]">
                       <p>{model.name}</p>
