@@ -33,7 +33,7 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
             className="flex gap-[10px] items-center cursor-pointer"
             onClick={onClose}
           >
-            <p className="opacity-100 translate-y-0">
+            <p className="opacity-100 translate-y-0 underline">
               guardados
             </p>
             <SecondaryButton px="11px">

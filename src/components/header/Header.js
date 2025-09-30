@@ -188,7 +188,7 @@ const Header = () => {
                   showGuardadosText
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
-                }`}
+                } ${isGuardadosOpen ? "underline" : ""}`}
               >
                 guardados
               </p>
