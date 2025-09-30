@@ -10,7 +10,6 @@ import { getModelsData } from "@/lib/sanity-models";
 import GuardadosMobile from "./GuardadosMobile";
 import GuardadosDesktop from "./GuardadosDesktop";
 import Star from "@/svg/star";
-import Line from "@/svg/line";
 
 const Header = () => {
   const [models, setModels] = useState([]);
