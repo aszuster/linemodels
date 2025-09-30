@@ -22,7 +22,7 @@ const Footer = () => {
     setIsModelModalOpen(false);
   };
   return (
-    <footer className="bg-white-00 px-[14px] pb-[24px] ">
+    <footer className="bg-white-00 px-[14px] pb-[24px] lg:px-[24px]">
       <div className="flex flex-col gap-[42px] lg:hidden">
         <div className="flex flex-col">
           <p className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</p>
