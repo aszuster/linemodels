@@ -217,21 +217,21 @@ export default function ModelPage({ params }) {
             </div>
             <div className="flex gap-[32px]">
               <div>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">altura</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">busto</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">cintura</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">cadera</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">zapatos</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">altura</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">busto</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">cintura</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">cadera</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">zapatos</p>
                 {/* {model.instagram && (
                   <p className="text-[12px] lg:text-[14px] text-grey-40">instagram</p>
                 )} */}
               </div>
               <div>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.height} cm</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.bust} cm</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.waist} cm</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.hips} cm</p>
-                <p className="text-[12px] lg:text-[14px] text-grey-40">{model.shoes}</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.height} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.bust} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.waist} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.hips} cm</p>
+                <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">{model.shoes}</p>
                 {/* {model.instagram && (
                   <a 
                     href={`https://instagram.com/${model.instagram}`} 

@@ -197,14 +197,14 @@ export default function Home() {
                 {/* Overlay con medidas - Solo visible en hover en desktop */}
                 <div className="absolute inset-0  bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex flex-col  p-[20px]">
                   <div className="flex justify-between">
-                    <div className="flex flex-col text-[14px] leading-[18px]">
+                    <div className="flex flex-col text-[14px] leading-[16px]">
                       <span>altura</span>
                       <span>busto</span>
                       <span>cintura</span>
                       <span>cadera</span>
                       <span>zapatos</span>
                     </div>
-                    <div className="flex flex-col text-[14px] leading-[18px]">
+                    <div className="flex flex-col text-[14px] leading-[16px]">
                       <span>{image.height} cm</span>
                       <span>{image.bust} cm</span>
                       <span>{image.waist} cm</span>
