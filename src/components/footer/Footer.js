@@ -84,7 +84,7 @@ const Footer = () => {
                   — querés ser modelo?
                   </p>
                   <p className="mb-[32px] leading-[20px]">
-                  nandanos tus datos y dos fotos a hola@linemodels.co <br />
+                  mandanos tus datos y dos fotos a hola@linemodels.co <br />
                   queremos verte natural, luz de día y sin make up, las fotos las podés sacar con tu celular.
                   </p>
                   <p className="mb-[32px] leading-[20px]">

@@ -27,7 +27,7 @@ const Header = () => {
         setModels(modelsData);
         setLoading(false);
       } catch (error) {
-        console.error('Error loading models:', error);
+        console.error("Error loading models:", error);
         setLoading(false);
       }
     };
@@ -100,85 +100,12 @@ const Header = () => {
                 line
               </h1>
             </Link>
-          </div>
-          <div>
-          <div className="hidden lg:block lg:mb-[20px]">
-            <div className="mb-[17px]">
+            <div className="hidden lg:block mb-[17px] lg:mt-[150px]">
             <Link href="/" className=" leading-[16px] tracking-[-0.4px]">
               — modelos
             </Link>
-            </div>
-            {/* Lista de modelos */}
-            <div className="space-y-[8px]">
-              <div className="grid grid-cols-3 gap-x-[40px] gap-y-[6px]">
-                {/* Primera columna - siempre visible */}
-                <div className="space-y-[6px]">
-                  {firstColumnModels.map((model) => (
-                    <Link
-                      key={model.id}
-                      href={`/modelo/${model.id}`}
-                      className="block text-[16px] leading-[16px] tracking-[-0.4px] hover:underline transition-all duration-200"
-                    >
-                      {model.name}
-                    </Link>
-                  ))}
-                </div>
-
-                {/* Segunda columna - con transición */}
-                <div className="space-y-[6px]">
-                  <div
-                    className={`transition-all duration-600 ease-in-out ${
-                      isModelsExpanded
-                        ? "opacity-100 max-h-[1000px]"
-                        : "opacity-0 max-h-0 overflow-hidden"
-                    }`}
-                  >
-                    {secondColumnModels.map((model) => (
-                      <Link
-                        key={model.id}
-                        href={`/modelo/${model.id}`}
-                        className="block text-[16px] leading-[16px] mb-[6px] tracking-[-0.4px] hover:underline transition-all duration-200 lowercase"
-                      >
-                        {model.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tercera columna - con transición */}
-                <div className="space-y-[6px]">
-                  <div
-                    className={`transition-all duration-600 ease-in-out ${
-                      isModelsExpanded
-                        ? "opacity-100 max-h-[1000px]"
-                        : "opacity-0 max-h-0 overflow-hidden"
-                    }`}
-                  >
-                    {thirdColumnModels.map((model) => (
-                      <Link
-                        key={model.id}
-                        href={`/modelo/${model.id}`}
-                        className="block text-[16px] leading-[16px] mb-[6px] tracking-[-0.4px] hover:underline transition-all duration-200"
-                      >
-                        {model.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón fijo */}
-              {shouldShowExpandButton && (
-                <button
-                  onClick={toggleModelsExpansion}
-                  className="text-[16px] text-grey-40 hover:text-black-00 hover:underline transition-colors duration-200 mt-[8px]"
-                >
-                  {isModelsExpanded ? "ver -" : "ver +"}
-                </button>
-              )}
-            </div>
           </div>
-          <div className="flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] ">
+          <div className="hidden lg:flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] ">
             <div
               className="flex gap-[10px] items-center cursor-pointer"
               onClick={toggleGuardados}
@@ -199,11 +126,119 @@ const Header = () => {
             {/* <p className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</p> */}
           </div>
           </div>
+
+
+          <div>
+            {/* palabra modelos desktop */}
+
+            {/* <div className="hidden lg:block lg:mb-[20px]">
+              <div className="mb-[17px]">
+                <Link href="/" className=" leading-[16px] tracking-[-0.4px]">
+                  — modelos
+                </Link>
+              </div> */}
+
+            {/* Lista de modelos */}
+            {/* <div className="space-y-[8px]">
+              <div className="grid grid-cols-3 gap-x-[40px] gap-y-[6px]"> */}
+            {/* Primera columna - siempre visible */}
+            {/* <div className="space-y-[6px]">
+                  {firstColumnModels.map((model) => (
+                    <Link
+                      key={model.id}
+                      href={`/modelo/${model.id}`}
+                      className="block text-[16px] leading-[16px] tracking-[-0.4px] hover:underline transition-all duration-200"
+                    >
+                      {model.name}
+                    </Link>
+                  ))}
+                </div> */}
+
+            {/* Segunda columna - con transición */}
+            {/* <div className="space-y-[6px]">
+                  <div
+                    className={`transition-all duration-600 ease-in-out ${
+                      isModelsExpanded
+                        ? "opacity-100 max-h-[1000px]"
+                        : "opacity-0 max-h-0 overflow-hidden"
+                    }`}
+                  >
+                    {secondColumnModels.map((model) => (
+                      <Link
+                        key={model.id}
+                        href={`/modelo/${model.id}`}
+                        className="block text-[16px] leading-[16px] mb-[6px] tracking-[-0.4px] hover:underline transition-all duration-200 lowercase"
+                      >
+                        {model.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div> */}
+
+            {/* Tercera columna - con transición */}
+            {/* <div className="space-y-[6px]">
+                  <div
+                    className={`transition-all duration-600 ease-in-out ${
+                      isModelsExpanded
+                        ? "opacity-100 max-h-[1000px]"
+                        : "opacity-0 max-h-0 overflow-hidden"
+                    }`}
+                  >
+                    {thirdColumnModels.map((model) => (
+                      <Link
+                        key={model.id}
+                        href={`/modelo/${model.id}`}
+                        className="block text-[16px] leading-[16px] mb-[6px] tracking-[-0.4px] hover:underline transition-all duration-200"
+                      >
+                        {model.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div> */}
+
+            {/* Botón fijo */}
+            {/* {shouldShowExpandButton && (
+                <button
+                  onClick={toggleModelsExpansion}
+                  className="text-[16px] text-grey-40 hover:text-black-00 hover:underline transition-colors duration-200 mt-[8px]"
+                >
+                  {isModelsExpanded ? "ver -" : "ver +"}
+                </button>
+              )}
+            </div> */}
+
+            {/* </div> */}
+                      {/* guardados desktop */}
+            <div className="lg:hidden flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] ">
+              <div
+                className="flex gap-[10px] items-center cursor-pointer"
+                onClick={toggleGuardados}
+              >
+                <p
+                  className={`transition-all duration-300 ease-in-out ${
+                    showGuardadosText
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
+                  } ${isGuardadosOpen ? "underline" : ""}`}
+                >
+                  guardados
+                </p>
+                <SecondaryButton px="11px">
+                  <span>{isClient ? guardadosList.length : 0}</span>
+                </SecondaryButton>
+              </div>
+
+            {/* ia lab link */}
+
+            {/* <p className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</p> */}
+            </div>
+          </div>
           <div className="bg-grey-10 w-[1px] h-[16px] absolute left-[50%] translate-x-[-50%] lg:hidden"></div>
           <div className="hidden lg:flex lg:flex-col lg:gap-[20px] lg:mb-[24px]">
             <div className="flex flex-col">
               <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">
-              — contacto
+                — contacto
               </p>
               <div className="text-grey-40 leading-[16px]">
                 <p className="pb-[6px]">hola@linemodels.co</p>
@@ -237,58 +272,58 @@ const Header = () => {
         <GuardadosDesktop isOpen={isGuardadosOpen} onClose={toggleGuardados} />
       </div>
 
-            {/* Modal de "querés ser modelo?" */}
-            {isModelModalOpen && (
+      {/* Modal de "querés ser modelo?" */}
+      {isModelModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white-00 opacity-95 w-full h-full  flex items-center justify-center">
             <div className="w-full lg:h-[375px] lg:flex lg:flex-row-reverse lg:max-w-[1000px]">
-            {/* Botón de cerrar */}
-            <div className="flex justify-center">
-              <button
-                onClick={closeModelModal}
-                className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center lg:cursor-pointer"
-                aria-label="Cerrar modal"
-              >
-                cerrar
-              </button>
-            </div>
+              {/* Botón de cerrar */}
+              <div className="flex justify-center">
+                <button
+                  onClick={closeModelModal}
+                  className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center lg:cursor-pointer"
+                  aria-label="Cerrar modal"
+                >
+                  cerrar
+                </button>
+              </div>
 
-            {/* Contenido del modal */}
-            <div className="flex-1 flex items-center justify-center px-[14px]">
-              <div className="relative overflow-hidden w-full">
-                <div className=" text-black-00 lg:max-w-[700px]">
-                  <p className="mb-[32px] leading-[20px] lg:text-[16px]">
-                  — querés ser modelo? 
-                  </p>
-                  <p className="mb-[32px] leading-[20px] lg:text-[16px] lg:max-w-[420px]">
-                    mandanos tus datos y dos fotos a hola@linemodels.co <br/>queremos
-                    verte natural, luz de día y sin make up, las fotos las podés
-                    sacar con tu celular.
-                  </p>
-                  <p className="mb-[32px] leading-[20px] lg:text-[16px]">
-                    nombre completo:
-                    <br />
-                    fecha de nacimiento:
-                    <br />
-                    edad:
-                    <br />
-                    localidad:
-                    <br />
-                    teléfono:
-                    <br />
-                    mail:
-                    <br />
-                    instagram:
-                    <br />
-                    altura:
-                    <br />
-                    medidas:
-                  </p>
-                  <p className="lg:text-[16px]">gracias —</p>
+              {/* Contenido del modal */}
+              <div className="flex-1 flex items-center justify-center px-[14px]">
+                <div className="relative overflow-hidden w-full">
+                  <div className=" text-black-00 lg:max-w-[700px]">
+                    <p className="mb-[32px] leading-[20px] lg:text-[16px]">
+                      — querés ser modelo? 
+                    </p>
+                    <p className="mb-[32px] leading-[20px] lg:text-[16px] lg:max-w-[420px]">
+                      mandanos tus datos y dos fotos a hola@linemodels.co <br />
+                      queremos verte natural, luz de día y sin make up, las
+                      fotos las podés sacar con tu celular.
+                    </p>
+                    <p className="mb-[32px] leading-[20px] lg:text-[16px]">
+                      nombre completo:
+                      <br />
+                      fecha de nacimiento:
+                      <br />
+                      edad:
+                      <br />
+                      localidad:
+                      <br />
+                      teléfono:
+                      <br />
+                      mail:
+                      <br />
+                      instagram:
+                      <br />
+                      altura:
+                      <br />
+                      medidas:
+                    </p>
+                    <p className="lg:text-[16px]">gracias —</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
       )}
