@@ -42,7 +42,7 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
                     className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
                   >
                     {/* en caso de cambiar de parecer sacar w-[100px] y justify-between */}
-                    <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] w-[105px]">
+                    <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] w-[110px]">
                     <p>{model.name} {model.lastName?.charAt(0)}.</p>
                       <div
                         className="cursor-pointer hover:opacity-70 transition-opacity"
