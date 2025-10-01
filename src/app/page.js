@@ -231,7 +231,7 @@ export default function Home() {
             <div className="bg-white-00 ">
               <div className="flex justify-between mt-[10px] px-[12px] items-end border-l border-grey-10">
                 <div>
-                  <p className="text-black-00 leading-[16px]">{image.name}</p>
+                  <p className="text-black-00 leading-[16px]">{image.name} {image.lastName}</p>
                   <p
                     className="text-[12px] cursor-pointer hover:underline leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
                     onClick={() => toggleCard(image.id)}
