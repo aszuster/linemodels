@@ -25,7 +25,7 @@ const Footer = () => {
     <footer className="bg-white-00 px-[14px] pb-[24px] lg:px-[24px]">
       <div className="flex flex-col gap-[42px] lg:hidden">
         <div className="flex flex-col">
-          <p className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</p>
+          {/* <p className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</p> */}
           <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">— contacto</p>
           <div className="text-grey-40 leading-[16px]">
             <p className="pb-[6px]">hola@linemodels.co</p>
