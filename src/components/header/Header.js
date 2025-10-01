@@ -96,7 +96,7 @@ const Header = () => {
         <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
           <div>
             <Link href="/">
-              <h1 className="text-[24px] font-normal	leading-[24px] lg:text-[29px]  z-50">
+              <h1 className="text-[24px] font-normal	leading-[24px] lg:text-[30px]  z-50">
                 line
               </h1>
             </Link>
