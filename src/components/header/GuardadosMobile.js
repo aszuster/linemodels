@@ -29,9 +29,9 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
       }`}
     >
       <div className="pt-[16px] px-[20px] pb-[40px] flex flex-col">
-        <div className="absolute top-[16px] right-[20px]">
+        {/* <div className="absolute top-[16px] right-[20px]">
           <Cross onClick={onClose} width="12px" height="12px" />
-        </div>
+        </div> */}
         <div className="py-4 flex gap-[8px] mb-[36px]">
           {isClient &&
             guardadosColumns.map((column, columnIndex) => (
@@ -42,8 +42,8 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
                     className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
                   >
                     {/* en caso de cambiar de parecer sacar w-[100px] y justify-between */}
-                    <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] w-[100px]">
-                      <p>{model.name}</p>
+                    <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] w-[105px]">
+                    <p>{model.name} {model.lastName?.charAt(0)}.</p>
                       <div
                         className="cursor-pointer hover:opacity-70 transition-opacity"
                         onClick={() => removeFromGuardados(model.id)}
@@ -67,6 +67,14 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
               onClick={clearAllGuardados}
             >
               borrar todos
+            </p>
+          </div>
+          <div>
+          <p
+              className="cursor-pointer hover:underline"
+              onClick={onClose}
+            >
+              cerrar
             </p>
           </div>
         </div>

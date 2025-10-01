@@ -17,11 +17,13 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <ConditionalLenis>
       <body
-        className={`font-times antialiased`}
+        className={`font-times antialiased min-h-screen flex flex-col`}
         suppressHydrationWarning>
         <GuardadosProvider>
           <Header />
-          {children}
+          <main className="flex-1">
+            {children}
+          </main>
           <Footer />
         </GuardadosProvider>
       </body>

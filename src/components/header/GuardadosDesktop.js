@@ -18,18 +18,18 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed left-0 right-auto w-1/4 top-[80px] h-[calc(100vh-80px)] bg-white-00 z-40 transition-all duration-300 ease-in-out ${
+      className={`z-60 fixed left-0 right-auto w-1/4 top-[281px] h-[calc(100vh-281px)] bg-white-00 transition-all duration-300 ease-in-out ${
         isOpen
           ? "opacity-100 translate-x-0"
           : "opacity-0 -translate-x-full pointer-events-none"
       }`}
     >
-      <div className="pt-[124px] px-[24px] pb-[24px] flex flex-col">
-        <Link href="/" className="mb-[36px] leading-[16px] tracking-[-0.4px]">
+      <div className="px-[24px] pb-[24px] flex flex-col">
+        {/* <Link href="/" className="mb-[36px] leading-[16px] tracking-[-0.4px]">
           — modelos
-        </Link>
+        </Link> */}
         {/* Botón guardados dentro del menú expandido */}
-        <div className="flex gap-[10px] items-center mb-[35px]">
+        {/* <div className="flex gap-[10px] items-center mb-[35px] justify-between">
           <div
             className="flex gap-[10px] items-center cursor-pointer"
             onClick={onClose}
@@ -40,9 +40,9 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
             <SecondaryButton px="11px">
               <span>{isClient ? guardadosList.length : 0}</span>
             </SecondaryButton>
-            <Cross onClick={onClose} width="12px" height="12px"/>
           </div>
-        </div>
+          <div onClick={onClose}><p className="cursor-pointer hover:underline text-grey-20">cerrar</p></div>
+        </div> */}
         <div className="py-4 flex gap-[8px] mb-[20px] flex-1">
           {isClient &&
             guardadosColumns.map((column, columnIndex) => (
@@ -52,8 +52,8 @@ const GuardadosDesktop = ({ isOpen, onClose }) => {
                     key={`${columnIndex}-${index}`}
                     className="flex justify-start items-center gap-[16px] h-[12px] my-[12px]"
                   >
-                    <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] lg:w-[100px]">
-                      <p>{model.name}</p>
+                    <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] lg:w-[105px]">
+                      <p>{model.name} {model.lastName?.charAt(0)}.</p>
                       <div
                         className="cursor-pointer hover:opacity-70 transition-opacity"
                         onClick={() => removeFromGuardados(model.id)}

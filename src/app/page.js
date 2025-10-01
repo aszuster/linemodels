@@ -20,7 +20,7 @@ export default function Home() {
 
   // Estado para la paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 20;
 
   // Estado para scroll infinito
   const [isLoading, setIsLoading] = useState(false);
@@ -165,12 +165,12 @@ export default function Home() {
   if (loading) {
     return (
       <main className="bg-white-00 pt-[216px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px]">
-        <div className="flex items-center justify-center min-h-[400px]">
+        {/* <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
             <p className="text-gray-600">Cargando modelos...</p>
           </div>
-        </div>
+        </div> */}
       </main>
     );
   }
@@ -231,7 +231,7 @@ export default function Home() {
             <div className="bg-white-00 ">
               <div className="flex justify-between mt-[10px] px-[12px] items-end border-l border-grey-10">
                 <div>
-                  <p className="text-black-00 leading-[16px]">{image.name}</p>
+                  <p className="text-black-00 leading-[16px]">{image.name} {image.lastName}</p>
                   <p
                     className="text-[12px] cursor-pointer hover:underline leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
                     onClick={() => toggleCard(image.id)}
