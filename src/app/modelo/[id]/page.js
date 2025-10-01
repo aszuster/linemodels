@@ -176,12 +176,7 @@ export default function ModelPage({ params }) {
   if (loading || !isClient) {
     return (
       <main className="bg-white-00 pt-[200px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
-        <div className="text-center">
-          <div className="animate-pulse">
-            <div className="h-8 bg-grey-10 rounded mb-4 mx-auto w-64"></div>
-            <div className="h-4 bg-grey-10 rounded mx-auto w-32"></div>
-          </div>
-        </div>
+
       </main>
     );
   }
