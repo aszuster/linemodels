@@ -95,7 +95,7 @@ const Header = () => {
       <header className="z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto lg:w-1/4 lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px]">
         <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
           <div className="lg:w-full ">
-            <Link href="/">
+            <Link href="/" onClick={isGuardadosOpen ? closeGuardados : undefined}>
               <h1 className="text-[24px] font-normal	leading-[24px] lg:text-[30px]  z-50">
                 line
               </h1>
