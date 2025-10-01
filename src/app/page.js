@@ -165,12 +165,12 @@ export default function Home() {
   if (loading) {
     return (
       <main className="bg-white-00 pt-[216px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px]">
-        <div className="flex items-center justify-center min-h-[400px]">
+        {/* <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-4"></div>
             <p className="text-gray-600">Cargando modelos...</p>
           </div>
-        </div>
+        </div> */}
       </main>
     );
   }
