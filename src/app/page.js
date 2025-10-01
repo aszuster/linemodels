@@ -20,7 +20,7 @@ export default function Home() {
 
   // Estado para la paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 20;
 
   // Estado para scroll infinito
   const [isLoading, setIsLoading] = useState(false);
