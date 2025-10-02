@@ -9,6 +9,11 @@ const nextConfig = {
         pathname: '/images/**',
       },
     ],
+    // Configuración adicional para mejor compatibilidad con Sanity
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   // Handle ESM modules better
   transpilePackages: ['sanity', '@sanity/vision', '@sanity/client'],
