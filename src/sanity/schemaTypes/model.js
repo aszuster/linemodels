@@ -53,7 +53,10 @@ export default {
         {
           type: 'image',
           options: {
-            hotspot: true
+            hotspot: true,
+            // Mejoras para carga múltiple
+            accept: 'image/*',
+            storeOriginalFilename: true
           },
           fields: [
             {
@@ -61,26 +64,85 @@ export default {
               title: 'Texto alternativo',
               type: 'string',
               description: 'Descripción de la imagen para accesibilidad'
+            },
+            {
+              name: 'caption',
+              title: 'Descripción',
+              type: 'string',
+              description: 'Descripción opcional de la imagen'
             }
           ]
         }
       ],
-      validation: Rule => Rule.min(1).max(10)
+      validation: Rule => Rule.min(1).max(15),
+      // Mejoras en la UI para carga múltiple
+      options: {
+        sortable: true,
+        layout: 'grid'
+      }
     },
     {
       name: 'book',
       title: 'Book',
       type: 'array',
       of: [
+        // Permitir carga directa de imágenes
+        {
+          type: 'image',
+          options: {
+            hotspot: true,
+            accept: 'image/*',
+            storeOriginalFilename: true
+          },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Texto alternativo',
+              type: 'string'
+            },
+            {
+              name: 'orientation',
+              title: 'Orientación',
+              type: 'string',
+              initialValue: 'vertical', // Por defecto vertical
+              options: {
+                list: [
+                  { title: 'Vertical', value: 'vertical' },
+                  { title: 'Horizontal', value: 'horizontal' }
+                ],
+                layout: 'radio'
+              },
+              validation: Rule => Rule.required()
+            }
+          ],
+          preview: {
+            select: {
+              media: 'asset',
+              title: 'orientation'
+            },
+            prepare(selection) {
+              const { media, title } = selection
+              return {
+                title: `Orientación: ${title || 'Vertical (por defecto)'}`,
+                media: media
+              }
+            }
+          }
+        },
+        // Mantener la opción de objeto para casos específicos
         {
           type: 'object',
+          name: 'bookItem',
+          title: 'Elemento de Book',
           fields: [
             {
               name: 'image',
               title: 'Imagen',
               type: 'image',
               options: {
-                hotspot: true
+                hotspot: true,
+                accept: 'image/*',
+                storeOriginalFilename: true
               },
               fields: [
                 {
@@ -94,6 +156,7 @@ export default {
               name: 'orientation',
               title: 'Orientación',
               type: 'string',
+              initialValue: 'vertical', // Por defecto vertical
               options: {
                 list: [
                   { title: 'Vertical', value: 'vertical' },
@@ -112,13 +175,18 @@ export default {
             prepare(selection) {
               const { media, title } = selection
               return {
-                title: `Orientación: ${title}`,
+                title: `Orientación: ${title || 'Vertical (por defecto)'}`,
                 media: media
               }
             }
           }
         }
-      ]
+      ],
+      // Mejoras para carga múltiple en book
+      options: {
+        sortable: true,
+        layout: 'grid'
+      }
     },
     {
       name: 'coverPhoto',
