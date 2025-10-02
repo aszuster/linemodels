@@ -59,52 +59,31 @@ export const useStaggeredImageAnimation = (items = [], delay = 200) => {
  */
 export const useProgressiveImageAnimation = (items = [], delay = 200) => {
   const [visibleItems, setVisibleItems] = useState(new Set());
-  const observerRefs = useRef([]);
   const [isClient, setIsClient] = useState(false);
+  const observerRef = useRef(null);
 
   // Asegurar que estamos en el cliente
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  // Inicializar todas las imágenes como visibles después de un breve delay
   useEffect(() => {
     if (!isClient || items.length === 0) return;
 
-    // Crear observers para cada elemento
-    const observers = items.map((_, index) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            // Aparecer con delay escalonado
-            setTimeout(() => {
-              setVisibleItems(prev => new Set([...prev, index]));
-            }, index * delay);
-            
-            // Desconectar el observer para esta imagen
-            observer.disconnect();
-          }
-        },
-        {
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px', // Reducido para mejor detección
-        }
-      );
-      
-      return observer;
-    });
+    // Mostrar todas las imágenes inmediatamente en producción para evitar problemas
+    const timer = setTimeout(() => {
+      const allIndices = new Set(items.map((_, index) => index));
+      setVisibleItems(allIndices);
+    }, 100);
 
-    observerRefs.current = observers;
+    return () => clearTimeout(timer);
+  }, [items.length, isClient]);
 
-    return () => {
-      observers.forEach(observer => observer.disconnect());
-    };
-  }, [items.length, delay, isClient]);
-
-  // Función para registrar un elemento para observación
+  // Función para registrar un elemento para observación (simplificada)
   const registerElement = (index, element) => {
-    if (element && observerRefs.current[index] && isClient) {
-      observerRefs.current[index].observe(element);
-    }
+    // No hacer nada, las imágenes se muestran automáticamente
+    return;
   };
 
   return { visibleItems, registerElement };
