@@ -60,9 +60,15 @@ export const useStaggeredImageAnimation = (items = [], delay = 200) => {
 export const useProgressiveImageAnimation = (items = [], delay = 200) => {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const observerRefs = useRef([]);
+  const [isClient, setIsClient] = useState(false);
+
+  // Asegurar que estamos en el cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
-    if (items.length === 0) return;
+    if (!isClient || items.length === 0) return;
 
     // Crear observers para cada elemento
     const observers = items.map((_, index) => {
@@ -80,7 +86,7 @@ export const useProgressiveImageAnimation = (items = [], delay = 200) => {
         },
         {
           threshold: 0.1,
-          rootMargin: '0px 0px -100px 0px',
+          rootMargin: '0px 0px -50px 0px', // Reducido para mejor detección
         }
       );
       
@@ -92,11 +98,11 @@ export const useProgressiveImageAnimation = (items = [], delay = 200) => {
     return () => {
       observers.forEach(observer => observer.disconnect());
     };
-  }, [items.length, delay]);
+  }, [items.length, delay, isClient]);
 
   // Función para registrar un elemento para observación
   const registerElement = (index, element) => {
-    if (element && observerRefs.current[index]) {
+    if (element && observerRefs.current[index] && isClient) {
       observerRefs.current[index].observe(element);
     }
   };
