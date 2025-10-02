@@ -520,10 +520,6 @@ export default function ModelPage({ params }) {
                           ? () => openBookModal(index)
                           : undefined
                       }
-                      style={{
-                        // Asegurar que las imágenes se muestren inmediatamente si no hay animación
-                        opacity: bookVisibleItems.has(index) ? 1 : 0.3
-                      }}
                     >
                       {item.type === "placeholder" ? (
                         <img
@@ -537,17 +533,6 @@ export default function ModelPage({ params }) {
                           alt="Book photo"
                           fill
                           className="object-cover"
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                          priority={false}
-                          unoptimized={false}
-                          onError={(e) => {
-                            console.error('Error loading book image:', item.data.image);
-                            e.target.style.display = 'none';
-                          }}
-                          onLoad={() => {
-                            // Forzar re-render cuando la imagen se carga
-                            setSelectedBookPhoto(prev => prev);
-                          }}
                         />
                       )}
                     </div>
@@ -702,9 +687,6 @@ export default function ModelPage({ params }) {
                   alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority={true}
-                  unoptimized={false}
                 />
               </div>
             </div>

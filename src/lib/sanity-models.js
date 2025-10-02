@@ -25,12 +25,12 @@ function processSanityBook(book) {
     let imageUrl = item.image
     
     if (item.image && item.image.asset) {
-      // Generar URL con dimensiones apropiadas basadas en orientación
+      // Usar dimensiones dinámicas basadas en la orientación
       if (item.orientation === 'horizontal') {
-        // Para imágenes horizontales, usar dimensiones que mantengan el aspect ratio 3:2
+        // Para imágenes horizontales, usar dimensiones que mantengan el aspect ratio
         imageUrl = urlFor(item.image).width(1200).height(800).fit('fill').url()
       } else {
-        // Para imágenes verticales, usar dimensiones que mantengan el aspect ratio 3:4
+        // Para imágenes verticales, usar dimensiones verticales
         imageUrl = urlFor(item.image).width(800).height(1200).fit('fill').url()
       }
     }
