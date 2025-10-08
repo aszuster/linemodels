@@ -373,7 +373,7 @@ export default function ModelPage({ params }) {
                       <button
                         key={index}
                         onClick={() => setSelectedPhoto(index)}
-                        className={`aspect-[3/4] relative overflow-hidden bg-grey-10 transition-all fade-in-stagger ${
+                        className={`aspect-[3/4] relative overflow-hidden transition-all fade-in-stagger ${
                           polasVisibleItems.has(index) ? "visible" : ""
                         } ${
                           selectedPhoto === index
@@ -381,9 +381,9 @@ export default function ModelPage({ params }) {
                             : "hover:opacity-70 cursor-pointer"
                         }`}
                       >
-                        <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-xs">
+                        {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-xs">
                           {index + 1}
-                        </div>
+                        </div> */}
                         {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                         <Image
