@@ -6,15 +6,20 @@ function processSanityImages(images) {
   if (!images || !Array.isArray(images)) return []
   
   return images.map(image => {
-    if (typeof image === 'string') {
-      // Si ya es una URL, devolverla tal como está
+    if (typeof image === 'string' && image.trim() !== '') {
+      // Si ya es una URL válida, devolverla tal como está
       return image
     } else if (image && image.asset) {
-      // Si es un objeto de Sanity, convertir a URL sin forzar dimensiones
-      return urlFor(image).url()
+      try {
+        // Si es un objeto de Sanity, convertir a URL sin forzar dimensiones
+        return urlFor(image).url()
+      } catch (error) {
+        console.error('Error processing image:', error)
+        return null
+      }
     }
-    return image
-  })
+    return null
+  }).filter(image => image !== null) // Filtrar imágenes nulas
 }
 
 // Función para procesar el book de Sanity
@@ -22,24 +27,38 @@ function processSanityBook(book) {
   if (!book || !Array.isArray(book)) return []
   
   return book.map(item => {
-    let imageUrl = item.image
+    let imageUrl = null
     
-    if (item.image && item.image.asset) {
-      // Usar dimensiones dinámicas basadas en la orientación
-      if (item.orientation === 'horizontal') {
-        // Para imágenes horizontales, usar dimensiones que mantengan el aspect ratio
-        imageUrl = urlFor(item.image).width(1200).height(800).fit('fill').url()
-      } else {
-        // Para imágenes verticales, usar dimensiones verticales
-        imageUrl = urlFor(item.image).width(800).height(1200).fit('fill').url()
+    console.log('Processing book item:', item)
+    
+    // Con la nueva estructura, item es directamente la imagen
+    if (item && item.asset) {
+      try {
+        // Usar dimensiones dinámicas basadas en la orientación
+        if (item.orientation === 'horizontal') {
+          // Para imágenes horizontales, usar dimensiones que mantengan el aspect ratio
+          imageUrl = urlFor(item).width(1200).height(800).fit('fill').url()
+        } else {
+          // Para imágenes verticales, usar dimensiones verticales
+          imageUrl = urlFor(item).width(800).height(1200).fit('fill').url()
+        }
+        console.log('Generated image URL:', imageUrl)
+      } catch (error) {
+        console.error('Error processing book image:', error)
+        imageUrl = null
       }
+    } else if (typeof item === 'string' && item.trim() !== '') {
+      // Si ya es una URL válida
+      imageUrl = item
+    } else {
+      console.log('Book item without valid asset:', item)
     }
     
     return {
       image: imageUrl,
-      orientation: item.orientation
+      orientation: item.orientation || 'vertical'
     }
-  })
+  }).filter(item => item.image !== null) // Filtrar elementos sin imagen válida
 }
 
 // Función para obtener todos los modelos con formato compatible
