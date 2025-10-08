@@ -292,7 +292,7 @@ export default function ModelPage({ params }) {
                   </p>
                   {/* Foto principal */}
                   <div
-                    className={`aspect-[3/4] relative overflow-hidden bg-grey-10 cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
+                    className={`aspect-[3/4] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
                       isMainPhotoVisible ? "visible" : ""
                     }`}
                     onClick={openModal}
@@ -508,7 +508,7 @@ export default function ModelPage({ params }) {
                     <div
                       key={item.key}
                       ref={(el) => registerBookElement(index, el)}
-                      className={`bg-grey-10 relative fade-in-stagger ${
+                      className={` relative fade-in-stagger ${
                         bookVisibleItems.has(index) ? "visible" : ""
                       } ${item.className} ${
                         item.type === "photo"
@@ -528,12 +528,14 @@ export default function ModelPage({ params }) {
                           className="w-full h-full bg-white-00 "
                         />
                       ) : (
-                        <Image
-                          src={item.data.image}
-                          alt="Book photo"
-                          fill
-                          className="object-cover"
-                        />
+                        item.data.image && (
+                          <Image
+                            src={item.data.image}
+                            alt="Book photo"
+                            fill
+                            className="object-cover"
+                          />
+                        )
                       )}
                     </div>
                   ));
@@ -597,7 +599,7 @@ export default function ModelPage({ params }) {
                 />
               )}
 
-              <div className="aspect-[3/4] relative overflow-hidden bg-grey-10 w-full max-w-4xl lg:max-w-[700px]">
+              <div className="aspect-[3/4] relative overflow-hidden  w-full max-w-4xl lg:max-w-[700px]">
                 <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                   {model.name} - Foto {selectedPhoto + 1}
                 </div>
@@ -669,7 +671,7 @@ export default function ModelPage({ params }) {
               )}
 
               <div
-                className="relative overflow-hidden bg-grey-10 w-full max-w-4xl lg:max-w-[700px]"
+                className="relative overflow-hidden  w-full max-w-4xl lg:max-w-[700px]"
                 style={{
                   aspectRatio:
                     model.book[selectedBookPhoto]?.orientation === "horizontal"
@@ -682,12 +684,14 @@ export default function ModelPage({ params }) {
                 </div>
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
-                <Image
-                  src={model.book[selectedBookPhoto]?.image}
-                  alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
-                  fill
-                  className="object-cover"
-                />
+                {model.book[selectedBookPhoto]?.image && (
+                  <Image
+                    src={model.book[selectedBookPhoto].image}
+                    alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                )}
               </div>
             </div>
 
