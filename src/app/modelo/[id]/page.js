@@ -297,15 +297,16 @@ export default function ModelPage({ params }) {
                     }`}
                     onClick={openModal}
                   >
-                    <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                    {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                       {model.name} - Foto {selectedPhoto + 1}
-                    </div>
+                    </div> */}
                     {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                     <Image
                       src={model.photos[selectedPhoto]}
                       alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                       fill
+                      quality={100}
                       className="object-cover"
                     />
 
@@ -373,7 +374,7 @@ export default function ModelPage({ params }) {
                       <button
                         key={index}
                         onClick={() => setSelectedPhoto(index)}
-                        className={`aspect-[3/4] relative overflow-hidden bg-grey-10 transition-all fade-in-stagger ${
+                        className={`aspect-[3/4] relative overflow-hidden transition-all fade-in-stagger ${
                           polasVisibleItems.has(index) ? "visible" : ""
                         } ${
                           selectedPhoto === index
@@ -381,15 +382,16 @@ export default function ModelPage({ params }) {
                             : "hover:opacity-70 cursor-pointer"
                         }`}
                       >
-                        <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-xs">
+                        {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-xs">
                           {index + 1}
-                        </div>
+                        </div> */}
                         {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                         <Image
                           src={photo}
                           alt={`${model.name} - Miniatura ${index + 1}`}
                           fill
+                          quality={100}
                           className="object-cover"
                         />
                       </button>
@@ -533,6 +535,7 @@ export default function ModelPage({ params }) {
                             src={item.data.image}
                             alt="Book photo"
                             fill
+                            quality={100}
                             className="object-cover"
                           />
                         )
@@ -600,15 +603,16 @@ export default function ModelPage({ params }) {
               )}
 
               <div className="aspect-[3/4] relative overflow-hidden  w-full max-w-4xl lg:max-w-[700px]">
-                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                   {model.name} - Foto {selectedPhoto + 1}
-                </div>
+                </div> */}
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                 <Image
                   src={model.photos[selectedPhoto]}
                   alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                   fill
+                  quality={100}
                   className="object-cover"
                 />
               </div>
@@ -679,9 +683,9 @@ export default function ModelPage({ params }) {
                       : "3/4",
                 }}
               >
-                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                   {model.name} - Book {selectedBookPhoto + 1}
-                </div>
+                </div> */}
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                 {model.book[selectedBookPhoto]?.image && (
@@ -689,6 +693,7 @@ export default function ModelPage({ params }) {
                     src={model.book[selectedBookPhoto].image}
                     alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
                     fill
+                    quality={100}
                     className="object-cover"
                   />
                 )}
