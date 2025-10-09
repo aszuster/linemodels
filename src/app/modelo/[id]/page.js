@@ -306,6 +306,7 @@ export default function ModelPage({ params }) {
                       src={model.photos[selectedPhoto]}
                       alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                       fill
+                      quality={100}
                       className="object-cover"
                     />
 
@@ -390,6 +391,7 @@ export default function ModelPage({ params }) {
                           src={photo}
                           alt={`${model.name} - Miniatura ${index + 1}`}
                           fill
+                          quality={100}
                           className="object-cover"
                         />
                       </button>
@@ -533,6 +535,7 @@ export default function ModelPage({ params }) {
                             src={item.data.image}
                             alt="Book photo"
                             fill
+                            quality={100}
                             className="object-cover"
                           />
                         )
@@ -609,6 +612,7 @@ export default function ModelPage({ params }) {
                   src={model.photos[selectedPhoto]}
                   alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                   fill
+                  quality={100}
                   className="object-cover"
                 />
               </div>
@@ -689,6 +693,7 @@ export default function ModelPage({ params }) {
                     src={model.book[selectedBookPhoto].image}
                     alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
                     fill
+                    quality={100}
                     className="object-cover"
                   />
                 )}

@@ -11,8 +11,12 @@ function processSanityImages(images) {
       return image
     } else if (image && image.asset) {
       try {
-        // Si es un objeto de Sanity, convertir a URL sin forzar dimensiones
-        return urlFor(image).url()
+        // Si es un objeto de Sanity, convertir a URL con máxima calidad
+        return urlFor(image)
+          .width(2400)
+          .quality(100)
+          .format('webp')
+          .url()
       } catch (error) {
         console.error('Error processing image:', error)
         return null
@@ -34,13 +38,25 @@ function processSanityBook(book) {
     // Con la nueva estructura, item es directamente la imagen
     if (item && item.asset) {
       try {
-        // Usar dimensiones dinámicas basadas en la orientación
+        // Usar dimensiones dinámicas basadas en la orientación con máxima calidad
         if (item.orientation === 'horizontal') {
           // Para imágenes horizontales, usar dimensiones que mantengan el aspect ratio
-          imageUrl = urlFor(item).width(1200).height(800).fit('fill').url()
+          imageUrl = urlFor(item)
+            .width(2400)
+            .height(1600)
+            .quality(100)
+            .format('webp')
+            .fit('max')
+            .url()
         } else {
           // Para imágenes verticales, usar dimensiones verticales
-          imageUrl = urlFor(item).width(800).height(1200).fit('fill').url()
+          imageUrl = urlFor(item)
+            .width(1600)
+            .height(2400)
+            .quality(100)
+            .format('webp')
+            .fit('max')
+            .url()
         }
         console.log('Generated image URL:', imageUrl)
       } catch (error) {
@@ -78,7 +94,7 @@ export async function getModelsData() {
       shoes: model.shoes,
       photos: processSanityImages(model.photos),
       book: processSanityBook(model.book),
-      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).url() : null,
+      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').url() : null,
       slug: model.slug,
       instagram: model.instagram
     }))
@@ -107,7 +123,7 @@ export async function getModelDataById(id) {
       shoes: model.shoes,
       photos: processSanityImages(model.photos),
       book: processSanityBook(model.book),
-      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).url() : null,
+      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').url() : null,
       slug: model.slug,
       contact: model.contact,
       instagram: model.instagram
