@@ -297,9 +297,9 @@ export default function ModelPage({ params }) {
                     }`}
                     onClick={openModal}
                   >
-                    <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                    {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                       {model.name} - Foto {selectedPhoto + 1}
-                    </div>
+                    </div> */}
                     {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                     <Image
@@ -603,9 +603,9 @@ export default function ModelPage({ params }) {
               )}
 
               <div className="aspect-[3/4] relative overflow-hidden  w-full max-w-4xl lg:max-w-[700px]">
-                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                   {model.name} - Foto {selectedPhoto + 1}
-                </div>
+                </div> */}
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                 <Image
@@ -683,9 +683,9 @@ export default function ModelPage({ params }) {
                       : "3/4",
                 }}
               >
-                <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                   {model.name} - Book {selectedBookPhoto + 1}
-                </div>
+                </div> */}
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                 {model.book[selectedBookPhoto]?.image && (
