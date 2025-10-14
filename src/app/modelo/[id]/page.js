@@ -307,6 +307,7 @@ export default function ModelPage({ params }) {
                       alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                       fill
                       quality={100}
+                      priority={selectedPhoto === 0}
                       className="object-cover"
                     />
 
@@ -392,6 +393,7 @@ export default function ModelPage({ params }) {
                           alt={`${model.name} - Miniatura ${index + 1}`}
                           fill
                           quality={100}
+                          // sizes="(max-width: 1024px) 16vw, 102px"
                           className="object-cover"
                         />
                       </button>
@@ -536,6 +538,7 @@ export default function ModelPage({ params }) {
                             alt="Book photo"
                             fill
                             quality={100}
+                            loading="lazy"
                             className="object-cover"
                           />
                         )

@@ -221,6 +221,8 @@ export default function Home() {
                   alt={image.name}
                   fill
                   quality={100}
+                  priority={index < 6}
+                  loading={index < 6 ? 'eager' : 'lazy'}
                   className="object-cover group-hover:opacity-20 transition-opacity duration-300"
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
                 />

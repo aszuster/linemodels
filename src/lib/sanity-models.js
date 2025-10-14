@@ -11,11 +11,13 @@ function processSanityImages(images) {
       return image
     } else if (image && image.asset) {
       try {
-        // Si es un objeto de Sanity, convertir a URL con máxima calidad
+        // Si es un objeto de Sanity, convertir a URL optimizada
+        // 1800px es suficiente para pantallas 4K, quality 85 es imperceptible vs 100
         return urlFor(image)
           .width(2400)
           .quality(100)
           .format('webp')
+          .auto('format') // Permite que Sanity elija el mejor formato (WebP/AVIF)
           .url()
       } catch (error) {
         console.error('Error processing image:', error)
@@ -24,6 +26,7 @@ function processSanityImages(images) {
     }
     return null
   }).filter(image => image !== null) // Filtrar imágenes nulas
+    .reverse() // Revertir para mostrar las más nuevas abajo y las más viejas arriba
 }
 
 // Función para procesar el book de Sanity
@@ -38,23 +41,25 @@ function processSanityBook(book) {
     // Con la nueva estructura, item es directamente la imagen
     if (item && item.asset) {
       try {
-        // Usar dimensiones dinámicas basadas en la orientación con máxima calidad
+        // Usar dimensiones optimizadas basadas en la orientación
         if (item.orientation === 'horizontal') {
-          // Para imágenes horizontales, usar dimensiones que mantengan el aspect ratio
+          // Para imágenes horizontales (1800x1200 es perfecto para web)
           imageUrl = urlFor(item)
             .width(2400)
             .height(1600)
             .quality(100)
             .format('webp')
+            .auto('format')
             .fit('max')
             .url()
         } else {
-          // Para imágenes verticales, usar dimensiones verticales
+          // Para imágenes verticales
           imageUrl = urlFor(item)
             .width(1600)
             .height(2400)
             .quality(100)
             .format('webp')
+            .auto('format')
             .fit('max')
             .url()
         }
@@ -75,6 +80,7 @@ function processSanityBook(book) {
       orientation: item.orientation || 'vertical'
     }
   }).filter(item => item.image !== null) // Filtrar elementos sin imagen válida
+    .reverse() // Revertir para mostrar las más nuevas abajo y las más viejas arriba
 }
 
 // Función para obtener todos los modelos con formato compatible
@@ -94,7 +100,7 @@ export async function getModelsData() {
       shoes: model.shoes,
       photos: processSanityImages(model.photos),
       book: processSanityBook(model.book),
-      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').url() : null,
+      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').auto('format').url() : null,
       slug: model.slug,
       instagram: model.instagram
     }))
@@ -123,7 +129,7 @@ export async function getModelDataById(id) {
       shoes: model.shoes,
       photos: processSanityImages(model.photos),
       book: processSanityBook(model.book),
-      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').url() : null,
+      coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').auto('format').url() : null,
       slug: model.slug,
       contact: model.contact,
       instagram: model.instagram
