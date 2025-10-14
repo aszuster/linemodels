@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getModelDataById } from "@/lib/sanity-models";
@@ -19,6 +19,8 @@ export default function ModelPage({ params }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBookModalOpen, setIsBookModalOpen] = useState(false);
   const [selectedBookPhoto, setSelectedBookPhoto] = useState(0);
+  const mainPhotoRef = useRef(null);
+  const [mainPhotoHeight, setMainPhotoHeight] = useState(0);
 
   // Hook para animación escalonada de miniaturas de polas
   const { containerRef: polasContainerRef, visibleItems: polasVisibleItems } =
@@ -173,6 +175,29 @@ export default function ModelPage({ params }) {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [model, selectedBookPhoto, isBookModalOpen]);
 
+  // Calcular altura de la foto principal para las miniaturas
+  useEffect(() => {
+    const updateHeight = () => {
+      if (mainPhotoRef.current && window.innerWidth >= 1025) {
+        const height = mainPhotoRef.current.offsetHeight;
+        setMainPhotoHeight(height);
+      } else {
+        setMainPhotoHeight(0);
+      }
+    };
+
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    
+    // Esperar a que la imagen cargue
+    const timer = setTimeout(updateHeight, 500);
+    
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+      clearTimeout(timer);
+    };
+  }, [model, isMainPhotoVisible]);
+
   if (loading || !isClient) {
     return (
       <main className="bg-white-00 pt-[200px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
@@ -285,13 +310,14 @@ export default function ModelPage({ params }) {
             {model.photos && model.photos.length > 0 && (
               <div className="space-y-4 mt-[48px] lg:w-3/4 lg:relative lg:mr-auto lg:mt-[160px]">
                 <p className="mb-[48px] lg:hidden">polas</p>
-                <div className="lg:flex  lg:items-start lg:justify-end">
+                <div className="lg:flex lg:justify-end">
                   {/* Título para desktop */}
                   <p className="hidden lg:block lg:text-right lg:writing-mode-vertical-rl lg:self-start mr-[135px]">
                     polas
                   </p>
                   {/* Foto principal */}
                   <div
+                    ref={mainPhotoRef}
                     className={`aspect-[3/4] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
                       isMainPhotoVisible ? "visible" : ""
                     }`}
@@ -369,13 +395,14 @@ export default function ModelPage({ params }) {
                   {/* Miniaturas */}
                   <div
                     ref={polasContainerRef}
-                    className="grid grid-cols-6 gap-[2px] lg:grid-cols-1 lg:gap-[2px] lg:w-[102px] lg:ml-[2px]"
+                    className="flex gap-[2px] overflow-x-auto scrollbar-hide lg:flex-col lg:overflow-y-auto lg:overflow-x-visible lg:gap-[2px] lg:w-[102px] lg:ml-[2px]"
+                    style={{ maxHeight: mainPhotoHeight > 0 ? `${mainPhotoHeight}px` : 'none' }}
                   >
                     {model.photos.map((photo, index) => (
                       <button
                         key={index}
                         onClick={() => setSelectedPhoto(index)}
-                        className={`aspect-[3/4] relative overflow-hidden transition-all fade-in-stagger ${
+                        className={`aspect-[3/4] relative overflow-hidden transition-all fade-in-stagger flex-shrink-0 w-[calc((100vw-28px-10px)/6)] lg:w-full ${
                           polasVisibleItems.has(index) ? "visible" : ""
                         } ${
                           selectedPhoto === index
@@ -393,7 +420,7 @@ export default function ModelPage({ params }) {
                           alt={`${model.name} - Miniatura ${index + 1}`}
                           fill
                           quality={100}
-                          // sizes="(max-width: 1024px) 16vw, 102px"
+                          sizes="(max-width: 1024px) 16vw, 102px"
                           className="object-cover"
                         />
                       </button>
@@ -605,7 +632,7 @@ export default function ModelPage({ params }) {
                 />
               )}
 
-              <div className="aspect-[3/4] relative overflow-hidden  w-full max-w-4xl lg:max-w-[700px]">
+              <div className="relative w-full h-full max-w-4xl max-h-full lg:max-w-[700px] flex items-center justify-center">
                 {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                   {model.name} - Foto {selectedPhoto + 1}
                 </div> */}
@@ -614,9 +641,10 @@ export default function ModelPage({ params }) {
                 <Image
                   src={model.photos[selectedPhoto]}
                   alt={`${model.name} - Foto ${selectedPhoto + 1}`}
-                  fill
+                  width={700}
+                  height={933}
                   quality={100}
-                  className="object-cover"
+                  className="object-contain w-full h-[100vh]"
                 />
               </div>
             </div>
@@ -677,15 +705,7 @@ export default function ModelPage({ params }) {
                 />
               )}
 
-              <div
-                className="relative overflow-hidden  w-full max-w-4xl lg:max-w-[700px]"
-                style={{
-                  aspectRatio:
-                    model.book[selectedBookPhoto]?.orientation === "horizontal"
-                      ? "3/2"
-                      : "3/4",
-                }}
-              >
+              <div className="relative w-full h-full max-w-4xl max-h-full lg:max-w-[700px] flex items-center justify-center">
                 {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                   {model.name} - Book {selectedBookPhoto + 1}
                 </div> */}
@@ -695,9 +715,10 @@ export default function ModelPage({ params }) {
                   <Image
                     src={model.book[selectedBookPhoto].image}
                     alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
-                    fill
+                    width={model.book[selectedBookPhoto]?.orientation === "horizontal" ? 700 : 700}
+                    height={model.book[selectedBookPhoto]?.orientation === "horizontal" ? 467 : 933}
                     quality={100}
-                    className="object-cover"
+                    className="object-contain w-full h-[100vh]"
                   />
                 )}
               </div>
