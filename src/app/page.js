@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useGuardados } from "@/context/GuardadosContext";
 import SecondaryButton from "@/components/secondaryButton/SecondaryButton";
-import { useInfiniteScrollAnimation } from "@/hooks/useInfiniteScrollAnimation";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { getModelsData } from "@/lib/sanity-models";
 
 export default function Home() {
@@ -18,6 +18,10 @@ export default function Home() {
   // Estado para controlar qué tarjeta está expandida
   const [expandedCard, setExpandedCard] = useState(null);
 
+  // Estado para prevenir hydration mismatches
+  const [isClient, setIsClient] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
   // Estado para la paginación
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -25,12 +29,6 @@ export default function Home() {
   // Estado para scroll infinito
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [showPauseAt22, setShowPauseAt22] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
-
-  // Estado para prevenir hydration mismatches
-  const [isClient, setIsClient] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   // Cargar datos de Sanity
   useEffect(() => {
@@ -57,6 +55,12 @@ export default function Home() {
     };
     
     checkIsMobile();
+    
+    // En desktop, iniciar con 3 páginas cargadas (60 elementos)
+    if (window.innerWidth >= 1024) {
+      setCurrentPage(3);
+    }
+    
     window.addEventListener('resize', checkIsMobile);
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
@@ -66,15 +70,14 @@ export default function Home() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentImages = isMobile 
-    ? models.slice(startIndex, endIndex) // Móvil: solo página actual (6 elementos)
+    ? models.slice(startIndex, endIndex) // Móvil: solo página actual (20 elementos)
     : models.slice(0, endIndex); // Desktop: scroll infinito (acumulativo)
 
-  // Hook para animación de fade in en secuencia con scroll infinito
-  const { containerRef, visibleItems, hasStarted } = useInfiniteScrollAnimation(
-    currentImages,
-    300, // 300ms de delay entre cada card
-    isMobile // Pasar el estado de móvil al hook
-  );
+  // Hook para animación de fade in al scrollear
+  const { observeElement, resetVisibility } = useScrollAnimation(isMobile);
+  
+  const itemRefs = useRef({});
+  const containerRef = useRef(null);
 
   const toggleCard = (cardId) => {
     setExpandedCard(expandedCard === cardId ? null : cardId);
@@ -84,6 +87,7 @@ export default function Home() {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
       setExpandedCard(null); // Cerrar acordeón al cambiar página
+      resetVisibility(containerRef.current); // Resetear animaciones en móvil
     }
   };
 
@@ -91,20 +95,27 @@ export default function Home() {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
       setExpandedCard(null); // Cerrar acordeón al cambiar página
+      resetVisibility(containerRef.current); // Resetear animaciones en móvil
     }
   };
+  
+  // Observar elementos cuando se renderizan
+  useEffect(() => {
+    // Usar requestAnimationFrame para evitar bloquear el scroll
+    const rafId = requestAnimationFrame(() => {
+      Object.entries(itemRefs.current).forEach(([index, element]) => {
+        if (element) {
+          observeElement(element, parseInt(index));
+        }
+      });
+    });
+    
+    return () => cancelAnimationFrame(rafId);
+  }, [currentImages.length, observeElement]);
 
   // Función para cargar más elementos (scroll infinito)
   const loadMore = useCallback(() => {
     if (isLoading || !hasMore) return;
-
-    // Verificar si llegamos a 22 modelos (4 páginas de 6 = 24, pero queremos pausar en 22)
-    const currentItemsCount = currentPage * itemsPerPage;
-    if (currentItemsCount >= 22 && !showPauseAt22) {
-      setShowPauseAt22(true);
-      setShowBackToTop(true);
-      return;
-    }
 
     setIsLoading(true);
 
@@ -118,7 +129,7 @@ export default function Home() {
       }
       setIsLoading(false);
     }, 500);
-  }, [currentPage, totalPages, isLoading, hasMore, showPauseAt22]);
+  }, [currentPage, totalPages, isLoading, hasMore]);
 
   // Detectar scroll para cargar más elementos
   useEffect(() => {
@@ -132,34 +143,19 @@ export default function Home() {
 
         // Cargar más cuando esté cerca del final (100px antes del final)
         if (scrollTop + windowHeight >= documentHeight - 100) {
-          // Si estamos en la pausa de 22 modelos, continuar el scroll infinito
-          if (showPauseAt22) {
-            setShowPauseAt22(false);
-            setShowBackToTop(false);
-            // Continuar cargando más elementos
-            loadMore();
-          } else {
-            loadMore();
-          }
+          loadMore();
         }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loadMore, showPauseAt22]);
+  }, [loadMore]);
 
   const handleToggleGuardado = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
     e.stopPropagation(); // Prevenir que se active el Link padre
     toggleGuardado(model);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
   };
 
   if (loading) {
@@ -183,10 +179,11 @@ export default function Home() {
       >
         {currentImages.map((image, index) => (
           <div 
-            key={image.id} 
-            className={`w-full fade-in-stagger ${
-              visibleItems.has(index) ? 'visible' : ''
-            }`}
+            key={image.id}
+            ref={(el) => {
+              if (el) itemRefs.current[index] = el;
+            }}
+            className="w-full fade-in-stagger"
           >
             {/* Contenedor de la imagen */}
             <Link href={`/modelo/${image.slug?.current || image.id}`}>
@@ -318,23 +315,11 @@ export default function Home() {
       )}
 
       {/* Indicador de carga para scroll infinito - Solo visible en desktop */}
-      {isClient && (isLoading || showPauseAt22) && (
-        <div className="hidden lg:flex max-w-[1282px] ml-auto justify-between items-center mt-[80px]">
-          <div></div>
+      {isClient && isLoading && (
+        <div className="hidden lg:flex max-w-[1282px] ml-auto justify-center items-center mt-[80px]">
           <div className="text-sm text-grey-30">
-            {showPauseAt22
-              ? `ver más (${models.length - currentImages.length})`
-              : "cargando más modelos..."}
+            cargando más modelos...
           </div>
-          {isClient && showBackToTop && (
-            <div className="hidden lg:flex justify-end items-center">
-              <SecondaryButton onClick={scrollToTop} px="14px">
-                <span className="tracking-[-0.3px] leading-[16px]">
-                  back to top
-                </span>
-              </SecondaryButton>
-            </div>
-          )}
         </div>
       )}
     </main>
