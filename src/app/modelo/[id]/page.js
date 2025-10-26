@@ -318,7 +318,7 @@ export default function ModelPage({ params }) {
                   {/* Foto principal */}
                   <div
                     ref={mainPhotoRef}
-                    className={`aspect-[3/4] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
+                    className={`aspect-[2/3] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
                       isMainPhotoVisible ? "visible" : ""
                     }`}
                     onClick={openModal}
@@ -498,7 +498,7 @@ export default function ModelPage({ params }) {
                         processedPhotos.push({
                           type: "placeholder",
                           key: `placeholder-${index}-1`,
-                          className: "col-span-1 aspect-[3/4]",
+                          className: "col-span-1 aspect-[2/3]",
                         });
                       }
                       // Agregar la foto horizontal
@@ -516,7 +516,7 @@ export default function ModelPage({ params }) {
                         type: "photo",
                         data: photo,
                         key: index,
-                        className: "col-span-1 aspect-[3/4]",
+                        className: "col-span-1 aspect-[2/3]",
                       });
                       currentCol++;
                       if (currentCol === 2) {

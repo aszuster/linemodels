@@ -187,7 +187,7 @@ export default function Home() {
           >
             {/* Contenedor de la imagen */}
             <Link href={`/modelo/${image.slug?.current || image.id}`}>
-              <div className="bg-white-00 w-full aspect-[3/4] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
+              <div className="bg-white-00 w-full aspect-[2/3] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
                 {/* Placeholder para la imagen */}
 
 
