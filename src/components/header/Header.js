@@ -244,7 +244,7 @@ const Header = () => {
                 — contacto
               </p>
               <div className="text-grey-40 leading-[16px]">
-                <p className="pb-[6px]">hola@linemodels.co</p>
+                <p className="pb-[6px]">hola@linemodels.xyz</p>
                 <p>buenos aires, argentina.</p>
               </div>
 
@@ -299,7 +299,7 @@ const Header = () => {
                       — querés ser modelo? 
                     </p>
                     <p className="mb-[32px] leading-[20px] lg:text-[16px] lg:max-w-[420px]">
-                      mandanos tus datos y dos fotos a hola@linemodels.co <br />
+                      mandanos tus datos y dos fotos a hola@linemodels.xyz <br />
                       queremos verte natural, luz de día y sin make up, las
                       fotos las podés sacar con tu celular.
                     </p>
