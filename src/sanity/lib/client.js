@@ -9,11 +9,11 @@ export const client = createClient({
   useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
 })
 
-// Función para obtener todos los modelos
+// Función para obtener todos los modelos visibles
 export async function getModels() {
   try {
     const models = await client.fetch(`
-      *[_type == "model"] | order(name asc) {
+      *[_type == "model" && (isVisible != false)] | order(name asc) {
         _id,
         name,
         lastName,
@@ -26,7 +26,9 @@ export async function getModels() {
         book,
         coverPhoto,
         slug,
-        instagram
+        instagram,
+        currentLocation,
+        isVisible
       }
     `)
     return models
@@ -36,11 +38,11 @@ export async function getModels() {
   }
 }
 
-// Función para obtener un modelo por ID o slug
+// Función para obtener un modelo por ID o slug (solo si es visible)
 export async function getModelById(id) {
   try {
     const model = await client.fetch(`
-      *[_type == "model" && (_id == $id || slug.current == $id)][0] {
+      *[_type == "model" && (_id == $id || slug.current == $id) && (isVisible != false)][0] {
         _id,
         name,
         lastName,
@@ -53,7 +55,9 @@ export async function getModelById(id) {
         book,
         coverPhoto,
         slug,
-        instagram
+        instagram,
+        currentLocation,
+        isVisible
       }
     `, { id })
     return model

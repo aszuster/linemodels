@@ -102,7 +102,8 @@ export async function getModelsData() {
       book: processSanityBook(model.book),
       coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').auto('format').url() : null,
       slug: model.slug,
-      instagram: model.instagram
+      instagram: model.instagram,
+      currentLocation: model.currentLocation
     }))
   } catch (error) {
     console.error('Error fetching models from Sanity:', error)
@@ -132,7 +133,8 @@ export async function getModelDataById(id) {
       coverPhoto: model.coverPhoto ? urlFor(model.coverPhoto).width(1600).quality(100).format('webp').auto('format').url() : null,
       slug: model.slug,
       contact: model.contact,
-      instagram: model.instagram
+      instagram: model.instagram,
+      currentLocation: model.currentLocation
     }
   } catch (error) {
     console.error('Error fetching model from Sanity:', error)
