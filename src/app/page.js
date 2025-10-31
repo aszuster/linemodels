@@ -38,7 +38,7 @@ export default function Home() {
         setModels(modelsData);
         setLoading(false);
       } catch (error) {
-        console.error('Error loading models:', error);
+        console.error("Error loading models:", error);
         setLoading(false);
       }
     };
@@ -48,34 +48,34 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
-    
+
     // Detectar si es móvil
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 1024);
     };
-    
+
     checkIsMobile();
-    
+
     // En desktop, iniciar con 3 páginas cargadas (60 elementos)
     if (window.innerWidth >= 1024) {
       setCurrentPage(3);
     }
-    
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
+
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
   // Calcular elementos para la página actual
   const totalPages = Math.ceil(models.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentImages = isMobile 
+  const currentImages = isMobile
     ? models.slice(startIndex, endIndex) // Móvil: solo página actual (20 elementos)
     : models.slice(0, endIndex); // Desktop: scroll infinito (acumulativo)
 
   // Hook para animación de fade in al scrollear
   const { observeElement, resetVisibility } = useScrollAnimation(isMobile);
-  
+
   const itemRefs = useRef({});
   const containerRef = useRef(null);
 
@@ -98,7 +98,7 @@ export default function Home() {
       resetVisibility(containerRef.current); // Resetear animaciones en móvil
     }
   };
-  
+
   // Observar elementos cuando se renderizan
   useEffect(() => {
     // Usar requestAnimationFrame para evitar bloquear el scroll
@@ -109,7 +109,7 @@ export default function Home() {
         }
       });
     });
-    
+
     return () => cancelAnimationFrame(rafId);
   }, [currentImages.length, observeElement]);
 
@@ -173,12 +173,12 @@ export default function Home() {
 
   return (
     <main className="bg-white-00 pt-[216px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px]">
-      <div 
+      <div
         ref={containerRef}
         className="w-full grid grid-cols-2 lg:grid-cols-3 gap-x-[2px] gap-y-[32px] lg:max-w-[1282px] lg:ml-auto"
       >
         {currentImages.map((image, index) => (
-          <div 
+          <div
             key={image.id}
             ref={(el) => {
               if (el) itemRefs.current[index] = el;
@@ -190,40 +190,47 @@ export default function Home() {
               <div className="bg-white-00 w-full aspect-[2/3] relative overflow-hidden cursor-pointer lg:hover:opacity-100 transition-opacity group">
                 {/* Placeholder para la imagen */}
 
-
                 {/* Overlay con medidas - Solo visible en hover en desktop */}
-                <div className="absolute inset-0  bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex flex-col  p-[20px]">
-                  <div className="flex justify-between">
-                    <div className="flex flex-col text-[14px] leading-[16px]">
-                      <span>altura</span>
-                      <span>busto</span>
-                      <span>cintura</span>
-                      <span>cadera</span>
-                      <span>zapatos</span>
+                <div className="absolute inset-0 bg-white bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:flex flex-col justify-between p-[20px]">
+                  <div className="flex flex-col justify-between h-full">
+                    <div className="flex justify-between">
+                      <div className="flex flex-col text-[14px] leading-[16px]">
+                        <span>altura</span>
+                        <span>busto</span>
+                        <span>cintura</span>
+                        <span>cadera</span>
+                        <span>zapatos</span>
+                      </div>
+                      <div className="flex flex-col text-[14px] leading-[16px]">
+                        <span>{image.height} cm</span>
+                        <span>{image.bust} cm</span>
+                        <span>{image.waist} cm</span>
+                        <span>{image.hips} cm</span>
+                        <span>{image.shoes}</span>
+                      </div>
                     </div>
-                    <div className="flex flex-col text-[14px] leading-[16px]">
-                      <span>{image.height} cm</span>
-                      <span>{image.bust} cm</span>
-                      <span>{image.waist} cm</span>
-                      <span>{image.hips} cm</span>
-                      <span>{image.shoes}</span>
-                    </div>
+                    {image.currentLocation && (
+                      <div className="text-[14px] leading-[16px] flex items-center gap-[5px]">
+                        <div className="h-[5px] w-[5px] bg-black-00 rounded-full"></div>
+                        <span className="tracking-[0%]">ubicación actual:</span>
+                        <span>{image.currentLocation}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* Cuando tengas las imágenes reales, descomenta esto: */}
-               
+
                 <Image
                   src={image.coverPhoto}
                   alt={image.name}
                   fill
                   quality={100}
                   priority={index < 6}
-                  loading={index < 6 ? 'eager' : 'lazy'}
+                  loading={index < 6 ? "eager" : "lazy"}
                   className="object-cover group-hover:opacity-20 transition-opacity duration-300"
                   sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
                 />
-          
               </div>
             </Link>
 
@@ -231,7 +238,9 @@ export default function Home() {
             <div className="bg-white-00 ">
               <div className="flex justify-between mt-[10px] px-[12px] items-end border-l border-grey-10">
                 <div>
-                  <p className="text-black-00 leading-[16px]">{image.name} {image.lastName}</p>
+                  <p className="text-black-00 leading-[16px]">
+                    {image.name} {image.lastName}
+                  </p>
                   <p
                     className="text-[12px] cursor-pointer hover:underline leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
                     onClick={() => toggleCard(image.id)}
@@ -317,9 +326,7 @@ export default function Home() {
       {/* Indicador de carga para scroll infinito - Solo visible en desktop */}
       {isClient && isLoading && (
         <div className="hidden lg:flex max-w-[1282px] ml-auto justify-center items-center mt-[80px]">
-          <div className="text-sm text-grey-30">
-            cargando más modelos...
-          </div>
+          <div className="text-sm text-grey-30">cargando más modelos...</div>
         </div>
       )}
     </main>

@@ -228,6 +228,21 @@ export default {
       })
     },
     {
+      name: 'currentLocation',
+      title: 'Ubicación Actual',
+      type: 'string',
+      placeholder: 'ej: Buenos Aires, Barcelona, Nueva York, etc.',
+      description: 'Ubicación actual del modelo. Puede ser una ciudad, país o cualquier texto descriptivo.'
+    },
+    {
+      name: 'isVisible',
+      title: 'Visible en el sitio',
+      type: 'boolean',
+      description: 'Controla si el modelo aparece visible en el sitio web. Desactiva esta opción para esconder temporalmente el perfil del modelo.',
+      initialValue: true,
+      validation: Rule => Rule.required()
+    },
+    {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -247,13 +262,14 @@ export default {
     select: {
       title: 'name',
       subtitle: 'lastName',
-      media: 'coverPhoto'
+      media: 'coverPhoto',
+      isVisible: 'isVisible'
     },
     prepare(selection) {
-      const { title, subtitle, media } = selection
+      const { title, subtitle, media, isVisible } = selection
       return {
-        title: `${title} ${subtitle}`,
-        subtitle: `Modelo`,
+        title: `${title} ${subtitle}${isVisible === false ? ' 🔒' : ''}`,
+        subtitle: isVisible === false ? 'Modelo (Oculto)' : 'Modelo',
         media: media
       }
     }
