@@ -211,7 +211,7 @@ export default function Home() {
                     </div>
                     {image.currentLocation && (
                       <div className="text-[16px] font-medium leading-[16px] flex items-center gap-[6px]">
-                        <div className="h-[13px] w-[13px] bg-black-00 rounded-full"></div>
+                        <div className="h-[8px] w-[8px] mt-[2px] bg-black-00 rounded-full"></div>
                         <span>{image.currentLocation}</span>
                       </div>
                     )}
@@ -234,7 +234,7 @@ export default function Home() {
             </Link>
 
             {/* Información debajo de la imagen */}
-            <div className="bg-white-00 ">
+            <div className="bg-white-00 lg:pb-[4px]">
               <div className="flex justify-between mt-[10px] px-[12px] items-end border-l border-grey-10">
                 <div>
                   <p className="text-black-00 leading-[16px]">
