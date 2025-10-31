@@ -259,7 +259,7 @@ const Header = () => {
               </button>
             </div>
             <div>
-              <Link href="https://www.instagram.com/line/" target="_blank">
+              <Link href="https://www.instagram.com/linemodels__/" target="_blank">
                 instagram
               </Link>
             </div>
