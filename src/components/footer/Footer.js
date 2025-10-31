@@ -44,7 +44,7 @@ const Footer = () => {
         </div>
         <div className="flex w-full justify-between items-center">
           <div>
-            <Link href="https://www.instagram.com/line/" target="_blank">
+            <Link href="https://www.instagram.com/linemodels__/" target="_blank">
               instagram
             </Link>
           </div>
