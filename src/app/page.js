@@ -210,9 +210,8 @@ export default function Home() {
                       </div>
                     </div>
                     {image.currentLocation && (
-                      <div className="text-[14px] leading-[16px] flex items-center gap-[5px]">
-                        <div className="h-[5px] w-[5px] bg-black-00 rounded-full"></div>
-                        <span className="tracking-[0%]">ubicación actual:</span>
+                      <div className="text-[16px] font-medium leading-[16px] flex items-center gap-[6px]">
+                        <div className="h-[13px] w-[13px] bg-black-00 rounded-full"></div>
                         <span>{image.currentLocation}</span>
                       </div>
                     )}
