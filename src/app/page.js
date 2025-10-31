@@ -235,26 +235,28 @@ export default function Home() {
 
             {/* Información debajo de la imagen */}
             <div className="bg-white-00 lg:pb-[4px]">
-              <div className="flex justify-between mt-[10px] px-[12px] items-end border-l border-grey-10">
-                <div>
+              <div className=" w-full mt-[10px] px-[12px] items-end border-l border-grey-10">
+                <div className="lg:flex lg:justify-between lg:items-center lg:w-full">
                   <p className="text-black-00 leading-[16px]">
                     {image.name} {image.lastName}
                   </p>
-                  <p
-                    className="text-[12px] cursor-pointer hover:underline leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
-                    onClick={() => toggleCard(image.id)}
-                  >
-                    {expandedCard === image.id
-                      ? "ocultar medidas"
-                      : "ver medidas"}
-                  </p>
-                </div>
-                <div
-                  className="text-[12px] lg:text-[16px] leading-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
-                  onClick={(e) => handleToggleGuardado(e, image)}
-                >
-                  <p>{isInGuardados(image.id) ? "added" : "add"}</p>
-                  <p>{isInGuardados(image.id) ? "( - )" : "( + )"}</p>
+                  <div className="flex justify-between items-end lg:items-center w-full lg:w-auto">
+                    <p
+                      className="text-[12px] cursor-pointer hover:underline leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
+                      onClick={() => toggleCard(image.id)}
+                    >
+                      {expandedCard === image.id
+                        ? "ocultar medidas"
+                        : "ver medidas"}
+                    </p>
+                    <div
+                      className="text-[12px] lg:text-[16px] leading-[12px] flex gap-[4px] items-center cursor-pointer hover:opacity-70 transition-opacity"
+                      onClick={(e) => handleToggleGuardado(e, image)}
+                    >
+                      <p>{isInGuardados(image.id) ? "added" : "add"}</p>
+                      <p>{isInGuardados(image.id) ? "( - )" : "( + )"}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
