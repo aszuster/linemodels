@@ -41,16 +41,19 @@ export default function ModelPage({ params }) {
   // Estado para controlar la aparición de la foto principal de polas
   const [isMainPhotoVisible, setIsMainPhotoVisible] = useState(false);
 
+  // Estado para mostrar/ocultar las polas
+  const [isPolasVisible, setIsPolasVisible] = useState(false);
+
   // Efecto para mostrar la foto principal con delay
   useEffect(() => {
-    if (model?.photos && model.photos.length > 0) {
+    if (model?.photos && model.photos.length > 0 && isPolasVisible) {
       const timer = setTimeout(() => {
         setIsMainPhotoVisible(true);
       }, 300); // Aparece después de 300ms
 
       return () => clearTimeout(timer);
     }
-  }, [model?.photos]);
+  }, [model?.photos, isPolasVisible]);
 
   const handleToggleGuardado = (e, model) => {
     e.preventDefault(); // Prevenir navegación del Link
@@ -187,22 +190,20 @@ export default function ModelPage({ params }) {
     };
 
     updateHeight();
-    window.addEventListener('resize', updateHeight);
-    
+    window.addEventListener("resize", updateHeight);
+
     // Esperar a que la imagen cargue
     const timer = setTimeout(updateHeight, 500);
-    
+
     return () => {
-      window.removeEventListener('resize', updateHeight);
+      window.removeEventListener("resize", updateHeight);
       clearTimeout(timer);
     };
   }, [model, isMainPhotoVisible]);
 
   if (loading || !isClient) {
     return (
-      <main className="bg-white-00 pt-[200px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
-
-      </main>
+      <main className="bg-white-00 pt-[200px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]"></main>
     );
   }
 
@@ -230,17 +231,16 @@ export default function ModelPage({ params }) {
 
       <div className="max-w-6xl mx-auto lg:max-w-full">
         <div>
-          <div className="lg:flex lg:items-start">
+          <div className="">
             {/* Información */}
-            <div className="flex justify-between lg:flex-col lg:w-1/4 lg:pt-[160px] lg:gap-[121px]">
+            <div className="flex justify-between lg:w-full lg:mt-[130px]">
               <div>
                 <h3 className="text-[20px] pb-[4px]">
                   {model.name} {model.lastName}
                 </h3>
                 {model.instagram && (
-                  <div  className="text-[12px] mb-[16px] lg:text-[16px] lg:mb-[24px]">
+                  <div className="text-[12px] mb-[16px] lg:hidden lg:text-[16px]">
                     <Link
-                     
                       href={`https://instagram.com/${model.instagram}`}
                       target="_blank"
                     >
@@ -256,44 +256,57 @@ export default function ModelPage({ params }) {
                   <p>{isInGuardados(model.id) ? "( - )" : "( + )"}</p>
                 </div>
               </div>
-              <div className="flex gap-[32px]">
-                <div>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    altura
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    busto
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    cintura
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    cadera
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    zapatos
-                  </p>
-                  {/* {model.instagram && (
+              <div className="lg:w-[804px] lg:flex lg:justify-between">
+                <div className="hidden lg:flex lg:gap-[150px]">
+                  {model.instagram && (
+                    <div className="lg:text-[16px]">
+                      <Link
+                        href={`https://instagram.com/${model.instagram}`}
+                        target="_blank"
+                      >
+                        @{model.instagram}
+                      </Link>
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-[32px]">
+                  <div>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      altura
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      busto
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      cintura
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      cadera
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      zapatos
+                    </p>
+                    {/* {model.instagram && (
                   <p className="text-[12px] lg:text-[14px] text-grey-40">instagram</p>
                 )} */}
-                </div>
-                <div>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    {model.height} cm
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    {model.bust} cm
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    {model.waist} cm
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    {model.hips} cm
-                  </p>
-                  <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
-                    {model.shoes}
-                  </p>
-                  {/* {model.instagram && (
+                  </div>
+                  <div>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      {model.height} cm
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      {model.bust} cm
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      {model.waist} cm
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      {model.hips} cm
+                    </p>
+                    <p className="text-[12px] lg:text-[14px] leading-[14px] lg:leading-[16px] text-grey-40">
+                      {model.shoes}
+                    </p>
+                    {/* {model.instagram && (
                   <a 
                     href={`https://instagram.com/${model.instagram}`} 
                     target="_blank" 
@@ -303,178 +316,207 @@ export default function ModelPage({ params }) {
                     https://instagram.com/{model.instagram}
                   </a>
                 )} */}
+                  </div>
                 </div>
               </div>
             </div>
             {/* Galería de fotos */}
             {model.photos && model.photos.length > 0 && (
-              <div className="space-y-4 mt-[48px] lg:w-3/4 lg:relative lg:mr-auto lg:mt-[160px]">
-                <p className="mb-[48px] lg:hidden">polas</p>
-                <div className="lg:flex lg:justify-end">
-                  {/* Título para desktop */}
-                  <p className="hidden lg:block lg:text-right lg:writing-mode-vertical-rl lg:self-start mr-[135px]">
-                    polas
-                  </p>
-                  {/* Foto principal */}
-                  <div
-                    ref={mainPhotoRef}
-                    className={`aspect-[2/3] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 lg:flex-1 lg:overflow-visible lg:max-w-[700px] fade-in-stagger ${
-                      isMainPhotoVisible ? "visible" : ""
-                    }`}
-                    onClick={openModal}
+              <div className="mt-[48px] lg:flex lg:gap-[48px] lg:items-start lg:mt-[64px]">
+                {/* Título con botón y miniatura */}
+                <div className="mb-[48px] lg:mb-0 lg:pt-0 flex items-start gap-2">
+                  {!isPolasVisible && (
+                    <div
+                      className="w-[32px] h-[48px] lg:w-[40px] lg:h-[60px] relative overflow-hidden cursor-pointer hover:opacity-70 transition-opacity"
+                      onClick={() => setIsPolasVisible(true)}
+                    >
+                      <Image
+                        src={model.photos[0]}
+                        alt={`${model.name} - Preview`}
+                        fill
+                        quality={100}
+                        sizes="40px"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <p  onClick={() => setIsPolasVisible(!isPolasVisible)} className="cursor-pointer hover:underline lg:text-[16px] leading-[12px]">ver polas</p>
+                  <button
+                    onClick={() => setIsPolasVisible(!isPolasVisible)}
+                    className="text-[12px] lg:text-[14px] lg:leading-[14px] cursor-pointer hover:underline"
                   >
-                    {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
+                    {isPolasVisible ? "( - )" : "( + )"}
+                  </button>
+                  {/* Miniatura pequeña cuando está cerrado */}
+                </div>
+
+                {/* Contenedor de fotos */}
+                {isPolasVisible && (
+                  <div className="lg:flex lg:flex-1 lg:justify-end lg:gap-[2px]">
+                    {/* Foto principal con botones */}
+                    <div className="lg:flex-1 lg:max-w-[700px]">
+                      <div
+                        ref={mainPhotoRef}
+                        className={`aspect-[2/3] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 fade-in-stagger ${
+                          isMainPhotoVisible ? "visible" : ""
+                        }`}
+                        onClick={openModal}
+                      >
+                        {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-lg">
                       {model.name} - Foto {selectedPhoto + 1}
                     </div> */}
-                    {/* Cuando tengas las imágenes reales, descomenta esto: */}
-
-                    <Image
-                      src={model.photos[selectedPhoto]}
-                      alt={`${model.name} - Foto ${selectedPhoto + 1}`}
-                      fill
-                      quality={100}
-                      priority={selectedPhoto === 0}
-                      className="object-cover"
-                    />
-
-                    {/* botones de navegación solo desktop */}
-                    <div className="hidden lg:flex justify-between gap-4 mt-4 lg:absolute lg:bottom-[-50px] lg:left-0 lg:right-0 lg:w-full">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          goToPreviousPhoto();
-                        }}
-                        disabled={selectedPhoto === 0}
-                        className={`py-2 flex items-center gap-3 ${
-                          selectedPhoto === 0
-                            ? "text-grey-30 cursor-not-allowed"
-                            : "text-black-00 hover:underline cursor-pointer"
-                        }`}
-                        aria-label="Foto anterior"
-                      >
-                        <span>
-                          <HorizontalLine
-                            fill={selectedPhoto === 0 ? "#9CA3AF" : "#000"}
-                          />
-                        </span>
-                        <span className="lg:text-[16px]">anterior</span>
-                      </button>
-
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          goToNextPhoto();
-                        }}
-                        disabled={
-                          model.photos &&
-                          selectedPhoto === model.photos.length - 1
-                        }
-                        className={`py-2 flex items-center gap-3 ${
-                          model.photos &&
-                          selectedPhoto === model.photos.length - 1
-                            ? "text-grey-30 cursor-not-allowed"
-                            : "text-black-00 hover:underline cursor-pointer"
-                        }`}
-                        aria-label="Foto siguiente"
-                      >
-                        <span className="lg:text-[16px]">siguiente</span>
-                        <span>
-                          <HorizontalLine
-                            fill={
-                              model.photos &&
-                              selectedPhoto === model.photos.length - 1
-                                ? "#9CA3AF"
-                                : "#000"
-                            }
-                          />
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Miniaturas */}
-                  <div
-                    ref={polasContainerRef}
-                    className="flex gap-[2px] overflow-x-auto scrollbar-hide lg:flex-col lg:overflow-y-auto lg:overflow-x-visible lg:gap-[2px] lg:w-[102px] lg:ml-[2px]"
-                    style={{ maxHeight: mainPhotoHeight > 0 ? `${mainPhotoHeight}px` : 'none' }}
-                  >
-                    {model.photos.map((photo, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedPhoto(index)}
-                        className={`aspect-[3/4] relative overflow-hidden transition-all fade-in-stagger flex-shrink-0 w-[calc((100vw-28px-10px)/6)] lg:w-full ${
-                          polasVisibleItems.has(index) ? "visible" : ""
-                        } ${
-                          selectedPhoto === index
-                            ? ""
-                            : "hover:opacity-70 cursor-pointer"
-                        }`}
-                      >
-                        {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-xs">
-                          {index + 1}
-                        </div> */}
                         {/* Cuando tengas las imágenes reales, descomenta esto: */}
 
                         <Image
-                          src={photo}
-                          alt={`${model.name} - Miniatura ${index + 1}`}
+                          src={model.photos[selectedPhoto]}
+                          alt={`${model.name} - Foto ${selectedPhoto + 1}`}
                           fill
                           quality={100}
-                          sizes="(max-width: 1024px) 16vw, 102px"
+                          priority={selectedPhoto === 0}
                           className="object-cover"
                         />
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                      </div>
 
-                {/* Botones de navegación */}
-                {model.photos && model.photos.length > 1 && (
-                  <div className="flex justify-between gap-4 mt-4 lg:hidden">
-                    <button
-                      onClick={goToPreviousPhoto}
-                      disabled={selectedPhoto === 0}
-                      className={`py-2 flex items-center gap-3 ${
-                        selectedPhoto === 0
-                          ? "text-grey-30 cursor-not-allowed"
-                          : "text-black-00 hover:underline cursor-pointer"
-                      }`}
-                      aria-label="Foto anterior"
-                    >
-                      <span>
-                        <HorizontalLine
-                          fill={selectedPhoto === 0 ? "#9CA3AF" : "#000"}
-                        />
-                      </span>
-                      <span>anterior</span>
-                    </button>
+                      {/* botones de navegación solo desktop */}
+                      <div className="hidden lg:flex justify-between gap-4 mt-4">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            goToPreviousPhoto();
+                          }}
+                          disabled={selectedPhoto === 0}
+                          className={`py-2 flex items-center gap-3 ${
+                            selectedPhoto === 0
+                              ? "text-grey-30 cursor-not-allowed"
+                              : "text-black-00 hover:underline cursor-pointer"
+                          }`}
+                          aria-label="Foto anterior"
+                        >
+                          <span>
+                            <HorizontalLine
+                              fill={selectedPhoto === 0 ? "#9CA3AF" : "#000"}
+                            />
+                          </span>
+                          <span className="lg:text-[16px]">anterior</span>
+                        </button>
 
-                    <button
-                      onClick={goToNextPhoto}
-                      disabled={
-                        model.photos &&
-                        selectedPhoto === model.photos.length - 1
-                      }
-                      className={`py-2 flex items-center gap-3 ${
-                        model.photos &&
-                        selectedPhoto === model.photos.length - 1
-                          ? "text-grey-30 cursor-not-allowed"
-                          : "text-black-00 hover:underline cursor-pointer"
-                      }`}
-                      aria-label="Foto siguiente"
-                    >
-                      <span>siguiente</span>
-                      <span>
-                        <HorizontalLine
-                          fill={
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            goToNextPhoto();
+                          }}
+                          disabled={
                             model.photos &&
                             selectedPhoto === model.photos.length - 1
-                              ? "#9CA3AF"
-                              : "#000"
                           }
-                        />
-                      </span>
-                    </button>
+                          className={`py-2 flex items-center gap-3 ${
+                            model.photos &&
+                            selectedPhoto === model.photos.length - 1
+                              ? "text-grey-30 cursor-not-allowed"
+                              : "text-black-00 hover:underline cursor-pointer"
+                          }`}
+                          aria-label="Foto siguiente"
+                        >
+                          <span className="lg:text-[16px]">siguiente</span>
+                          <span>
+                            <HorizontalLine
+                              fill={
+                                model.photos &&
+                                selectedPhoto === model.photos.length - 1
+                                  ? "#9CA3AF"
+                                  : "#000"
+                              }
+                            />
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Miniaturas */}
+                    <div
+                      ref={polasContainerRef}
+                      className="flex gap-[2px] overflow-x-auto scrollbar-hide lg:flex-col lg:overflow-y-auto lg:overflow-x-visible lg:gap-[2px] lg:w-[102px]"
+                      style={{
+                        maxHeight:
+                          mainPhotoHeight > 0 ? `${mainPhotoHeight}px` : "none",
+                      }}
+                    >
+                      {model.photos.map((photo, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setSelectedPhoto(index)}
+                          className={`aspect-[3/4] relative overflow-hidden transition-all flex-shrink-0 w-[calc((100vw-28px-10px)/6)] lg:w-full ${
+                            selectedPhoto === index
+                              ? ""
+                              : "hover:opacity-70 cursor-pointer"
+                          }`}
+                        >
+                          {/* <div className="absolute inset-0 flex items-center justify-center text-grey-30 text-xs">
+                          {index + 1}
+                        </div> */}
+                          {/* Cuando tengas las imágenes reales, descomenta esto: */}
+
+                          <Image
+                            src={photo}
+                            alt={`${model.name} - Miniatura ${index + 1}`}
+                            fill
+                            quality={100}
+                            sizes="(max-width: 1024px) 16vw, 102px"
+                            className="object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Botones de navegación */}
+                    {model.photos && model.photos.length > 1 && (
+                      <div className="flex justify-between gap-4 mt-4 lg:hidden">
+                        <button
+                          onClick={goToPreviousPhoto}
+                          disabled={selectedPhoto === 0}
+                          className={`py-2 flex items-center gap-3 ${
+                            selectedPhoto === 0
+                              ? "text-grey-30 cursor-not-allowed"
+                              : "text-black-00 hover:underline cursor-pointer"
+                          }`}
+                          aria-label="Foto anterior"
+                        >
+                          <span>
+                            <HorizontalLine
+                              fill={selectedPhoto === 0 ? "#9CA3AF" : "#000"}
+                            />
+                          </span>
+                          <span>anterior</span>
+                        </button>
+
+                        <button
+                          onClick={goToNextPhoto}
+                          disabled={
+                            model.photos &&
+                            selectedPhoto === model.photos.length - 1
+                          }
+                          className={`py-2 flex items-center gap-3 ${
+                            model.photos &&
+                            selectedPhoto === model.photos.length - 1
+                              ? "text-grey-30 cursor-not-allowed"
+                              : "text-black-00 hover:underline cursor-pointer"
+                          }`}
+                          aria-label="Foto siguiente"
+                        >
+                          <span>siguiente</span>
+                          <span>
+                            <HorizontalLine
+                              fill={
+                                model.photos &&
+                                selectedPhoto === model.photos.length - 1
+                                  ? "#9CA3AF"
+                                  : "#000"
+                              }
+                            />
+                          </span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -482,7 +524,7 @@ export default function ModelPage({ params }) {
           </div>
           {/* book component */}
           {model.book && model.book.length > 0 && (
-            <div className="mt-[48px] lg:mt-[144px]">
+            <div className={`mt-[48px] ${isPolasVisible ? "lg:mt-[144px]" : "lg:mt-[78px]"}`}>
               <p className="mb-[48px] lg:mb-[80px]">book</p>
               <div className="grid grid-cols-2 gap-x-[2px] gap-y-[16px] lg:gap-y-[32px]">
                 {(() => {
@@ -715,8 +757,18 @@ export default function ModelPage({ params }) {
                   <Image
                     src={model.book[selectedBookPhoto].image}
                     alt={`${model.name} - Book ${selectedBookPhoto + 1}`}
-                    width={model.book[selectedBookPhoto]?.orientation === "horizontal" ? 700 : 700}
-                    height={model.book[selectedBookPhoto]?.orientation === "horizontal" ? 467 : 933}
+                    width={
+                      model.book[selectedBookPhoto]?.orientation ===
+                      "horizontal"
+                        ? 700
+                        : 700
+                    }
+                    height={
+                      model.book[selectedBookPhoto]?.orientation ===
+                      "horizontal"
+                        ? 467
+                        : 933
+                    }
                     quality={100}
                     className="object-contain w-full h-[100vh]"
                   />
