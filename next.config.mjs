@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    // Usar el CDN de Sanity directamente para evitar límites de Vercel
+    loader: 'custom',
+    loaderFile: './src/lib/sanity-image-loader.js',
     remotePatterns: [
       {
         protocol: 'https',

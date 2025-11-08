@@ -6,7 +6,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Desactivado temporalmente para evitar problemas de caché con imágenes
+  useCdn: true, // Usar CDN de Sanity para mejor rendimiento (es gratuito e ilimitado)
 })
 
 // Función para obtener todos los modelos visibles
