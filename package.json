@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check-images": "node scripts/check-images.js"
   },
   "dependencies": {
     "@sanity/client": "^7.11.2",

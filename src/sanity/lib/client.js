@@ -6,7 +6,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+  useCdn: false, // Desactivado temporalmente para evitar problemas de caché con imágenes
 })
 
 // Función para obtener todos los modelos visibles
@@ -22,18 +22,43 @@ export async function getModels() {
         waist,
         hips,
         shoes,
-        photos,
-        book,
-        coverPhoto,
+        photos[] {
+          asset->{
+            _id,
+            _ref,
+            url
+          },
+          alt,
+          caption
+        },
+        book[] {
+          asset->{
+            _id,
+            _ref,
+            url
+          },
+          alt,
+          orientation
+        },
+        coverPhoto {
+          asset->{
+            _id,
+            _ref,
+            url
+          },
+          alt
+        },
         slug,
         instagram,
         currentLocation,
         isVisible
       }
     `)
+    
+    console.log('✅ Modelos cargados desde Sanity:', models.length)
     return models
   } catch (error) {
-    console.error('Error fetching models:', error)
+    console.error('❌ Error fetching models:', error)
     return []
   }
 }
@@ -51,18 +76,45 @@ export async function getModelById(id) {
         waist,
         hips,
         shoes,
-        photos,
-        book,
-        coverPhoto,
+        photos[] {
+          asset->{
+            _id,
+            _ref,
+            url
+          },
+          alt,
+          caption
+        },
+        book[] {
+          asset->{
+            _id,
+            _ref,
+            url
+          },
+          alt,
+          orientation
+        },
+        coverPhoto {
+          asset->{
+            _id,
+            _ref,
+            url
+          },
+          alt
+        },
         slug,
         instagram,
         currentLocation,
         isVisible
       }
     `, { id })
+    
+    if (model) {
+      console.log(`✅ Modelo "${model.name}" cargado correctamente`)
+    }
     return model
   } catch (error) {
-    console.error('Error fetching model:', error)
+    console.error('❌ Error fetching model:', error)
     return null
   }
 }
