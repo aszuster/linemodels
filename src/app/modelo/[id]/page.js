@@ -354,7 +354,7 @@ export default function ModelPage({ params }) {
                 {isPolasVisible && (
                   <div className="lg:flex lg:flex-1 lg:justify-end lg:gap-[2px]">
                     {/* Foto principal con botones */}
-                    <div className="lg:flex-1 lg:max-w-[700px]">
+                    <div className="lg:flex-1 lg:max-w-[550px]">
                       <div
                         ref={mainPhotoRef}
                         className={`aspect-[2/3] relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity mb-[8px] lg:mb-0 fade-in-stagger ${
