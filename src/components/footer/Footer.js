@@ -1,11 +1,14 @@
 "use client";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import SecondaryButton from "../secondaryButton/SecondaryButton";
 import Link from "next/link";
 import Star from "@/svg/star";
 
 const Footer = () => {
   const [isModelModalOpen, setIsModelModalOpen] = useState(false);
+  const pathname = usePathname();
+  const isIaLabPage = pathname === "/ia-lab";
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -25,7 +28,7 @@ const Footer = () => {
     <footer className="bg-white-00 px-[14px] pb-[24px] lg:px-[24px] mt-auto">
       <div className="flex flex-col gap-[42px] lg:hidden">
         <div className="flex flex-col">
-          {/* <p className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</p> */}
+          {/* <Link href="/ia-lab" className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</Link> */}
           <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">— contacto</p>
           <div className="text-grey-40 leading-[16px]">
             <p className="pb-[6px]">hola@linemodels.xyz</p>
@@ -55,11 +58,13 @@ const Footer = () => {
           </SecondaryButton>
         </div>
       </div>
-      <div className="hidden lg:flex w-full justify-end items-center">
-        <SecondaryButton onClick={scrollToTop} px="14px">
-          <span className="tracking-[-0.3px] leading-[16px]">back to top</span>
-        </SecondaryButton>
-      </div>
+      {!isIaLabPage && (
+        <div className="hidden lg:flex w-full justify-end items-center">
+          <SecondaryButton onClick={scrollToTop} px="14px">
+            <span className="tracking-[-0.3px] leading-[16px]">back to top</span>
+          </SecondaryButton>
+        </div>
+      )}
 
       {/* Modal de "querés ser modelo?" */}
       {isModelModalOpen && (

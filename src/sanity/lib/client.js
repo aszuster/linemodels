@@ -118,3 +118,34 @@ export async function getModelById(id) {
     return null
   }
 }
+
+// Función para obtener la galería activa de IA Lab
+export async function getIaLabGallery() {
+  try {
+    const gallery = await client.fetch(`
+      *[_type == "iaLab" && isActive == true][0] {
+        _id,
+        title,
+        description,
+        images[] {
+          asset->{
+            _id,
+            _ref,
+            url
+          },
+          alt,
+          caption
+        },
+        isActive
+      }
+    `)
+    
+    if (gallery) {
+      console.log(`✅ Galería IA Lab cargada: ${gallery.images?.length || 0} imágenes`)
+    }
+    return gallery
+  } catch (error) {
+    console.error('❌ Error fetching IA Lab gallery:', error)
+    return null
+  }
+}

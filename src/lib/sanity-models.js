@@ -1,4 +1,4 @@
-import { getModels, getModelById } from '@/sanity/lib/client'
+import { getModels, getModelById, getIaLabGallery } from '@/sanity/lib/client'
 import { urlFor } from '@/sanity/lib/image'
 
 // Función para procesar imágenes de Sanity
@@ -176,5 +176,26 @@ export async function getModelDataById(id) {
   } catch (error) {
     console.error('Error fetching model from Sanity:', error)
     return null
+  }
+}
+
+// Función para obtener las imágenes de IA Lab
+export async function getIaLabImages() {
+  try {
+    const gallery = await getIaLabGallery()
+    
+    if (!gallery || !gallery.images) {
+      console.log('⚠️ No hay galería activa de IA Lab')
+      return []
+    }
+    
+    // Procesar las imágenes usando la función existente
+    const processedImages = processSanityImages(gallery.images)
+    
+    console.log(`✅ Procesadas ${processedImages.length} imágenes de IA Lab`)
+    return processedImages
+  } catch (error) {
+    console.error('Error fetching IA Lab images from Sanity:', error)
+    return []
   }
 }
