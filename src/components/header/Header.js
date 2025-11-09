@@ -126,7 +126,7 @@ const Header = () => {
             {isGuardadosOpen && (
             <div onClick={toggleGuardados}><p className="cursor-pointer hover:underline text-grey-20">cerrar</p></div>
             )}
-            {/* <p className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</p> */}
+           
           </div>
           </div>
 
@@ -234,12 +234,13 @@ const Header = () => {
 
             {/* ia lab link */}
 
-            {/* <p className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</p> */}
+            {/* <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link> */}
             </div>
           </div>
           <div className="bg-grey-10 w-[1px] h-[16px] absolute left-[50%] translate-x-[-50%] lg:hidden"></div>
           <div className="hidden lg:flex lg:flex-col lg:gap-[20px] lg:mb-[24px]">
             <div className="flex flex-col">
+            {/* <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link> */}
               <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">
                 — contacto
               </p>

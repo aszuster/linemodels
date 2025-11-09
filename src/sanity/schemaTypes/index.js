@@ -1,5 +1,6 @@
 import model from './model'
+import iaLab from './iaLab'
 
 export const schema = {
-  types: [model],
+  types: [model, iaLab],
 }
