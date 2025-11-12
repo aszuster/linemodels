@@ -109,7 +109,7 @@ export default function IaLab() {
               </p>
               <p className="leading-[20px] lg:text-[16px] text-grey-40 max-w-[574px]">
                 desarrollamos campañas publicitarias a medida con modelos y
-                escenarios vivos y generados por IA. Ofrecemos soluciones
+                escenarios vivos y generados por ia. ofrecemos soluciones
                 visuales innovadoras y flexibles integrando diseño, tecnología y
                 creatividad para potenciar cada proyecto.
               </p>
@@ -236,7 +236,7 @@ export default function IaLab() {
             ) : (
               <div className="mt-[48px] text-center">
                 <p className="text-grey-40 lg:text-[16px]">
-                  No hay imágenes disponibles en este momento.
+                  no hay imágenes disponibles en este momento.
                 </p>
               </div>
             )}

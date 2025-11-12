@@ -234,13 +234,13 @@ const Header = () => {
 
             {/* ia lab link */}
 
-            {/* <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link> */}
+            <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link>
             </div>
           </div>
           <div className="bg-grey-10 w-[1px] h-[16px] absolute left-[50%] translate-x-[-50%] lg:hidden"></div>
           <div className="hidden lg:flex lg:flex-col lg:gap-[20px] lg:mb-[24px]">
             <div className="flex flex-col">
-            {/* <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link> */}
+            <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link>
               <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">
                 — contacto
               </p>
