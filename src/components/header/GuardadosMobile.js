@@ -14,13 +14,17 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed top-[40px] pt-[40px] left-0 right-0 bg-white-00 z-40 transition-all duration-300 ease-in-out ${
+      style={{
+        height: isOpen ? 'calc(100vh - 80px)' : '0px',
+        transitionTimingFunction: 'cubic-bezier(0.45, 0, 0.55, 1)'
+      }}
+      className={`fixed top-[40px] pt-[40px] left-0 right-0 bg-white-00 z-40 transition-[height] duration-[400ms] overflow-hidden ${
         isOpen
-          ? "opacity-100 translate-y-0 max-h-[calc(100vh-80px)]"
-          : "opacity-0 -translate-y-full max-h-0 pointer-events-none"
+          ? ""
+          : "pointer-events-none"
       }`}
     >
-      <div className="pt-[16px] px-[20px] pb-[40px] flex flex-col">
+      <div className="pt-[16px] px-[20px] pb-[40px] flex flex-col h-full">
         <div className="py-4 mb-[36px] max-h-[calc(100vh-240px)] overflow-y-auto">
           {isClient && guardadosList.length > 0 ? (
             <div className="flex flex-col gap-[12px]">
