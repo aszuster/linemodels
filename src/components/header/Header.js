@@ -92,9 +92,10 @@ const Header = () => {
   const numColumns = displayedModels.length > 0 ? maxColumns : 1;
   const columnWidth = 260;
   const gap = 56; // gap entre columnas
-  
+
   // Calcular ancho: (ancho de columna * número de columnas) + (gaps) + padding lateral + scrollbar
-  const headerWidth = columnWidth * numColumns + gap * (numColumns - 1) + 48 + 40;
+  const headerWidth =
+    columnWidth * numColumns + gap * (numColumns - 1) + 48 + 40;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,16 +130,39 @@ const Header = () => {
       <header
         style={
           isGuardadosOpen && windowWidth >= 1024
-            ? { width: `${headerWidth}px` }
-            : {}
+            ? { 
+                width: `${headerWidth}px`,
+                transitionTimingFunction: 'cubic-bezier(0.45, 0, 0.55, 1)'
+              }
+            : { transitionTimingFunction: 'cubic-bezier(0.45, 0, 0.55, 1)' }
         }
-        className={`z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto ${!isGuardadosOpen ? "lg:w-1/4" : ""} lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px]`}
+        className={`z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto ${!isGuardadosOpen ? "lg:w-1/4" : ""} lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px] transition-all duration-[400ms]`}
       >
         <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
           <div className="lg:w-full ">
+            <div className="hidden lg:flex lg:justify-between lg:items-center lg:w-full">
+              <Link
+                href="/"
+                onClick={isGuardadosOpen ? closeGuardados : undefined}
+              >
+                <h1 className="text-[24px] font-normal	leading-[24px] lg:text-[30px]  z-50">
+                  line
+                </h1>
+              </Link>
+              {isGuardadosOpen && (
+                <div onClick={toggleGuardados} className="flex gap-[10px] items-center">
+                  <div className="bg-grey-10 w-[1px] h-[18px]"></div>
+                  <p className="cursor-pointer hover:text-grey-20 text-black-00 ">
+                    cerrar
+                  </p>
+                  <div className="bg-grey-10 w-[1px] h-[18px]"></div>
+                </div>
+              )}
+            </div>
             <Link
               href="/"
               onClick={isGuardadosOpen ? closeGuardados : undefined}
+              className="lg:hidden"
             >
               <h1 className="text-[24px] font-normal	leading-[24px] lg:text-[30px]  z-50">
                 line
@@ -167,13 +191,6 @@ const Header = () => {
                   <span>{isClient ? guardadosList.length : 0}</span>
                 </SecondaryButton>
               </div>
-              {isGuardadosOpen && (
-                <div onClick={toggleGuardados}>
-                  <p className="cursor-pointer hover:underline text-grey-20 lg:pr-[20px]">
-                    cerrar
-                  </p>
-                </div>
-              )}
             </div>
           </div>
 
@@ -365,7 +382,7 @@ const Header = () => {
                     <div className="w-full flex flex-col justify-between items-start">
                       <div>
                         <p className="mb-[32px] leading-[20px]">
-                          — querés ser modelo? 
+                          — querés ser modelo?
                         </p>
                         <p className="mb-[32px] leading-[20px]">
                           mandanos tus datos y dos fotos a hola@linemodels.xyz{" "}

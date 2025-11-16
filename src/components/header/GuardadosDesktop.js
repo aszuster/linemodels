@@ -56,14 +56,22 @@ const GuardadosDesktop = ({ isOpen, onClose, headerWidth }) => {
 
   return (
     <div
-      style={{ width: `${headerWidth}px` }}
-      className={`z-60 fixed left-0 right-auto top-[281px] h-[calc(100vh-281px)] bg-white-00 ${
+      style={{ 
+        width: isOpen ? `${headerWidth}px` : '0px',
+        transitionTimingFunction: 'cubic-bezier(0.45, 0, 0.55, 1)'
+      }}
+      className={`z-60 fixed left-0 right-auto top-[281px] h-[calc(100vh-281px)] bg-white-00 transition-[width] duration-[400ms] overflow-hidden ${
         isOpen
-          ? "opacity-100"
-          : "opacity-0 pointer-events-none"
+          ? ""
+          : "pointer-events-none"
       }`}
     >
-      <div className="px-[24px] pb-[24px] flex flex-col h-full">
+      <div 
+        style={{ 
+          width: `${headerWidth}px`,
+        }}
+        className="px-[24px] pb-[24px] flex flex-col h-full"
+      >
         {/* <Link href="/" className="mb-[36px] leading-[16px] tracking-[-0.4px]">
           — modelos
         </Link> */}
