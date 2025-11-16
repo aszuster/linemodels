@@ -1,7 +1,7 @@
 
 import "./globals.css";
 import Header from "@/components/header/Header";
-import Footer from "@/components/footer/Footer";
+import ConditionalFooter from "@/components/ConditionalFooter";
 import { GuardadosProvider } from "@/context/GuardadosContext";
 import { ConditionalLenis } from "@/components/ConditionalLenis";
 
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
           <main className="flex-1">
             {children}
           </main>
-          <Footer />
+          <ConditionalFooter />
         </GuardadosProvider>
       </body>
       </ConditionalLenis>
