@@ -22,51 +22,45 @@ const GuardadosDesktop = ({ isOpen, onClose, headerWidth }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Calcular número de columnas y modelos por columna según el breakpoint
+  // Calcular número de columnas según el breakpoint
   let maxColumns = 3;
-  let itemsPerColumn = 20;
 
   if (windowWidth >= 1920) {
-    // xxl: 5 columnas, 12 modelos por columna
+    // xxl: 5 columnas
     maxColumns = 5;
-    itemsPerColumn = 12;
   } else if (windowWidth >= 1440) {
-    // xl: 4 columnas, 15 modelos por columna
+    // xl: 4 columnas
     maxColumns = 4;
-    itemsPerColumn = 15;
   } else if (windowWidth >= 1025) {
-    // lg: 3 columnas, 20 modelos por columna
+    // lg: 3 columnas
     maxColumns = 3;
-    itemsPerColumn = 20;
   }
 
   // Máximo 60 modelos
   const displayedModels = guardadosList.slice(0, 60);
   const totalGuardados = displayedModels.length;
   
-  // Calcular número de columnas necesarias
-  const numColumnsNeeded = Math.min(Math.ceil(totalGuardados / itemsPerColumn), maxColumns);
+  // Calcular número de columnas (siempre usamos maxColumns para distribución por fila)
+  const numColumns = maxColumns;
   
-  // Distribuir modelos en columnas
-  const guardadosColumns = [];
-  for (let i = 0; i < numColumnsNeeded; i++) {
-    guardadosColumns.push([]);
+  // Calcular número de filas necesarias
+  const numRows = Math.ceil(totalGuardados / numColumns);
+  
+  // Distribuir modelos por FILA (horizontalmente)
+  const guardadosRows = [];
+  for (let i = 0; i < numRows; i++) {
+    const startIndex = i * numColumns;
+    const endIndex = Math.min(startIndex + numColumns, totalGuardados);
+    guardadosRows.push(displayedModels.slice(startIndex, endIndex));
   }
-  
-  displayedModels.forEach((model, index) => {
-    const columnIndex = Math.floor(index / itemsPerColumn);
-    if (columnIndex < numColumnsNeeded) {
-      guardadosColumns[columnIndex].push(model);
-    }
-  });
 
   return (
     <div
       style={{ width: `${headerWidth}px` }}
-      className={`z-60 fixed left-0 right-auto top-[281px] h-[calc(100vh-281px)] bg-white-00 transition-all duration-300 ease-in-out ${
+      className={`z-60 fixed left-0 right-auto top-[281px] h-[calc(100vh-281px)] bg-white-00 ${
         isOpen
-          ? "opacity-100 translate-x-0"
-          : "opacity-0 -translate-x-full pointer-events-none"
+          ? "opacity-100"
+          : "opacity-0 pointer-events-none"
       }`}
     >
       <div className="px-[24px] pb-[24px] flex flex-col h-full">
@@ -88,11 +82,11 @@ const GuardadosDesktop = ({ isOpen, onClose, headerWidth }) => {
           </div>
           <div onClick={onClose}><p className="cursor-pointer hover:underline text-grey-20">cerrar</p></div>
         </div> */}
-        <div className="py-4 flex gap-[56px] mb-[20px] flex-1 overflow-y-auto overflow-x-hidden pr-[20px]">
+        <div className="py-4 flex flex-col gap-[12px] mb-[20px] flex-1 overflow-y-auto overflow-x-hidden pr-[20px]">
           {isClient && displayedModels.length > 0 ? (
-            guardadosColumns.map((column, columnIndex) => (
-              <div key={columnIndex} className="w-[280px] flex-shrink-0 flex flex-col gap-[12px]">
-                {column.map((model, index) => (
+            guardadosRows.map((row, rowIndex) => (
+              <div key={rowIndex} className="grid gap-[56px]" style={{ gridTemplateColumns: `repeat(${numColumns}, 260px)` }}>
+                {row.map((model) => (
                   <div
                     key={model.id}
                     className="flex items-start gap-[12px] border-t border-grey-10 pt-[8px]"
