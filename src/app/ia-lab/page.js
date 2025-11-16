@@ -11,6 +11,7 @@ export default function IaLab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Cargar imágenes desde Sanity
   useEffect(() => {
@@ -28,17 +29,22 @@ export default function IaLab() {
     loadImages();
   }, []);
 
-  // Funciones de navegación
-  const goToPreviousPhoto = () => {
-    if (selectedPhoto > 0) {
-      setSelectedPhoto(selectedPhoto - 1);
-    }
-  };
+  // Slideshow automático
+  useEffect(() => {
+    if (galleryImages.length <= 1 || isPaused) return;
 
-  const goToNextPhoto = () => {
-    if (selectedPhoto < galleryImages.length - 1) {
-      setSelectedPhoto(selectedPhoto + 1);
-    }
+    const interval = setInterval(() => {
+      setSelectedPhoto((prev) => (prev + 1) % galleryImages.length);
+    }, 1500); // Cambiar cada 4 segundos
+
+    return () => clearInterval(interval);
+  }, [galleryImages.length, isPaused]);
+
+  // Manejar cuando el mouse sale de la imagen
+  const handleMouseLeave = () => {
+    setIsPaused(false);
+    // Cambiar inmediatamente a la siguiente imagen
+    setSelectedPhoto((prev) => (prev + 1) % galleryImages.length);
   };
 
   // Funciones del modal
@@ -49,26 +55,6 @@ export default function IaLab() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  // Navegación con teclado
-  useEffect(() => {
-    if (galleryImages.length <= 1) return;
-
-    const handleKeyPress = (e) => {
-      // Solo navegar si el modal NO está abierto, o si está abierto
-      if (e.key === "ArrowLeft" && selectedPhoto > 0) {
-        goToPreviousPhoto();
-      } else if (
-        e.key === "ArrowRight" &&
-        selectedPhoto < galleryImages.length - 1
-      ) {
-        goToNextPhoto();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [selectedPhoto, galleryImages.length]);
 
   // Cerrar modal con Escape
   useEffect(() => {
@@ -103,11 +89,11 @@ export default function IaLab() {
             </h2>
             <Star className="mb-[32px] lg:mt-[8px] lg:w-[12px]" />
             <div className="space-y-[16px] mb-[48px] lg:flex lg:gap-[16px]">
-              <p className="leading-[20px] lg:text-[16px] text-grey-40 max-w-[456px]">
+              <p className="leading-[20px] lg:text-[16px] text-grey-40 lg:flex-1">
                 somos un estudio especializado en campañas con modelos de
                 inteligencia artificial.
               </p>
-              <p className="leading-[20px] lg:text-[16px] text-grey-40 max-w-[574px]">
+              <p className="leading-[20px] lg:text-[16px] text-grey-40 lg:flex-1">
                 desarrollamos campañas publicitarias a medida con modelos y
                 escenarios vivos y generados por ia. ofrecemos soluciones
                 visuales innovadoras y flexibles integrando diseño, tecnología y
@@ -125,111 +111,43 @@ export default function IaLab() {
               </div>
             ) : galleryImages.length > 0 ? (
               <div className="mt-[48px]">
-                {/* Foto principal */}
+                {/* Foto principal con crossfade */}
                 <div
-                  className="w-full relative bg-grey-10 mb-[16px] lg:mb-0 cursor-pointer lg:cursor-default"
+                  className="w-full relative mb-[16px] lg:mb-0 cursor-pointer lg:cursor-default"
                   onClick={(e) => {
                     // Solo abrir modal en móvil
                     if (window.innerWidth < 1024) {
                       openModal();
                     }
                   }}
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={handleMouseLeave}
                   style={{ minHeight: "400px" }}
                 >
-                  {/* Áreas clickeables para navegación en desktop */}
-                  {galleryImages.length > 1 && (
-                    <>
-                      {/* Área izquierda - Anterior (solo desktop) */}
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (selectedPhoto > 0) {
-                            goToPreviousPhoto();
-                          }
-                        }}
-                        className={`hidden lg:block absolute left-0 top-0 w-1/2 h-full z-10 ${
-                          selectedPhoto > 0
-                            ? "cursor-[url(/arrow-left.cur),_pointer]"
-                            : "cursor-default"
-                        }`}
-                        aria-label="Imagen anterior"
+                  {galleryImages.map((image, index) => (
+                    <div
+                      key={index}
+                      className={`absolute inset-0 transition-opacity duration-1000 ${
+                        index === selectedPhoto ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <Image
+                        src={image}
+                        alt={`IA Lab - Imagen ${index + 1}`}
+                        width={1920}
+                        height={1080}
+                        quality={100}
+                        priority={index === 0}
+                        className="object-contain w-full h-auto"
                       />
-
-                      {/* Área derecha - Siguiente (solo desktop) */}
-                      <div
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (selectedPhoto < galleryImages.length - 1) {
-                            goToNextPhoto();
-                          }
-                        }}
-                        className={`hidden lg:block absolute right-0 top-0 w-1/2 h-full z-10 ${
-                          selectedPhoto < galleryImages.length - 1
-                            ? "cursor-[url(/arrow-right.cur),_pointer]"
-                            : "cursor-default"
-                        }`}
-                        aria-label="Imagen siguiente"
-                      />
-                    </>
-                  )}
-
-                  <Image
-                    src={galleryImages[selectedPhoto]}
-                    alt={`IA Lab - Imagen ${selectedPhoto + 1}`}
-                    width={1920}
-                    height={1080}
-                    quality={100}
-                    priority={selectedPhoto === 0}
-                    className="object-contain w-full h-auto"
-                  />
+                    </div>
+                  ))}
                 </div>
 
-                {/* Controles de navegación - Solo móvil */}
+                {/* Indicador de imagen actual */}
                 {galleryImages.length > 1 && (
-                  <div className="flex justify-between gap-4 mt-4 lg:hidden">
-                    <button
-                      onClick={goToPreviousPhoto}
-                      disabled={selectedPhoto === 0}
-                      className={`py-2 flex items-center gap-3 ${
-                        selectedPhoto === 0
-                          ? "text-grey-30 cursor-not-allowed"
-                          : "text-black-00 hover:underline cursor-pointer"
-                      }`}
-                      aria-label="Imagen anterior"
-                    >
-                      <span>
-                        <HorizontalLine
-                          fill={selectedPhoto === 0 ? "#9CA3AF" : "#000"}
-                        />
-                      </span>
-                      <span>anterior</span>
-                    </button>
-
-                    <div className="text-sm text-grey-40 flex items-center">
-                      {selectedPhoto + 1} / {galleryImages.length}
-                    </div>
-
-                    <button
-                      onClick={goToNextPhoto}
-                      disabled={selectedPhoto === galleryImages.length - 1}
-                      className={`py-2 flex items-center gap-3 ${
-                        selectedPhoto === galleryImages.length - 1
-                          ? "text-grey-30 cursor-not-allowed"
-                          : "text-black-00 hover:underline cursor-pointer"
-                      }`}
-                      aria-label="Imagen siguiente"
-                    >
-                      <span>siguiente</span>
-                      <span>
-                        <HorizontalLine
-                          fill={
-                            selectedPhoto === galleryImages.length - 1
-                              ? "#9CA3AF"
-                              : "#000"
-                          }
-                        />
-                      </span>
-                    </button>
+                  <div className="text-center text-sm text-grey-40 mt-4">
+                    {selectedPhoto + 1} / {galleryImages.length}
                   </div>
                 )}
               </div>
@@ -259,102 +177,37 @@ export default function IaLab() {
               </button>
             </div>
 
-            {/* Foto ampliada */}
-            <div className="flex-1 flex items-center justify-center px-2 relative">
-              {/* Área clickeable izquierda - Anterior (solo desktop) */}
-              {galleryImages.length > 1 && (
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (selectedPhoto > 0) {
-                      goToPreviousPhoto();
-                    }
-                  }}
-                  className={`hidden lg:block absolute left-0 top-0 w-1/2 h-full z-10 ${
-                    selectedPhoto > 0
-                      ? "cursor-[url(/arrow-left.cur),_pointer] hover:bg-opacity-5 transition-colors"
-                      : "cursor-default"
-                  }`}
-                  aria-label="Área para ir a la foto anterior"
-                />
-              )}
-
-              {/* Área clickeable derecha - Siguiente (solo desktop) */}
-              {galleryImages.length > 1 && (
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (selectedPhoto < galleryImages.length - 1) {
-                      goToNextPhoto();
-                    }
-                  }}
-                  className={`hidden lg:block absolute right-0 top-0 w-1/2 h-full z-10 ${
-                    selectedPhoto < galleryImages.length - 1
-                      ? "cursor-[url(/arrow-right.cur),_pointer] hover:bg-opacity-5 transition-colors"
-                      : "cursor-default"
-                  }`}
-                  aria-label="Área para ir a la foto siguiente"
-                />
-              )}
-
+            {/* Foto ampliada con crossfade */}
+            <div 
+              className="flex-1 flex items-center justify-center px-2 relative"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={handleMouseLeave}
+            >
               <div className="relative w-full h-full max-w-6xl max-h-full flex items-center justify-center">
-                <Image
-                  src={galleryImages[selectedPhoto]}
-                  alt={`IA Lab - Imagen ${selectedPhoto + 1}`}
-                  width={1920}
-                  height={1080}
-                  quality={100}
-                  className="object-contain w-full h-[100vh]"
-                />
+                {galleryImages.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ${
+                      index === selectedPhoto ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <Image
+                      src={image}
+                      alt={`IA Lab - Imagen ${index + 1}`}
+                      width={1920}
+                      height={1080}
+                      quality={100}
+                      className="object-contain w-full h-[100vh]"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Botones de navegación para móvil */}
+            {/* Indicador de imagen actual */}
             {galleryImages.length > 1 && (
-              <div className="flex justify-between gap-4 p-4 lg:hidden">
-                <button
-                  onClick={goToPreviousPhoto}
-                  disabled={selectedPhoto === 0}
-                  className={`py-2 flex items-center gap-3 ${
-                    selectedPhoto === 0
-                      ? "text-grey-30 cursor-not-allowed"
-                      : "text-black-00 hover:underline cursor-pointer"
-                  }`}
-                  aria-label="Imagen anterior"
-                >
-                  <span>
-                    <HorizontalLine
-                      fill={selectedPhoto === 0 ? "#9CA3AF" : "#000"}
-                    />
-                  </span>
-                  <span>anterior</span>
-                </button>
-
-                <div className="text-sm text-grey-40 flex items-center">
-                  {selectedPhoto + 1} / {galleryImages.length}
-                </div>
-
-                <button
-                  onClick={goToNextPhoto}
-                  disabled={selectedPhoto === galleryImages.length - 1}
-                  className={`py-2 flex items-center gap-3 ${
-                    selectedPhoto === galleryImages.length - 1
-                      ? "text-grey-30 cursor-not-allowed"
-                      : "text-black-00 hover:underline cursor-pointer"
-                  }`}
-                  aria-label="Imagen siguiente"
-                >
-                  <span>siguiente</span>
-                  <span>
-                    <HorizontalLine
-                      fill={
-                        selectedPhoto === galleryImages.length - 1
-                          ? "#9CA3AF"
-                          : "#000"
-                      }
-                    />
-                  </span>
-                </button>
+              <div className="text-center text-sm text-grey-40 pb-4">
+                {selectedPhoto + 1} / {galleryImages.length}
               </div>
             )}
           </div>
