@@ -1,5 +1,6 @@
 "use client";
 import Cross from "@/svg/cross";
+import Image from "next/image";
 import { useGuardados } from "@/context/GuardadosContext";
 
 const GuardadosMobile = ({ isOpen, onClose }) => {
@@ -11,15 +12,6 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
     copyAllUrls,
   } = useGuardados();
 
-  // Calcular guardados por columna (máximo 11 por columna)
-  const itemsPerColumn = 11;
-  const totalGuardados = guardadosList.length;
-  const guardadosColumns = [];
-
-  for (let i = 0; i < totalGuardados; i += itemsPerColumn) {
-    guardadosColumns.push(guardadosList.slice(i, i + itemsPerColumn));
-  }
-
   return (
     <div
       className={`fixed top-[40px] pt-[40px] left-0 right-0 bg-white-00 z-40 transition-all duration-300 ease-in-out ${
@@ -29,32 +21,50 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
       }`}
     >
       <div className="pt-[16px] px-[20px] pb-[40px] flex flex-col">
-        {/* <div className="absolute top-[16px] right-[20px]">
-          <Cross onClick={onClose} width="12px" height="12px" />
-        </div> */}
-        <div className="py-4 flex gap-[8px] mb-[36px]">
-          {isClient &&
-            guardadosColumns.map((column, columnIndex) => (
-              <div key={columnIndex} className="flex-1">
-                {column.map((model, index) => (
-                  <div
-                    key={`${columnIndex}-${index}`}
-                    className="flex justify-start items-center gap-[16px] h-[12px] mb-[8px]"
-                  >
-                    {/* en caso de cambiar de parecer sacar w-[100px] y justify-between */}
-                    <div className="flex justify-between items-center gap-[16px] border-r border-grey-10 pr-[8px] h-[12px] w-[110px]">
-                    <p>{model.name} {model.lastName?.charAt(0)}.</p>
-                      <div
-                        className="cursor-pointer hover:opacity-70 transition-opacity"
-                        onClick={() => removeFromGuardados(model.id)}
-                      >
-                        <Cross />
-                      </div>
+        <div className="py-4 mb-[36px] max-h-[calc(100vh-240px)] overflow-y-auto">
+          {isClient && guardadosList.length > 0 ? (
+            <div className="flex flex-col gap-[12px]">
+              {guardadosList.map((model) => (
+                <div key={model.id} className="flex items-start gap-[12px] border-t border-grey-10 pt-[8px]">
+                  {/* Miniatura de la imagen */}
+                  <div className="relative w-[40px] h-[60px] flex-shrink-0 overflow-hidden">
+                    {model.coverPhoto ? (
+                      <Image
+                        src={model.coverPhoto}
+                        alt={`${model.name} ${model.lastName}`}
+                        fill
+                        className="object-cover"
+                        sizes="40px"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-grey-10"></div>
+                    )}
+                  </div>
+
+                  {/* Nombre y botón de eliminar */}
+                  <div className="flex justify-between items-center flex-1">
+                    <p className="text-[14px] leading-[16px]">
+                      {model.name} {model.lastName}
+                    </p>
+                    <div
+                      className="cursor-pointer hover:opacity-70 transition-opacity flex items-center gap-[4px]"
+                      onClick={() => removeFromGuardados(model.id)}
+                    >
+                      <span>[</span>
+                      <Cross />
+                      <span>]</span>
                     </div>
                   </div>
-                ))}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
+          ) : (
+            isClient && (
+              <p className="text-grey-20 text-center py-4">
+                No hay modelos guardados
+              </p>
+            )
+          )}
         </div>
         <div className="flex justify-between items-center text-grey-20">
           <div className="flex gap-[16px] items-center">
@@ -70,10 +80,7 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
             </p>
           </div>
           <div>
-          <p
-              className="cursor-pointer hover:underline"
-              onClick={onClose}
-            >
+            <p className="cursor-pointer hover:underline" onClick={onClose}>
               cerrar
             </p>
           </div>

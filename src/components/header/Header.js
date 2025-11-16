@@ -18,7 +18,18 @@ const Header = () => {
   const [isGuardadosOpen, setIsGuardadosOpen] = useState(false);
   const [showGuardadosText, setShowGuardadosText] = useState(true);
   const [isModelsExpanded, setIsModelsExpanded] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1920);
   const { guardadosList, isClient } = useGuardados();
+
+  // Detectar cambios de tamaño de ventana
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const loadModels = async () => {
@@ -62,6 +73,29 @@ const Header = () => {
   const secondColumnModels = isModelsExpanded ? models.slice(14, 28) : []; // Los siguientes 14 en la segunda columna
   const thirdColumnModels = isModelsExpanded ? models.slice(28) : []; // Los restantes en la tercera columna
 
+  // Calcular ancho del header cuando guardados está abierto
+  let maxColumns = 3;
+  let itemsPerColumn = 20;
+
+  if (windowWidth >= 1920) {
+    maxColumns = 5;
+    itemsPerColumn = 12;
+  } else if (windowWidth >= 1440) {
+    maxColumns = 4;
+    itemsPerColumn = 15;
+  } else if (windowWidth >= 1025) {
+    maxColumns = 3;
+    itemsPerColumn = 20;
+  }
+
+  const displayedModels = guardadosList.slice(0, 60);
+  const numColumnsNeeded = Math.min(Math.ceil(displayedModels.length / itemsPerColumn), maxColumns);
+  const columnWidth = 260;
+  // Agregar 20px extra para compensar el espacio del scrollbar
+  const headerWidth = numColumnsNeeded > 0 
+    ? (columnWidth * numColumnsNeeded) + 48 + (50 * (numColumnsNeeded - 1)) + 40
+    : columnWidth + 48 + 20;
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -92,7 +126,10 @@ const Header = () => {
   return (
     <>
       {/* Header fijo que siempre se mantiene visible */}
-      <header className="z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto lg:w-1/4 lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px]">
+      <header 
+        style={isGuardadosOpen && windowWidth >= 1024 ? { width: `${headerWidth}px` } : {}}
+        className={`z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto ${!isGuardadosOpen ? 'lg:w-1/4' : ''} lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px] transition-all duration-300 ease-in-out`}
+      >
         <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
           <div className="lg:w-full ">
             <Link href="/" onClick={isGuardadosOpen ? closeGuardados : undefined}>
@@ -124,7 +161,7 @@ const Header = () => {
               </SecondaryButton>
             </div>
             {isGuardadosOpen && (
-            <div onClick={toggleGuardados}><p className="cursor-pointer hover:underline text-grey-20">cerrar</p></div>
+            <div onClick={toggleGuardados}><p className="cursor-pointer hover:underline text-grey-20 lg:pr-[20px]">cerrar</p></div>
             )}
            
           </div>
@@ -273,7 +310,11 @@ const Header = () => {
         <GuardadosMobile isOpen={isGuardadosOpen} onClose={closeGuardados} />
       </div>
       <div className="hidden lg:block">
-        <GuardadosDesktop isOpen={isGuardadosOpen} onClose={toggleGuardados} />
+        <GuardadosDesktop 
+          isOpen={isGuardadosOpen} 
+          onClose={toggleGuardados}
+          headerWidth={headerWidth}
+        />
       </div>
 
       {/* Modal de "querés ser modelo?" */}
@@ -282,7 +323,7 @@ const Header = () => {
           <div className="bg-white-00 opacity-95 w-full h-full  flex items-center justify-center">
             <div className="w-full lg:h-[375px] lg:flex lg:flex-row-reverse lg:max-w-[1000px]">
               {/* Botón de cerrar */}
-              <div className="flex justify-center">
+              <div className="flex justify-center ">
                 <button
                   onClick={closeModelModal}
                   className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center lg:cursor-pointer"
