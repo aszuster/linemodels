@@ -10,6 +10,7 @@ import { getModelsData } from "@/lib/sanity-models";
 import GuardadosMobile from "./GuardadosMobile";
 import GuardadosDesktop from "./GuardadosDesktop";
 import Star from "@/svg/star";
+import Image from "next/image";
 
 const Header = () => {
   const [models, setModels] = useState([]);
@@ -18,7 +19,9 @@ const Header = () => {
   const [isGuardadosOpen, setIsGuardadosOpen] = useState(false);
   const [showGuardadosText, setShowGuardadosText] = useState(true);
   const [isModelsExpanded, setIsModelsExpanded] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1920);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1920
+  );
   const { guardadosList, isClient } = useGuardados();
 
   // Detectar cambios de tamaño de ventana
@@ -27,8 +30,8 @@ const Header = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -89,12 +92,16 @@ const Header = () => {
   }
 
   const displayedModels = guardadosList.slice(0, 60);
-  const numColumnsNeeded = Math.min(Math.ceil(displayedModels.length / itemsPerColumn), maxColumns);
+  const numColumnsNeeded = Math.min(
+    Math.ceil(displayedModels.length / itemsPerColumn),
+    maxColumns
+  );
   const columnWidth = 260;
   // Agregar 20px extra para compensar el espacio del scrollbar
-  const headerWidth = numColumnsNeeded > 0 
-    ? (columnWidth * numColumnsNeeded) + 48 + (50 * (numColumnsNeeded - 1)) + 40
-    : columnWidth + 48 + 20;
+  const headerWidth =
+    numColumnsNeeded > 0
+      ? columnWidth * numColumnsNeeded + 48 + 50 * (numColumnsNeeded - 1) + 40
+      : columnWidth + 48 + 20;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -126,47 +133,56 @@ const Header = () => {
   return (
     <>
       {/* Header fijo que siempre se mantiene visible */}
-      <header 
-        style={isGuardadosOpen && windowWidth >= 1024 ? { width: `${headerWidth}px` } : {}}
-        className={`z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto ${!isGuardadosOpen ? 'lg:w-1/4' : ''} lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px] transition-all duration-300 ease-in-out`}
+      <header
+        style={
+          isGuardadosOpen && windowWidth >= 1024
+            ? { width: `${headerWidth}px` }
+            : {}
+        }
+        className={`z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto ${!isGuardadosOpen ? "lg:w-1/4" : ""} lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px] transition-all duration-300 ease-in-out`}
       >
         <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
           <div className="lg:w-full ">
-            <Link href="/" onClick={isGuardadosOpen ? closeGuardados : undefined}>
+            <Link
+              href="/"
+              onClick={isGuardadosOpen ? closeGuardados : undefined}
+            >
               <h1 className="text-[24px] font-normal	leading-[24px] lg:text-[30px]  z-50">
                 line
               </h1>
             </Link>
             <div className="hidden lg:block mb-[17px] lg:mt-[150px]">
-            <Link href="/" className=" leading-[16px] tracking-[-0.4px]">
-              — modelos
-            </Link>
-          </div>
-          <div className="hidden lg:flex gap-[10px] items-center lg:w-full lg:justify-between">
-            <div
-              className="flex gap-[10px] items-center cursor-pointer"
-              onClick={toggleGuardados}
-            >
-              <p
-                className={`transition-all duration-300 ease-in-out ${
-                  showGuardadosText
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
-                } ${isGuardadosOpen ? "underline" : ""}`}
-              >
-                guardados
-              </p>
-              <SecondaryButton px="11px">
-                <span>{isClient ? guardadosList.length : 0}</span>
-              </SecondaryButton>
+              <Link href="/" className=" leading-[16px] tracking-[-0.4px]">
+                — modelos
+              </Link>
             </div>
-            {isGuardadosOpen && (
-            <div onClick={toggleGuardados}><p className="cursor-pointer hover:underline text-grey-20 lg:pr-[20px]">cerrar</p></div>
-            )}
-           
+            <div className="hidden lg:flex gap-[10px] items-center lg:w-full lg:justify-between">
+              <div
+                className="flex gap-[10px] items-center cursor-pointer"
+                onClick={toggleGuardados}
+              >
+                <p
+                  className={`transition-all duration-300 ease-in-out ${
+                    showGuardadosText
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
+                  } ${isGuardadosOpen ? "underline" : ""}`}
+                >
+                  guardados
+                </p>
+                <SecondaryButton px="11px">
+                  <span>{isClient ? guardadosList.length : 0}</span>
+                </SecondaryButton>
+              </div>
+              {isGuardadosOpen && (
+                <div onClick={toggleGuardados}>
+                  <p className="cursor-pointer hover:underline text-grey-20 lg:pr-[20px]">
+                    cerrar
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
-          </div>
-
 
           <div>
             {/* palabra modelos desktop */}
@@ -249,7 +265,7 @@ const Header = () => {
             </div> */}
 
             {/* </div> */}
-                      {/* guardados desktop */}
+            {/* guardados desktop */}
             <div className="lg:hidden flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] ">
               <div
                 className="flex gap-[10px] items-center cursor-pointer"
@@ -269,15 +285,25 @@ const Header = () => {
                 </SecondaryButton>
               </div>
 
-            {/* ia lab link */}
+              {/* ia lab link */}
 
-            <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link>
+              <Link
+                href="/ia-lab"
+                className="hidden lg:flex pb-[34px]  items-center gap-[6px]"
+              >
+                <Star /> ia lab
+              </Link>
             </div>
           </div>
           <div className="bg-grey-10 w-[1px] h-[16px] absolute left-[50%] translate-x-[-50%] lg:hidden"></div>
           <div className="hidden lg:flex lg:flex-col lg:gap-[20px] lg:mb-[24px]">
             <div className="flex flex-col">
-            <Link href="/ia-lab" className="hidden lg:flex pb-[34px]  items-center gap-[6px]"><Star /> ia lab</Link>
+              <Link
+                href="/ia-lab"
+                className="hidden lg:flex pb-[34px]  items-center gap-[6px]"
+              >
+                <Star /> ia lab
+              </Link>
               <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">
                 — contacto
               </p>
@@ -286,18 +312,35 @@ const Header = () => {
                 <p>buenos aires, argentina.</p>
               </div>
 
-              <button
-                onClick={openModelModal}
-                className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
-              >
-                <p>querés ser modelo?</p>
-                <SecondaryButton>
-                  <span>+</span>
-                </SecondaryButton>
-              </button>
+              {/* Desktop: Link a página, Mobile: Modal */}
+              <div className="hidden lg:block">
+                <Link
+                  href="/ser-modelo"
+                  className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
+                >
+                  <p>querés ser modelo?</p>
+                  <SecondaryButton>
+                    <span>+</span>
+                  </SecondaryButton>
+                </Link>
+              </div>
+              <div className="lg:hidden">
+                <button
+                  onClick={openModelModal}
+                  className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
+                >
+                  <p>querés ser modelo?</p>
+                  <SecondaryButton>
+                    <span>+</span>
+                  </SecondaryButton>
+                </button>
+              </div>
             </div>
             <div>
-              <Link href="https://www.instagram.com/linemodels__/" target="_blank">
+              <Link
+                href="https://www.instagram.com/linemodels__/"
+                target="_blank"
+              >
                 instagram
               </Link>
             </div>
@@ -310,61 +353,91 @@ const Header = () => {
         <GuardadosMobile isOpen={isGuardadosOpen} onClose={closeGuardados} />
       </div>
       <div className="hidden lg:block">
-        <GuardadosDesktop 
-          isOpen={isGuardadosOpen} 
+        <GuardadosDesktop
+          isOpen={isGuardadosOpen}
           onClose={toggleGuardados}
           headerWidth={headerWidth}
         />
       </div>
 
-      {/* Modal de "querés ser modelo?" */}
+      {/* Modal de "querés ser modelo?" - Solo para mobile */}
       {isModelModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="lg:hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white-00 opacity-95 w-full h-full  flex items-center justify-center">
-            <div className="w-full lg:h-[375px] lg:flex lg:flex-row-reverse lg:max-w-[1000px]">
-              {/* Botón de cerrar */}
-              <div className="flex justify-center ">
-                <button
-                  onClick={closeModelModal}
-                  className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center lg:cursor-pointer"
-                  aria-label="Cerrar modal"
-                >
-                  cerrar
-                </button>
-              </div>
-
+            <div className="w-full">
               {/* Contenido del modal */}
               <div className="flex-1 flex items-center justify-center px-[14px]">
                 <div className="relative overflow-hidden w-full">
-                  <div className=" text-black-00 lg:max-w-[700px]">
-                    <p className="mb-[32px] leading-[20px] lg:text-[16px]">
-                      — querés ser modelo? 
-                    </p>
-                    <p className="mb-[32px] leading-[20px] lg:text-[16px] lg:max-w-[420px]">
-                      mandanos tus datos y dos fotos a hola@linemodels.xyz <br />
-                      queremos verte natural, luz de día y sin make up, las
-                      fotos las podés sacar con tu celular.
-                    </p>
-                    <p className="mb-[32px] leading-[20px] lg:text-[16px]">
-                      nombre completo:
-                      <br />
-                      fecha de nacimiento:
-                      <br />
-                      edad:
-                      <br />
-                      localidad:
-                      <br />
-                      teléfono:
-                      <br />
-                      mail:
-                      <br />
-                      instagram:
-                      <br />
-                      altura:
-                      <br />
-                      medidas:
-                    </p>
-                    <p className="lg:text-[16px]">gracias —</p>
+                  <div className="text-black-00">
+                    <div className="w-full flex flex-col justify-between items-start">
+                      <div>
+                        <p className="mb-[32px] leading-[20px]">
+                          — querés ser modelo? 
+                        </p>
+                        <p className="mb-[32px] leading-[20px]">
+                          mandanos tus datos y dos fotos a hola@linemodels.xyz{" "}
+                          <br />
+                          queremos verte natural, luz de día y sin make up, las
+                          fotos las podés sacar con tu celular.
+                        </p>
+                        <div className="mb-[32px] leading-[20px] flex flex-col">
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(01)</span>
+                            <p>nombre completo</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(02)</span>
+                            <p>fecha de nacimiento</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(03)</span>
+                            <p>edad</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(04)</span>
+                            <p>localidad</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(05)</span>
+                            <p>teléfono</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(06)</span>
+                            <p>mail</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(07)</span>
+                            <p>instagram</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(08)</span>
+                            <p>altura</p>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-[9px] pr-[12px]">(09)</span>
+                            <p>medidas</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-full pb-[32px]">
+                        <div className="flex justify-between items-center text-[6px]">
+                          <span>01</span>
+                          <span>03</span>
+                        </div>
+                        <Image
+                          src="/queres-ser-modelo.png"
+                          alt="logo"
+                          width={554}
+                          height={350}
+                          className="w-full h-auto py-[10px]"
+                        />
+                        <div className="flex justify-between items-center text-[6px]">
+                          <span>02</span>
+                          <span>04</span>
+                        </div>
+                      </div>
+                    </div>
+                    <p>gracias —</p>
                   </div>
                 </div>
               </div>

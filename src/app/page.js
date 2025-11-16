@@ -269,7 +269,7 @@ export default function Home() {
               }`}
             >
               <div className="bg-white-00  border-l border-grey-10">
-                <div className=" px-[12px] py-[10px] text-sm text-grey-30 flex justify-start gap-[24px]">
+                <div className=" px-[12px] py-[10px] text-[12px] leading-[14px] text-grey-30 flex justify-start gap-[24px]">
                   <div>
                     <p className="">altura</p>
                     <p className="">busto</p>
