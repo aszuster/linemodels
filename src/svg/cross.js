@@ -1,10 +1,10 @@
-export default function Cross({ className = "", width = "10px", height = "10px", onClick }) {
+export default function Cross({ className = "", width = "7px", height = "7px", onClick }) {
   return (
     <svg 
       className={`${className} ${onClick ? 'cursor-pointer' : ''}`} 
       width={width} 
       height={height}
-      viewBox="0 0 10 10"
+      viewBox={`0 0 ${width} ${height}`}
       fill="none"
       onClick={onClick}
     >
