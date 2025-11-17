@@ -82,7 +82,7 @@ export default function SerModelo() {
                   <div className="hidden lg:flex justify-center mb-[20px] lg:mb-0 lg:ml-[50px]">
                     <button
                       onClick={() => router.back()}
-                      className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center cursor-pointer hover:underline"
+                      className="text-black-00 border-x border-grey-10 px-[15px] h-[18px] flex items-center cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
                       aria-label="Cerrar"
                     >
                       cerrar

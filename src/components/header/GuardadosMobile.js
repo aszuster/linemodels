@@ -72,19 +72,19 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
         </div>
         <div className="flex justify-between items-center text-grey-20">
           <div className="flex gap-[16px] items-center">
-            <p className="cursor-pointer hover:underline" onClick={copyAllUrls}>
+            <p className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out" onClick={copyAllUrls}>
               copiar todos
             </p>
             <div className="bg-grey-10 w-[1px] h-[9px]"></div>
             <p
-              className="cursor-pointer hover:underline"
+              className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
               onClick={clearAllGuardados}
             >
               borrar todos
             </p>
           </div>
           <div>
-            <p className="cursor-pointer hover:underline" onClick={onClose}>
+            <p className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out" onClick={onClose}>
               cerrar
             </p>
           </div>
