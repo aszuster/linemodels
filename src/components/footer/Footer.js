@@ -33,7 +33,7 @@ const Footer = () => {
           <Link href="/ia-lab" className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</Link>
           <p className="tracking-[0%] leading-[16px] mb-[10px]">— contacto</p>
           <div className="text-grey-40 leading-[16px]">
-            <p className="pb-[6px]">hola@linemodels.xyz</p>
+            <p className="pb-[6px] no-underline!">hola@linemodels.xyz</p>
             <p>buenos aires, argentina.</p>
           </div>
 
