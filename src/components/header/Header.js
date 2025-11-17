@@ -22,7 +22,12 @@ const Header = () => {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1920
   );
+  const [isMounted, setIsMounted] = useState(false);
   const { guardadosList, isClient } = useGuardados();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Detectar cambios de tamaño de ventana
   useEffect(() => {
@@ -131,7 +136,7 @@ const Header = () => {
       {/* Header fijo que siempre se mantiene visible */}
       <header
         style={
-          isGuardadosOpen && windowWidth >= 1024
+          isMounted && isGuardadosOpen && windowWidth >= 1024
             ? { 
                 width: `${headerWidth}px`,
                 transitionTimingFunction: 'cubic-bezier(0.45, 0, 0.55, 1)'
@@ -142,7 +147,7 @@ const Header = () => {
       >
         <div 
           className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full"
-          style={windowWidth >= 1024 && isGuardadosOpen ? { width: `${headerWidth - 48}px` } : windowWidth >= 1024 ? { width: '260px' } : {}}
+          style={isMounted && windowWidth >= 1024 && isGuardadosOpen ? { width: `${headerWidth - 48}px` } : isMounted && windowWidth >= 1024 ? { width: '260px' } : {}}
         >
           <div className="lg:w-full ">
             <div className="hidden lg:flex lg:justify-between lg:items-center lg:w-full">
@@ -174,7 +179,7 @@ const Header = () => {
               </h1>
             </Link>
             <div className="hidden lg:block mb-[17px] lg:mt-[150px]">
-              <Link href="/" className=" leading-[16px] tracking-[-0.4px]">
+              <Link href="/" className=" leading-[16px] tracking-[0%]">
                 — modelos
               </Link>
             </div>
@@ -187,7 +192,7 @@ const Header = () => {
                   className={`hover:text-grey-20 transition-all duration-300 ease-in-out ${
                     showGuardadosText
                       ? "opacity-100 translate-y-0"
-                      : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
+                      : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100 lg:pointer-events-auto"
                   } ${isGuardadosOpen ? "underline" : ""}`}
                 >
                   guardados
@@ -290,7 +295,7 @@ const Header = () => {
                   className={`hover:text-grey-20 transition-all duration-300 ease-in-out ${
                     showGuardadosText
                       ? "opacity-100 translate-y-0"
-                      : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
+                      : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100 lg:pointer-events-auto"
                   } ${isGuardadosOpen ? "underline" : ""}`}
                 >
                   guardados
@@ -304,7 +309,7 @@ const Header = () => {
 
               <Link
                 href="/ia-lab"
-                className="hidden lg:flex pb-[34px]  items-center gap-[6px]"
+                className="hidden lg:flex pb-[34px]  items-center gap-[6px] tracking-[0%]"
               >
                 <Star /> ia lab
               </Link>
@@ -315,11 +320,11 @@ const Header = () => {
             <div className="flex flex-col">
               <Link
                 href="/ia-lab"
-                className="hidden lg:flex mb-[34px]  items-center gap-[6px] hover:text-grey-20 transition-all duration-300 ease-in-out"
+                className="hidden lg:flex mb-[34px]  items-center gap-[6px] hover:text-grey-20 transition-all duration-300 ease-in-out tracking-[0%]"
               >
                 <Star  /> ia lab
               </Link>
-              <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">
+              <p className="tracking-[0%] leading-[16px] mb-[10px]">
                 — contacto
               </p>
               <div className="text-grey-40 leading-[16px]">
@@ -331,7 +336,7 @@ const Header = () => {
               <div className="hidden lg:block">
                 <Link
                   href="/ser-modelo"
-                  className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
+                  className="tracking-[0%] flex gap-[14px] items-center mt-[34px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
                 >
                   <p>querés ser modelo?</p>
                   <SecondaryButton>
@@ -342,7 +347,7 @@ const Header = () => {
               <div className="lg:hidden">
                 <button
                   onClick={openModelModal}
-                  className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
+                  className="tracking-[0%] flex gap-[14px] items-center mt-[34px] cursor-pointer"
                 >
                   <p>querés ser modelo?</p>
                   <SecondaryButton>

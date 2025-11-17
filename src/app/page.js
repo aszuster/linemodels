@@ -242,7 +242,7 @@ export default function Home() {
                   </p>
                   <div className="flex justify-between items-end lg:items-center w-full lg:w-auto">
                     <p
-                      className="text-[12px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
+                      className="text-[12px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out leading-[12px] pt-[5px] tracking-[0%] lg:hidden"
                       onClick={() => toggleCard(image.id)}
                     >
                       {expandedCard === image.id

@@ -31,7 +31,7 @@ const Footer = () => {
       <div className="flex flex-col gap-[42px] lg:hidden">
         <div className="flex flex-col">
           <Link href="/ia-lab" className="pb-[34px] flex items-center gap-[6px]"><Star /> ia lab</Link>
-          <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">— contacto</p>
+          <p className="tracking-[0%] leading-[16px] mb-[10px]">— contacto</p>
           <div className="text-grey-40 leading-[16px]">
             <p className="pb-[6px]">hola@linemodels.xyz</p>
             <p>buenos aires, argentina.</p>
@@ -39,7 +39,7 @@ const Footer = () => {
 
           <button
             onClick={openModelModal}
-            className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
+            className="tracking-[0%] flex gap-[14px] items-center mt-[34px] cursor-pointer"
           >
             <p>— querés ser modelo?</p>
             <SecondaryButton>
@@ -55,7 +55,7 @@ const Footer = () => {
           </div>
           {!isSerModeloPage && (
             <SecondaryButton onClick={scrollToTop} px="14px">
-              <span className="tracking-[-0.3px] leading-[16px]">
+              <span className="tracking-[0%] leading-[16px]">
                 back to top
               </span>
             </SecondaryButton>
@@ -65,7 +65,7 @@ const Footer = () => {
       {!isIaLabPage && !isSerModeloPage && (
         <div className="hidden lg:flex w-full justify-end items-center">
           <SecondaryButton onClick={scrollToTop} px="14px">
-            <span className="tracking-[-0.3px] leading-[16px]">back to top</span>
+            <span className="tracking-[0%] leading-[16px]">back to top</span>
           </SecondaryButton>
         </div>
       )}
