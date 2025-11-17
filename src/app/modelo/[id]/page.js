@@ -212,7 +212,7 @@ export default function ModelPage({ params }) {
       <main className="bg-white-00 pt-[32px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
         <div className="text-center">
           <h1 className="text-2xl text-black-00 mb-4">Modelo no encontrado</h1>
-          <Link href="/" className="text-grey-30 hover:underline">
+          <Link href="/" className="text-grey-30 hover:text-grey-20 transition-all duration-300 ease-in-out">
             volver
           </Link>
         </div>
@@ -340,10 +340,10 @@ export default function ModelPage({ params }) {
                       />
                     </div>
                   )}
-                  <p  onClick={() => setIsPolasVisible(!isPolasVisible)} className="cursor-pointer hover:underline lg:text-[16px] leading-[12px]">ver polas</p>
+                  <p  onClick={() => setIsPolasVisible(!isPolasVisible)} className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out lg:text-[16px] leading-[12px]">ver polas</p>
                   <button
                     onClick={() => setIsPolasVisible(!isPolasVisible)}
-                    className="text-[12px] lg:text-[14px] lg:leading-[14px] cursor-pointer hover:underline"
+                    className="text-[12px] lg:text-[14px] lg:leading-[14px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
                   >
                     {isPolasVisible ? "( - )" : "( + )"}
                   </button>
@@ -388,7 +388,7 @@ export default function ModelPage({ params }) {
                           className={`py-2 flex items-center gap-3 ${
                             selectedPhoto === 0
                               ? "text-grey-30 cursor-not-allowed"
-                              : "text-black-00 hover:underline cursor-pointer"
+                              : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
                           }`}
                           aria-label="Foto anterior"
                         >
@@ -413,7 +413,7 @@ export default function ModelPage({ params }) {
                             model.photos &&
                             selectedPhoto === model.photos.length - 1
                               ? "text-grey-30 cursor-not-allowed"
-                              : "text-black-00 hover:underline cursor-pointer"
+                              : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
                           }`}
                           aria-label="Foto siguiente"
                         >
@@ -477,7 +477,7 @@ export default function ModelPage({ params }) {
                           className={`py-2 flex items-center gap-3 ${
                             selectedPhoto === 0
                               ? "text-grey-30 cursor-not-allowed"
-                              : "text-black-00 hover:underline cursor-pointer"
+                              : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
                           }`}
                           aria-label="Foto anterior"
                         >
@@ -499,7 +499,7 @@ export default function ModelPage({ params }) {
                             model.photos &&
                             selectedPhoto === model.photos.length - 1
                               ? "text-grey-30 cursor-not-allowed"
-                              : "text-black-00 hover:underline cursor-pointer"
+                              : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
                           }`}
                           aria-label="Foto siguiente"
                         >
@@ -785,7 +785,7 @@ export default function ModelPage({ params }) {
                   className={`py-2 flex items-center gap-3 ${
                     selectedBookPhoto === 0
                       ? "text-grey-30 cursor-not-allowed"
-                      : "text-black-00 hover:underline cursor-pointer"
+                      : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
                   }`}
                   aria-label="Foto anterior"
                 >
@@ -803,7 +803,7 @@ export default function ModelPage({ params }) {
                   className={`py-2 flex items-center gap-3 ${
                     selectedBookPhoto === model.book.length - 1
                       ? "text-grey-30 cursor-not-allowed"
-                      : "text-black-00 hover:underline cursor-pointer"
+                      : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
                   }`}
                   aria-label="Foto siguiente"
                 >

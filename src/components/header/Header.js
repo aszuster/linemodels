@@ -89,13 +89,15 @@ const Header = () => {
 
   const displayedModels = guardadosList.slice(0, 60);
   // Ahora usamos siempre maxColumns ya que distribuimos por filas
-  const numColumns = displayedModels.length > 0 ? maxColumns : 1;
+  const numColumns = maxColumns;
   const columnWidth = 260;
   const gap = 56; // gap entre columnas
 
   // Calcular ancho: (ancho de columna * número de columnas) + (gaps) + padding lateral + scrollbar
-  const headerWidth =
-    columnWidth * numColumns + gap * (numColumns - 1) + 48 + 40;
+  // Si no hay modelos, usar 575px
+  const headerWidth = displayedModels.length > 0 
+    ? columnWidth * numColumns + gap * (numColumns - 1) + 48 + 40
+    : 575;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -136,9 +138,12 @@ const Header = () => {
               }
             : { transitionTimingFunction: 'cubic-bezier(0.45, 0, 0.55, 1)' }
         }
-        className={`z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto ${!isGuardadosOpen ? "lg:w-1/4" : ""} lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px] transition-all duration-[400ms]`}
+        className={`z-50 fixed top-0 left-0 right-0 lg:left-0 lg:top-0 lg:right-auto ${!isGuardadosOpen ? "lg:w-1/4" : ""} lg:h-screen bg-white-00 text-black-00 px-[20px] pt-[16px] lg:px-[24px] lg:pt-[24px] transition-all duration-[400ms] lg:overflow-hidden`}
       >
-        <div className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full">
+        <div 
+          className="mb-[10px] flex justify-between items-center lg:flex-col lg:items-start lg:h-full"
+          style={windowWidth >= 1024 && isGuardadosOpen ? { width: `${headerWidth - 48}px` } : windowWidth >= 1024 ? { width: '260px' } : {}}
+        >
           <div className="lg:w-full ">
             <div className="hidden lg:flex lg:justify-between lg:items-center lg:w-full">
               <Link
@@ -152,7 +157,7 @@ const Header = () => {
               {isGuardadosOpen && (
                 <div onClick={toggleGuardados} className="flex gap-[10px] items-center">
                   <div className="bg-grey-10 w-[1px] h-[18px]"></div>
-                  <p className="cursor-pointer hover:text-grey-20 text-black-00 ">
+                  <p className="cursor-pointer hover:text-grey-20 text-black-00 whitespace-nowrap">
                     cerrar
                   </p>
                   <div className="bg-grey-10 w-[1px] h-[18px]"></div>
@@ -278,11 +283,11 @@ const Header = () => {
             {/* guardados desktop */}
             <div className="lg:hidden flex gap-[10px] items-center lg:flex-col lg:items-start lg:gap-[20px] ">
               <div
-                className="flex gap-[10px] items-center cursor-pointer"
+                className="flex gap-[10px] items-center cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
                 onClick={toggleGuardados}
               >
                 <p
-                  className={`transition-all duration-300 ease-in-out ${
+                  className={`hover:text-grey-20 transition-all duration-300 ease-in-out ${
                     showGuardadosText
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"

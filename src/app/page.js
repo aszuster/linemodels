@@ -242,7 +242,7 @@ export default function Home() {
                   </p>
                   <div className="flex justify-between items-end lg:items-center w-full lg:w-auto">
                     <p
-                      className="text-[12px] cursor-pointer hover:underline leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
+                      className="text-[12px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out leading-[12px] pt-[5px] tracking-[-0.3px] lg:hidden"
                       onClick={() => toggleCard(image.id)}
                     >
                       {expandedCard === image.id
@@ -300,7 +300,7 @@ export default function Home() {
             className={` py-2 text-sm ${
               currentPage === 1
                 ? "text-grey-30 cursor-not-allowed"
-                : "text-black-00 hover:underline cursor-pointer"
+                : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
             }`}
           >
             anterior
@@ -316,7 +316,7 @@ export default function Home() {
             className={` py-2 text-sm ${
               currentPage === totalPages
                 ? "text-grey-30 cursor-not-allowed"
-                : "text-black-00 hover:underline cursor-pointer"
+                : "text-black-00 hover:text-grey-20 transition-all duration-300 ease-in-out cursor-pointer"
             }`}
           >
             siguiente
