@@ -24,7 +24,7 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
           : "pointer-events-none"
       }`}
     >
-      <div className="pt-[16px] px-[20px] pb-[40px] flex flex-col h-full">
+      <div className="pt-[16px] px-[20px] pb-[40px] flex flex-col" style={{ height: 'calc(100vh - 80px - 40px)' }}>
         <div className="py-4 mb-[36px] max-h-[calc(100vh-240px)] overflow-y-auto">
           {isClient && guardadosList.length > 0 ? (
             <div className="flex flex-col gap-[12px]">
@@ -70,8 +70,8 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
             )
           )}
         </div>
-        <div className="flex justify-between items-center text-grey-20">
-          <div className="flex gap-[16px] items-center">
+        <div className="flex justify-between items-center text-grey-20 min-w-0 w-full">
+          <div className="flex gap-[16px] items-center flex-shrink min-w-0">
             <p className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out" onClick={copyAllUrls}>
               copiar todos
             </p>
@@ -83,8 +83,8 @@ const GuardadosMobile = ({ isOpen, onClose }) => {
               borrar todos
             </p>
           </div>
-          <div>
-            <p className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out" onClick={onClose}>
+          <div className="flex-shrink-0">
+            <p className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out whitespace-nowrap" onClick={onClose}>
               cerrar
             </p>
           </div>
