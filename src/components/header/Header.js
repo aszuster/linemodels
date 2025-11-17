@@ -328,7 +328,7 @@ const Header = () => {
                 — contacto
               </p>
               <div className="text-grey-40 leading-[16px]">
-                <p className="pb-[6px]">hola@linemodels.xyz</p>
+                <p className="pb-[6px] no-underline!">hola@linemodels.xyz</p>
                 <p>buenos aires, argentina.</p>
               </div>
 

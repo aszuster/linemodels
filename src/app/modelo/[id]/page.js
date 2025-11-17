@@ -212,7 +212,10 @@ export default function ModelPage({ params }) {
       <main className="bg-white-00 pt-[32px] lg:pt-0 lg:ml-[25%] px-[14px] pb-[80px]">
         <div className="text-center">
           <h1 className="text-2xl text-black-00 mb-4">Modelo no encontrado</h1>
-          <Link href="/" className="text-grey-30 hover:text-grey-20 transition-all duration-300 ease-in-out">
+          <Link
+            href="/"
+            className="text-grey-30 hover:text-grey-20 transition-all duration-300 ease-in-out"
+          >
             volver
           </Link>
         </div>
@@ -224,7 +227,10 @@ export default function ModelPage({ params }) {
     <main className="bg-white-00 pt-[80px] lg:ml-[25%] px-[14px] pb-[80px] lg:pt-[24px] lg:px-[24px]">
       {/* Botón de regreso */}
       <div className="mb-8 lg:mb-0">
-        <Link href="/" className="text-black-00 flex items-center gap-2 hover:text-grey-20 transition-all duration-300 ease-in-out">
+        <Link
+          href="/"
+          className="text-black-00 flex items-center gap-2 hover:text-grey-20 transition-all duration-300 ease-in-out"
+        >
           <HorizontalLine fill="#000" /> volver
         </Link>
       </div>
@@ -326,7 +332,7 @@ export default function ModelPage({ params }) {
             {model.photos && model.photos.length > 0 && (
               <div className="mt-[48px] lg:flex lg:gap-[48px] lg:items-start lg:mt-[64px]">
                 {/* Título con botón y miniatura */}
-                <div className="mb-[48px] lg:mb-0 lg:pt-0 flex items-start gap-2">
+                <div className="mb-[48px] lg:mb-0 lg:pt-0 flex items-start gap-[12px]">
                   {!isPolasVisible && (
                     <div
                       className="w-[32px] h-[48px] lg:w-[40px] lg:h-[60px] relative overflow-hidden cursor-pointer hover:opacity-70 transition-opacity"
@@ -342,12 +348,20 @@ export default function ModelPage({ params }) {
                       />
                     </div>
                   )}
-                  <p  onClick={() => setIsPolasVisible(!isPolasVisible)} className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out lg:text-[16px] leading-[12px]">    {isPolasVisible ? "ocultar polas" : "ver polas"}</p>
+                  <p
+                    onClick={() => setIsPolasVisible(!isPolasVisible)}
+                    className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out lg:text-[16px] leading-[12px]"
+                  >
+                    {" "}
+                    {isPolasVisible ? "ocultar polas" : "ver polas"}
+                  </p>
                   <button
                     onClick={() => setIsPolasVisible(!isPolasVisible)}
-                    className="text-[12px] lg:text-[14px] lg:leading-[14px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
+                    className="text-[14px] leading-[14px] lg:text-[14px] lg:leading-[14px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out flex items-center gap-[8px]"
                   >
-                    {isPolasVisible ? "( - )" : "( + )"}
+                    <div className="bg-grey-10 w-[1px] h-[12px]"></div>
+                    {isPolasVisible ? "-" : "+"}
+                    <div className="bg-grey-10 w-[1px] h-[12px]"></div>
                   </button>
                   {/* Miniatura pequeña cuando está cerrado */}
                 </div>
@@ -526,7 +540,9 @@ export default function ModelPage({ params }) {
           </div>
           {/* book component */}
           {model.book && model.book.length > 0 && (
-            <div className={`mt-[48px] ${isPolasVisible ? "lg:mt-[144px]" : "lg:mt-[78px]"}`}>
+            <div
+              className={`mt-[48px] ${isPolasVisible ? "lg:mt-[144px]" : "lg:mt-[78px]"}`}
+            >
               <p className="mb-[48px] lg:mb-[80px]">book</p>
               <div className="grid grid-cols-2 gap-x-[2px] gap-y-[16px] lg:gap-y-[32px]">
                 {(() => {
