@@ -141,20 +141,20 @@ const GuardadosDesktop = ({ isOpen, onClose, headerWidth }) => {
           )}
         </div>
         
-        <div className="flex justify-between items-center text-grey-20">
+        <div className="flex justify-between items-center text-black-00">
           <div className="flex gap-[16px] items-center">
             <p 
               className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
               onClick={copyAllUrls}
             >
-              copiar todos
+              copiar todo
             </p>
             <div className="bg-grey-10 w-[1px] h-[9px]"></div>
             <p
               className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
               onClick={clearAllGuardados}
             >
-              borrar todos
+              borrar todo
             </p>
           </div>
         </div>

@@ -72,7 +72,7 @@ export default function IaLab() {
     <>
       <main className="bg-white-00 pt-[82px] lg:ml-[25%] px-[14px] pb-[80px] lg:px-[24px] lg:pt-[24px] lg:pb-0">
         <div className="pb-[32px]">
-          <Link href="/" className="text-black-00 flex items-center gap-2">
+          <Link href="/" className="text-black-00 flex items-center gap-2 hover:text-grey-20 transition-all duration-300 ease-in-out">
             <HorizontalLine fill="#000" /> volver
           </Link>
         </div>

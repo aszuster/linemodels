@@ -224,7 +224,7 @@ export default function ModelPage({ params }) {
     <main className="bg-white-00 pt-[80px] lg:ml-[25%] px-[14px] pb-[80px] lg:pt-[24px] lg:px-[24px]">
       {/* Botón de regreso */}
       <div className="mb-8 lg:mb-0">
-        <Link href="/" className="text-black-00 flex items-center gap-2">
+        <Link href="/" className="text-black-00 flex items-center gap-2 hover:text-grey-20 transition-all duration-300 ease-in-out">
           <HorizontalLine fill="#000" /> volver
         </Link>
       </div>
@@ -243,13 +243,14 @@ export default function ModelPage({ params }) {
                     <Link
                       href={`https://instagram.com/${model.instagram}`}
                       target="_blank"
+                      className="hover:text-grey-20 transition-all duration-300 ease-in-out"
                     >
                       @{model.instagram}
                     </Link>
                   </div>
                 )}
                 <div
-                  className="text-[12px] lg:text-[16px] flex gap-[4px] items-center cursor-pointer"
+                  className="text-[12px] lg:text-[16px] flex gap-[4px] items-center cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
                   onClick={(e) => handleToggleGuardado(e, model)}
                 >
                   <p>{isInGuardados(model.id) ? "added" : "add"}</p>
@@ -263,6 +264,7 @@ export default function ModelPage({ params }) {
                       <Link
                         href={`https://instagram.com/${model.instagram}`}
                         target="_blank"
+                        className="hover:text-grey-20 transition-all duration-300 ease-in-out"
                       >
                         @{model.instagram}
                       </Link>
@@ -340,7 +342,7 @@ export default function ModelPage({ params }) {
                       />
                     </div>
                   )}
-                  <p  onClick={() => setIsPolasVisible(!isPolasVisible)} className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out lg:text-[16px] leading-[12px]">ver polas</p>
+                  <p  onClick={() => setIsPolasVisible(!isPolasVisible)} className="cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out lg:text-[16px] leading-[12px]">    {isPolasVisible ? "ocultar polas" : "ver polas"}</p>
                   <button
                     onClick={() => setIsPolasVisible(!isPolasVisible)}
                     className="text-[12px] lg:text-[14px] lg:leading-[14px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"

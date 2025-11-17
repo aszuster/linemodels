@@ -184,7 +184,7 @@ const Header = () => {
                 onClick={toggleGuardados}
               >
                 <p
-                  className={`transition-all duration-300 ease-in-out ${
+                  className={`hover:text-grey-20 transition-all duration-300 ease-in-out ${
                     showGuardadosText
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 -translate-y-2 pointer-events-none lg:translate-y-0 lg:opacity-100"
@@ -315,9 +315,9 @@ const Header = () => {
             <div className="flex flex-col">
               <Link
                 href="/ia-lab"
-                className="hidden lg:flex pb-[34px]  items-center gap-[6px]"
+                className="hidden lg:flex mb-[34px]  items-center gap-[6px] hover:text-grey-20 transition-all duration-300 ease-in-out"
               >
-                <Star /> ia lab
+                <Star  /> ia lab
               </Link>
               <p className="tracking-[-0.2px] leading-[16px] mb-[10px]">
                 — contacto
@@ -331,7 +331,7 @@ const Header = () => {
               <div className="hidden lg:block">
                 <Link
                   href="/ser-modelo"
-                  className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer"
+                  className="tracking-[-0.3px] flex gap-[14px] items-center mt-[34px] cursor-pointer hover:text-grey-20 transition-all duration-300 ease-in-out"
                 >
                   <p>querés ser modelo?</p>
                   <SecondaryButton>
@@ -355,6 +355,7 @@ const Header = () => {
               <Link
                 href="https://www.instagram.com/linemodels__/"
                 target="_blank"
+                className="hover:text-grey-20 transition-all duration-300 ease-in-out"
               >
                 instagram
               </Link>
