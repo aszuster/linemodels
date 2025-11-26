@@ -94,7 +94,8 @@ const Footer = () => {
                     <span>01</span>
                     <span>03</span>
                   </div>
-                <Image src="/queres-ser-modelo.png" alt="logo" width={386} height={244} className="w-full h-auto py-[10px]" />
+                  <div className="w-[386px] h-[244px] py-[10px]"></div>
+                {/* <Image src="/queres-ser-modelo.png" alt="logo" width={386} height={244} className="w-full h-auto py-[10px]" /> */}
                 <div className="flex justify-between items-center text-[6px]">
                     <span>02</span>
                     <span>04</span>
