@@ -68,7 +68,7 @@ const GuardadosDesktop = ({ isOpen, onClose, headerWidth }) => {
     >
       <div 
         style={{ 
-          width: `${headerWidth - 48}px`,
+          width: `${headerWidth - 20}px`,
         }}
         className="px-[24px] pb-[24px] flex flex-col h-full"
       >

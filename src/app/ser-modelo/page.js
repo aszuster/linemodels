@@ -68,13 +68,14 @@ export default function SerModelo() {
                     <span>01</span>
                     <span>03</span>
                   </div>
-                  <Image
+                  <div className="w-[544px] h-[350px]"></div>
+                  {/* <Image
                     src="/queres-ser-modelo.png"
                     alt="logo"
                     width={554}
                     height={350}
-                    className=" h-auto w-[544px]"
-                  />
+                    className=" h-auto "
+                  /> */}
                   <div className="flex flex-col justify-between items-center text-[6px] pl-[6px]">
                     <span>02</span>
                     <span>04</span>
